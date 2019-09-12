@@ -6,13 +6,14 @@ const db = {
             createdAt: '2019-09-12T11:59:58.903Z',
             likeCount: 11,
             commentCount: 7
-        },
+        }       
+    ],
+    users: [
         {
-            username: 'user2',
-            body: 'Hear about the new restaurant called Karma? There’s no menu: You get what you deserve.',
-            createdAt: '2019-09-12T12:02:45.148Z',
-            likeCount: 5,
-            commentCount: 3
-        },
+            userId: 'u2G37gulZ4NBXIltiBQsLUQzGUt2',
+            username: 'user1',
+            email: 'userOne@email.com',
+            createdAt: '2019-09-12T11:59:58.903Z',
+        }       
     ]
 }
