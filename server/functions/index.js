@@ -16,9 +16,42 @@ admin.initializeApp();
 // Initialize Firebase (Cloud firestore DB)
 const db = admin.firestore(); 
 
+
+// checks if request is authorized
+// if authorized takes the user info and add to the request
+const FBAuth = (req, res, next) => {
+  if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
+    idToken = req.headers.authorization.split('Bearer ')[1];
+  }else {
+    console.error('No token found');
+    return res.status(403).json({error: 'Unauthorized'})
+  }
+  
+  admin.auth().verifyIdToken(idToken)
+    .then(decodedToken => {
+      req.user = decodedToken;
+      return db.collection('users')
+        .where('userId', '==', req.user.uid)
+        .limit(1)
+        .get();
+
+    })
+    .then(data => {
+      req.user.username = data.docs[0].data().username;
+      return next();
+    })
+    .catch(err => {
+      console.error('Error while verifying token ', err);
+      return res.status(403).json(err);
+    });
+}
+
 //  Setup joke-posts routes
+
+// get all jokes
 app.get('/jokes', (req, res)=> {
   db.collection('jokes')
+    .orderBy('createdAt', 'desc')
     .get()
     .then(snapshots => {
       const jokes = [];
@@ -32,14 +65,19 @@ app.get('/jokes', (req, res)=> {
     })
     .catch(err => {
       res.json({error: err});
-      console.error('== ERROR ==', err);
+      console.error('Error while getting jokes ', err);
     });
 });
 
+// Post one joke
+app.post('/joke',FBAuth, (req, res)=>{
 
-app.post('/joke', (req, res)=>{
+  if(req.body.body.trim() === ''){
+    return res.status(400).json({body: 'joke body must not be empty'});
+  }
+
   const newJoke = {
-    username: req.body.username, 
+    username: req.user.username, 
     body: req.body.body,
     createdAt: new Date().toISOString()
   };
@@ -49,7 +87,7 @@ app.post('/joke', (req, res)=>{
     .then(doc => res.json({message: `document ${doc.id} created successfully`}))
     .catch(err => {
       res.status(500).json({error: 'something went wrong'});
-      console.error('== ERROR ==', err);
+      console.error('Error while posting a new joke ', err);
     });
 });
 
@@ -104,7 +142,7 @@ app.post('/signup', (req, res)=> {
     })
     .then(()=>res.status(201).json({token}))
     .catch(err => {
-      console.error('== ERROR ==', err);
+      console.error('Error while using sing-up ', err);
       if(err.code === 'auth/email-already-in-use') {
         return res.status(400).json({email: 'email is already in use'});
       }
@@ -129,7 +167,7 @@ app.get('/login', (req, res)=>{
     .then(data => data.user.getIdToken())
     .then(token => res.json({token}))
     .catch(err => {
-      console.error('== ERROR ==', err);
+      console.error('Error while user login ', err);
       if(err.code === 'auth/user-not-found'){
         return res.status(403).json({general: 'This email does not exist. please try again'});
       }
