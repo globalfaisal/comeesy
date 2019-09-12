@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const app = require('express')();
 
 const firebaseConfig = require('./firebase-config.js');
-const validateUserSignUp = require('./helpers/validateUserSignUp.js')
+const validateUser = require('./helpers/validateUser.js')
 
 
 
@@ -63,16 +63,16 @@ app.post('/signup', (req, res)=> {
     username: req.body.username,
   };
   
-  let token, userId ;
-    
-  const signupErrors = validateUserSignUp(newUser);
-
+  
+  // Validate user credentials
+  const signupErrors = validateUser.singUp(newUser);
+  
   if(Object.keys(signupErrors).length > 0){
     return res.status(400).json({error: signupErrors});
   }
-  // Validate user credentials
   
-
+  
+  let token, userId ;
 
   db.doc(`/users/${newUser.username}`)
     .get()
@@ -112,9 +112,33 @@ app.post('/signup', (req, res)=> {
     });
 });
 
+app.get('/login', (req, res)=>{
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  };
 
+  // Validate user credentials
+   const signInErrors = validateUser.signIn(user);
+  
+   if(Object.keys(signInErrors).length > 0){
+     return res.status(400).json({error: signInErrors});
+   }
 
-
+   firebase.auth().signInWithEmailAndPassword(user.email, user.password)
+    .then(data => data.user.getIdToken())
+    .then(token => res.json({token}))
+    .catch(err => {
+      console.error('== ERROR ==', err);
+      if(err.code === 'auth/user-not-found'){
+        return res.status(403).json({general: 'This email does not exist. please try again'});
+      }
+      if(err.code === 'auth/wrong-password') {
+        return res.status(403).json({general: 'Wrong credentials. please try again'});
+      }
+      return res.status(500).json({error: err.code});
+    });
+});
 
 
 
