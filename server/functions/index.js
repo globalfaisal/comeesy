@@ -3,18 +3,11 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const app = require('express')();
 
+const firebaseConfig = require('./firebase-config.js');
+const validateUserSignUp = require('./helpers/validateUserSignUp.js')
 
 
-// Our web app's firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyA_D174zCQigxHHQuoAjPRVWhqCsWW8Y2I",
-  authDomain: "kydding-f188e.firebaseapp.com",
-  databaseURL: "https://kydding-f188e.firebaseio.com",
-  projectId: "kydding-f188e",
-  storageBucket: "kydding-f188e.appspot.com",
-  messagingSenderId: "1055385668845",
-  appId: "1:1055385668845:web:780d5a228c2659507710e4"
-};
+
 
 // Initialize Firebase and Firebase-admin
 firebase.initializeApp(firebaseConfig);
@@ -71,6 +64,15 @@ app.post('/signup', (req, res)=> {
   };
   
   let token, userId ;
+    
+  const signupErrors = validateUserSignUp(newUser);
+
+  if(Object.keys(signupErrors).length > 0){
+    return res.status(400).json({error: signupErrors});
+  }
+  // Validate user credentials
+  
+
 
   db.doc(`/users/${newUser.username}`)
     .get()
@@ -109,6 +111,12 @@ app.post('/signup', (req, res)=> {
       return res.status(500).json({error: err.code});
     });
 });
+
+
+
+
+
+
 
 // https://baseurl.com/api/{route}
 exports.api = functions.region('europe-west1').https.onRequest(app);
