@@ -4,7 +4,7 @@
 		"ecmaVersion": 2018
 	},
 	"plugins": ["promise"],
-	"extends": "eslint:recommended",
+	"extends": ["wesbos", "eslint:recommended"],
 	"rules": {
 		// Removed rule "disallow the use of console" from recommended eslint rules
 		"no-console": "off",

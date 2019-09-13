@@ -14,7 +14,17 @@ firebase-debug.log*
 # Uncomment this if you'd like others to create their own Firebase project.
 # For a team working on the same Firebase project(s), it is recommended to leave
 # it commented so all members can deploy to the same project(s) in .firebaserc.
-# .firebaserc
+ .firebaserc
+
+#firebase web app config
+config.js
+
+# Google Cloud Platform's Credentials
+gcp-service-acount-secret.json
+
+#Google firestore (DB) schema
+dbschema.js
+
 
 # Runtime data
 pids
@@ -63,3 +73,5 @@ node_modules/
 
 # dotenv environment variables file
 .env
+
+
