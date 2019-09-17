@@ -19,16 +19,14 @@ module.exports = (req, res, next) => {
     .auth()
     .verifyIdToken(idToken)
     .then(decodedToken => {
-      req.user = decodedToken;
-
       return db
         .collection('users')
-        .where('userId', '==', req.user.uid)
+        .where('userId', '==', decodedToken.uid)
         .limit(1)
         .get();
     })
     .then(snapshot => {
-      req.user.username = snapshot.docs[0].data().username;
+      req.user = snapshot.docs[0].data();
       return next();
     })
     .catch(err => {

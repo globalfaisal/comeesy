@@ -44,6 +44,15 @@ exports.reduceUserDetails = data => {
     details.birthdate = data.birthdate;
   return {
     details,
-    isEmptyObj: Object.keys(details).length === 0 ? true : false,
+    isEmptyData: Object.keys(details).length === 0 ? true : false,
+  };
+};
+
+exports.validateBodyContent = body => {
+  const errors = {};
+  if (validator.isEmpty(body)) errors.body = 'Must not be empty';
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0 ? true : false,
   };
 };

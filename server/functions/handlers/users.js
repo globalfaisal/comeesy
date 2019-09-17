@@ -119,9 +119,9 @@ exports.signup = (req, res) => {
 
 // Add user details
 exports.addUserOwnData = (req, res) => {
-  const { isEmptyObj, details } = reduceUserDetails(req.body);
-  if (isEmptyObj)
-    return res.status(400).json({ error: 'Empty data submitted' });
+  const { isEmptyData, details } = reduceUserDetails(req.body);
+  if (isEmptyData)
+    return res.status(400).json({ error: 'Data must not be empty' });
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)

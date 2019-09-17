@@ -4,6 +4,7 @@ const app = require('express')();
 const fbAuth = require('./utils/fbAuth');
 
 const { getJokes, getJoke, postJoke } = require('./handlers/jokes');
+const { postComment } = require('./handlers/comments');
 const {
   login,
   signup,
@@ -16,10 +17,10 @@ const {
 app.get('/jokes', getJokes);
 app.get('/joke/:jokeId', getJoke);
 app.post('/joke', fbAuth, postJoke);
+app.post('/joke/:jokeId/comment', fbAuth, postComment);
 //TODO: delete joke route
 //TODO: like a joke route
 //TODO: unlike a joke route
-//TODO: comment on a joke route
 
 // users routes
 app.post('/signup', signup);

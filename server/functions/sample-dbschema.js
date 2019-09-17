@@ -1,13 +1,19 @@
 const db = {
   jokes: [
     {
-      username: 'username',
       body:
         'Did you hear about the crook who stole a calendar? He got twelve months.',
       createdAt: '2019-09-12T11:59:58.903Z',
       /*optional fields*/
       likeCount: 11,
       commentCount: 7,
+      user: {
+        username: 'john_doe',
+        firstname: 'John',
+        lastname: 'Doe',
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/5410283630790.jpg?alt=media',
+      },
     },
   ],
   users: [
@@ -31,7 +37,13 @@ const db = {
       jokeId: 'wgNarnumWwwggTyOMKtA',
       body: 'wow! that is so funny 🤣',
       createdAt: '2019-09-14T11:11:58.903Z',
-      username: 'jane_doe',
+      user: {
+        username: 'jane_doe',
+        firstname: 'Jane',
+        lastname: 'Doe',
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/5410283630790.jpg?alt=media',
+      },
     },
   ],
 };
