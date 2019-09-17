@@ -8,13 +8,14 @@ const { admin, db } = require('../utils/admin');
 const {
   validateLoginData,
   validateSignupData,
+  reduceUserDetails,
 } = require('../utils/validators');
 
 const config = require('../config');
 
 firebase.initializeApp(config);
 
-// user login request handler
+// Login request handler
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
@@ -46,7 +47,7 @@ exports.login = (req, res) => {
     });
 };
 
-// user signup request handler
+// Signup request handler
 exports.signup = (req, res) => {
   const newUser = {
     firstname: req.body.firstname,
@@ -101,7 +102,7 @@ exports.signup = (req, res) => {
     })
     .then(() => res.status(201).json({ token }))
     .catch(err => {
-      console.error('Error while using sing-up ', err);
+      console.error('Error while user sing-up ', err);
 
       if (err.code === 'auth/email-already-in-use') {
         return res.status(400).json({ email: 'Email is already in use' });
@@ -117,7 +118,22 @@ exports.signup = (req, res) => {
     });
 };
 
-// user profile picture upload request handler
+// Add user details request handler
+exports.addUserDetails = (req, res) => {
+  const { isEmptyObj, details } = reduceUserDetails(req.body);
+  if (isEmptyObj)
+    return res.status(400).json({ error: 'Empty data submitted' });
+  // persist the update details in the users db
+  db.doc(`/users/${req.user.username}`)
+    .update(details)
+    .then(() => res.json({ message: 'Details added successfully' }))
+    .catch(err => {
+      console.error('Error while adding user details ', err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+// User profile picture upload request handler
 exports.uploadProfileImage = (req, res) => {
   let imageFileName;
   let imageToUpload = {};

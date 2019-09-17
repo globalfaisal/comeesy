@@ -34,3 +34,16 @@ exports.validateSignupData = data => {
     isValid: Object.keys(errors).length === 0 ? true : false,
   };
 };
+
+exports.reduceUserDetails = data => {
+  const details = {};
+  if (data.location && !validator.isEmpty(data.location))
+    details.location = data.location;
+  if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;
+  if (data.birthdate && !validator.isEmpty(data.birthdate))
+    details.birthdate = data.birthdate;
+  return {
+    details,
+    isEmptyObj: Object.keys(details).length === 0 ? true : false,
+  };
+};
