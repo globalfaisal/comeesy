@@ -6,7 +6,7 @@ const db = {
         'Did you hear about the crook who stole a calendar? He got twelve months.',
       createdAt: '2019-09-12T11:59:58.903Z',
       /*optional fields*/
-      laughCount: 11,
+      likeCount: 11,
       commentCount: 7,
     },
   ],

@@ -4,14 +4,11 @@ exports.getAllJokes = (req, res) => {
   db.collection('jokes')
     .orderBy('createdAt', 'desc')
     .get()
-    .then(snapshots => {
-      const jokes = [];
-      snapshots.forEach(doc => {
-        jokes.push({
-          jokeId: doc.id,
-          ...doc.data(),
-        });
-      });
+    .then(snapshot => {
+      const jokes = snapshot.docs.map(doc => ({
+        jokeId: doc.id,
+        ...doc.data(),
+      }));
       return res.json(jokes);
     })
     .catch(err => {

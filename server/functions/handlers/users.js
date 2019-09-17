@@ -15,7 +15,7 @@ const config = require('../config');
 
 firebase.initializeApp(config);
 
-// Login request handler
+// Login existing user
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
@@ -47,7 +47,7 @@ exports.login = (req, res) => {
     });
 };
 
-// Signup request handler
+// Signup new user
 exports.signup = (req, res) => {
   const newUser = {
     firstname: req.body.firstname,
@@ -118,23 +118,48 @@ exports.signup = (req, res) => {
     });
 };
 
-// Add user details request handler
-exports.addUserDetails = (req, res) => {
+// Add user details
+exports.addUserOwnData = (req, res) => {
   const { isEmptyObj, details } = reduceUserDetails(req.body);
   if (isEmptyObj)
     return res.status(400).json({ error: 'Empty data submitted' });
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)
-    .then(() => res.json({ message: 'Details added successfully' }))
+    .then(() => res.json({ message: 'Data added successfully' }))
     .catch(err => {
-      console.error('Error while adding user details ', err);
+      console.error('Error while adding user data ', err);
       return res.status(500).json({ error: err.code });
     });
 };
 
-// User profile picture upload request handler
-exports.uploadProfileImage = (req, res) => {
+// Get user's own data
+exports.getUserOwnData = (req, res) => {
+  const userData = {};
+  db.doc(`/users/${req.user.username}`)
+    .get()
+    .then(doc => {
+      if (doc.exists) {
+        userData.credentials = doc.data();
+        return db
+          .collection('likes')
+          .where('username', '==', req.user.username)
+          .get();
+      }
+      return null;
+    })
+    .then(snapshot => {
+      userData.likes = snapshot.docs.map(doc => doc.data());
+      return res.status(200).json(userData);
+    })
+    .catch(err => {
+      console.error('Error while getting user own data ', err);
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+// Post user profile image
+exports.uploadUserAvatar = (req, res) => {
   let imageFileName;
   let imageToUpload = {};
 
