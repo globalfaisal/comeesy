@@ -63,7 +63,7 @@ exports.signup = (req, res) => {
   if (!isValid) return res.status(400).json({ errors });
 
   let token, userId;
-  const defaultAvatar = 'default-avatar.png';
+  const defaultAvatarFileName = 'default-avatar.png';
 
   // Creates new user
   db.doc(`/users/${newUser.username}`)
@@ -71,7 +71,7 @@ exports.signup = (req, res) => {
     .then(doc => {
       // Check if username is already exists
       if (doc.exists) {
-        return res.status(400).json({ username: 'username is already taken' });
+        return res.status(400).json({ username: 'Username is already taken' });
       } else {
         // Create new user
         return firebase
@@ -80,7 +80,6 @@ exports.signup = (req, res) => {
       }
     })
     .then(data => {
-      console.log('--------------------- here');
       userId = data.user.uid;
       return data.user.getIdToken();
     })
@@ -94,7 +93,7 @@ exports.signup = (req, res) => {
         createdAt: new Date().toISOString(),
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
           config.storageBucket
-        }/o/${defaultAvatar}?alt=media`,
+        }/o/${defaultAvatarFileName}?alt=media`,
         userId,
       };
       // Persist the newly created user credentials to the db
