@@ -10,12 +10,15 @@ exports.validateLoginData = data => {
 
   return {
     errors,
-    valid: Object.keys(errors).length === 0 ? true : false,
+    isValid: Object.keys(errors).length === 0 ? true : false,
   };
 };
 
 exports.validateSignupData = data => {
   const errors = {};
+  if (validator.isEmpty(data.firstname)) errors.firstname = 'Must not be empty';
+  if (validator.isEmpty(data.lastname)) errors.lastname = 'Must not be empty';
+
   if (validator.isEmpty(data.username)) errors.username = 'Must not be empty';
 
   if (validator.isEmpty(data.email)) errors.email = 'Must not be empty';
@@ -28,6 +31,6 @@ exports.validateSignupData = data => {
 
   return {
     errors,
-    valid: Object.keys(errors).length === 0 ? true : false,
+    isValid: Object.keys(errors).length === 0 ? true : false,
   };
 };

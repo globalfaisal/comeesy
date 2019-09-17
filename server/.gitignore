@@ -20,7 +20,7 @@ firebase-debug.log*
 config.js
 
 # Google Cloud Platform's Credentials
-gcp-service-acount-secret.json
+kydding-691e97933cb9.json
 
 #Google firestore (DB) schema
 dbschema.js

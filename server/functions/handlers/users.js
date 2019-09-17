@@ -1,15 +1,20 @@
 const firebase = require('firebase');
-const config = require('../config');
+const BusBoy = require('busboy');
+const path = require('path');
+const os = require('os');
+const fs = require('fs');
 
-firebase.initializeApp(config);
-
-const { db } = require('../utils/admin');
-
+const { admin, db } = require('../utils/admin');
 const {
   validateLoginData,
   validateSignupData,
 } = require('../utils/validators');
 
+const config = require('../config');
+
+firebase.initializeApp(config);
+
+// user login request handler
 exports.login = (req, res) => {
   const user = {
     email: req.body.email,
@@ -17,43 +22,48 @@ exports.login = (req, res) => {
   };
 
   // Validate incoming data
-  const { valid, errors } = validateLoginData(user);
-  if (!valid) return res.status(400).json({ errors });
+  const { isValid, errors } = validateLoginData(user);
+  if (!isValid) return res.status(400).json({ errors });
 
   firebase
     .auth()
     .signInWithEmailAndPassword(user.email, user.password)
     .then(data => data.user.getIdToken())
-    .then(token => res.json({ token }))
+    .then(token => res.status(200).json({ token }))
     .catch(err => {
       console.error('Error while user login ', err);
       if (err.code === 'auth/user-not-found') {
         return res
           .status(403)
-          .json({ general: 'This email does not exist. please try again' });
+          .json({ email: 'This email does not exist. Please try again' });
       }
       if (err.code === 'auth/wrong-password') {
         return res
           .status(403)
-          .json({ general: 'Wrong credentials. please try again' });
+          .json({ password: 'Wrong password. Please try again' });
       }
       return res.status(500).json({ error: err.code });
     });
 };
 
+// user signup request handler
 exports.signup = (req, res) => {
   const newUser = {
+    firstname: req.body.firstname,
+    lastname: req.body.lastname,
+    username: req.body.username,
     email: req.body.email,
     password: req.body.password,
     confirmPassword: req.body.confirmPassword,
-    username: req.body.username,
   };
 
   // Validate incoming data
-  const { valid, errors } = validateSignupData(newUser);
-  if (!valid) return res.status(400).json({ errors });
+  const { isValid, errors } = validateSignupData(newUser);
+  if (!isValid) return res.status(400).json({ errors });
 
   let token, userId;
+  const defaultAvatar = 'default-avatar.png';
+
   // Creates new user
   db.doc(`/users/${newUser.username}`)
     .get()
@@ -69,15 +79,21 @@ exports.signup = (req, res) => {
       }
     })
     .then(data => {
+      console.log('--------------------- here');
       userId = data.user.uid;
       return data.user.getIdToken();
     })
     .then(idToken => {
       token = idToken;
       const userCredentials = {
+        firstname: newUser.firstname,
+        lastname: newUser.lastname,
         username: newUser.username,
         email: newUser.email,
         createdAt: new Date().toISOString(),
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${defaultAvatar}?alt=media`,
         userId,
       };
       // Persist the newly created user credentials to the db
@@ -99,4 +115,61 @@ exports.signup = (req, res) => {
 
       return res.status(500).json({ error: err.code });
     });
+};
+
+// user profile picture upload request handler
+exports.uploadProfileImage = (req, res) => {
+  let imageFileName;
+  let imageToUpload = {};
+
+  const busboy = new BusBoy({ headers: req.headers });
+  busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+    if (!file || !mimetype)
+      return res.status(400).json({ error: 'Invalid file submitted' });
+    if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
+      return res.status(400).json({ error: 'Wrong file type submitted' });
+    }
+    // 1. Generate unique image filename
+    const imageExt = filename.split('.')[filename.split('.').length - 1];
+    imageFileName = `${Math.round(Math.random() * 10000000000000)}.${imageExt}`;
+    // 2. Create filepath
+    const filePath = path.join(os.tmpdir(), imageFileName);
+    // 3. Create the file in the user's temp directory
+    file.pipe(fs.createWriteStream(filePath));
+
+    imageToUpload = { filePath, mimetype };
+  });
+
+  busboy.on('finish', () => {
+    // 1. Upload the created file to firebase storage
+    admin
+      .storage()
+      .bucket()
+      .upload(imageToUpload.filePath, {
+        resumable: false,
+        metadata: {
+          metadata: {
+            contentType: imageToUpload.mimetype,
+          },
+        },
+      })
+      .then(() => {
+        // 2. Get the file url from the storage
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${imageFileName}?alt=media`;
+
+        // 2. Add the imageUrl to the db
+        return db.doc(`/users/${req.user.username}`).update({ imageUrl });
+      })
+      .then(() =>
+        res.status(201).json({ message: 'Image uploaded successfully' })
+      )
+      .catch(err => {
+        console.error('Error while uploading profile image ', err);
+      });
+  });
+  // get the response from the server
+  // once the request is completed
+  busboy.end(req.rawBody);
 };

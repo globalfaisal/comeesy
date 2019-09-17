@@ -1,8 +1,7 @@
 const { admin, db } = require('./admin');
 
-// middleware func that checks if request is authorized
-// takes the authorized user credentials and add to the request header
-// calls the handler(next)
+// Middleware func for protecting the route
+// from un authorized access.
 module.exports = (req, res, next) => {
   let idToken;
   // 1. get the token from the req header
@@ -13,7 +12,7 @@ module.exports = (req, res, next) => {
     idToken = req.headers.authorization.split('Bearer ')[1];
   } else {
     console.error('Error: No token found in the request');
-    return res.status(403).json({ error: 'Unauthorized' });
+    return res.status(403).json({ error: 'Unauthorized Request' });
   }
   // 2. check if the token is valid
   admin
@@ -34,6 +33,15 @@ module.exports = (req, res, next) => {
     })
     .catch(err => {
       console.error('Error while verifying token ', err);
-      return res.status(403).json(err);
+      if (err.code === 'auth/id-token-expired') {
+        return res.status(403).json({
+          error: 'expired id-token provided',
+        });
+      } else if (err.code === 'auth/argument-error') {
+        return res.status(403).json({
+          error: 'invalid id-token provided',
+        });
+      }
+      return res.status(500).json(err);
     });
 };
