@@ -42,7 +42,21 @@ const db = {
         firstname: 'Jane',
         lastname: 'Doe',
         imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/5410283630790.jpg?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
+      },
+    },
+  ],
+  replies: [
+    {
+      commentId: 'wgNarnumWwwggTyOMKtA',
+      body: 'lol! thanks',
+      createdAt: '2019-09-14T15:11:58.903Z',
+      user: {
+        username: 'alen_adam',
+        firstname: 'Alen',
+        lastname: 'Adam',
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
     },
   ],
@@ -58,7 +72,7 @@ const userOwnData = {
     email: 'johndoe@email.com',
     createdAt: '2019-09-12T11:59:58.903Z',
     imageUrl:
-      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/image-name.jpg?alt=media',
+      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
     /*optional fields*/
     location: 'Stockholm, Sweden',
     birthdate: '1990-12-08',

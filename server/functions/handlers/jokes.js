@@ -39,7 +39,11 @@ exports.getJoke = (req, res) => {
         .get();
     })
     .then(snapshot => {
-      jokeData.comments = snapshot.docs.map(doc => doc.data());
+      jokeData.comments = snapshot.docs.map(doc => ({
+        commentId: doc.id,
+        ...doc.data(),
+      }));
+
       return res.status(200).json(jokeData);
     })
     .catch(err => {
