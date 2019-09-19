@@ -2,12 +2,12 @@ const { db } = require('../utils/admin');
 const { validateBodyContent } = require('../utils/validators');
 
 // Add comment on joke
-exports.postComment = (req, res) => {
+exports.commentOnJoke = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
 
   if (!req.params.jokeId)
-    return res.status(400).json({ error: 'the jokeId must be provided' });
+    return res.status(400).json({ error: 'the jokeId is required' });
 
   const newComment = {
     jokeId: req.params.jokeId,
@@ -39,14 +39,14 @@ exports.postComment = (req, res) => {
     });
 };
 
-exports.postCommentReply = (req, res) => {
+exports.replyOnComment = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
 
   if (!req.params.jokeId)
-    return res.status(400).json({ error: 'the jokeId must be provided' });
+    return res.status(400).json({ error: 'the jokeId is required' });
   else if (!req.params.commentId)
-    return res.status(400).json({ error: 'the commentId must be provided' });
+    return res.status(400).json({ error: 'the commentId is required' });
 
   const commentReply = {
     commentId: req.params.commentId,

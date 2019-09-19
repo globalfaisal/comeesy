@@ -53,7 +53,7 @@ exports.getJoke = (req, res) => {
 };
 
 // Post a joke
-exports.postJoke = (req, res) => {
+exports.addJoke = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
 
