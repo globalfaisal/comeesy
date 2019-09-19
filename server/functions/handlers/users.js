@@ -99,7 +99,11 @@ exports.signup = (req, res) => {
       // Persist the newly created user credentials to the db
       return db.doc(`/users/${newUser.username}`).set(userCredentials);
     })
-    .then(() => res.status(201).json({ token }))
+    .then(doc => {
+      // created successfully
+      console.log(`User created successfully`);
+      return res.status(201).json({ token });
+    })
     .catch(err => {
       console.error('Error while user sing-up ', err);
 
@@ -121,7 +125,7 @@ exports.signup = (req, res) => {
 exports.addUserDetails = (req, res) => {
   const { isEmptyData, details } = reduceUserDetails(req.body);
   if (isEmptyData)
-    return res.status(400).json({ error: 'Details must not be empty' });
+    return res.status(400).json({ error: 'No data found in the request body' });
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)
@@ -142,13 +146,17 @@ exports.getUserOwnData = (req, res) => {
         userData.credentials = doc.data();
         return db
           .collection('likes')
-          .where('username', '==', req.user.username)
+          .where('user.username', '==', req.user.username)
           .get();
       }
       return null;
     })
     .then(snapshot => {
-      userData.likes = snapshot.docs.map(doc => doc.data());
+      if (snapshot.empty) console.log('No likes found.');
+      userData.likes = snapshot.docs.map(doc => ({
+        likeId: doc.id,
+        ...doc.data(),
+      }));
       return res.status(200).json(userData);
     })
     .catch(err => {

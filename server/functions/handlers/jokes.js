@@ -1,16 +1,17 @@
 const { db } = require('../utils/admin');
 const { validateBodyContent } = require('../utils/validators');
+
 // Get all jokes
 exports.getJokes = (req, res) => {
   db.collection('jokes')
     .orderBy('createdAt', 'desc')
     .get()
     .then(snapshot => {
-      const jokes = snapshot.docs.map(doc => ({
+      const jokesData = snapshot.docs.map(doc => ({
         jokeId: doc.id,
         ...doc.data(),
       }));
-      return res.json(jokes);
+      return res.status(200).json(jokesData);
     })
     .catch(err => {
       console.error('Error while getting jokes ', err);
@@ -21,7 +22,7 @@ exports.getJokes = (req, res) => {
 // Get one joke
 exports.getJoke = (req, res) => {
   if (!req.params.jokeId)
-    return res.status(400).json({ error: 'the jokeId must not be empty' });
+    return res.status(400).json({ error: 'jokeId is required' });
 
   let jokeData = {};
   db.doc(`/jokes/${req.params.jokeId}`)
@@ -39,6 +40,8 @@ exports.getJoke = (req, res) => {
         .get();
     })
     .then(snapshot => {
+      if (snapshot.empty) console.log('No joke comments found.');
+
       jokeData.comments = snapshot.docs.map(doc => ({
         commentId: doc.id,
         ...doc.data(),
@@ -52,7 +55,7 @@ exports.getJoke = (req, res) => {
     });
 };
 
-// Post a joke
+// Post a new joke
 exports.addJoke = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
@@ -60,6 +63,8 @@ exports.addJoke = (req, res) => {
   const newJoke = {
     body: req.body.body,
     createdAt: new Date().toISOString(),
+    likeCount: 0,
+    commentCount: 0,
     user: {
       username: req.user.username,
       firstname: req.user.firstname,
@@ -71,10 +76,9 @@ exports.addJoke = (req, res) => {
   db.collection('jokes')
     .add(newJoke)
     .then(doc => {
-      // added sucessfully
+      // added successfully
       console.log(`Joke ${doc.id} created successfully`);
-      // return the joke to the client
-      return res.json({ ...newJoke, jokeId: doc.id });
+      return res.status(201).json({ ...newJoke, jokeId: doc.id });
     })
     .catch(err => {
       console.error('Error while adding a new joke ', err);
