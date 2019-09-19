@@ -5,7 +5,7 @@ exports.validateLoginData = data => {
 
   if (validator.isEmpty(data.email)) errors.email = 'Must not be empty';
   else if (!validator.isEmail(data.email))
-    errors.email = 'Must provide a valid email address';
+    errors.email = 'Must be a valid email address';
   if (validator.isEmpty(data.password)) errors.password = 'Must not be empty';
 
   return {

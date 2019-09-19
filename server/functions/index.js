@@ -13,7 +13,7 @@ const {
   login,
   signup,
   getUserOwnData,
-  addUserOwnData,
+  addUserOwnDetails,
   uploadUserAvatar,
 } = require('./handlers/users');
 
@@ -33,7 +33,7 @@ app.post('/signup', signup);
 app.get('/login', login);
 
 app.get('/user', fbAuth, getUserOwnData);
-app.post('/user', fbAuth, addUserOwnData);
+app.post('/user', fbAuth, addUserOwnDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
 
 // https://baseurl.com/api/{route}

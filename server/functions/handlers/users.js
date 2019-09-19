@@ -118,16 +118,16 @@ exports.signup = (req, res) => {
 };
 
 // Add user details
-exports.addUserOwnData = (req, res) => {
+exports.addUserOwnDetails = (req, res) => {
   const { isEmptyData, details } = reduceUserDetails(req.body);
   if (isEmptyData)
-    return res.status(400).json({ error: 'Data must not be empty' });
+    return res.status(400).json({ error: 'Details must not be empty' });
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)
-    .then(() => res.json({ message: 'Data added successfully' }))
+    .then(() => res.json({ message: 'Details added successfully' }))
     .catch(err => {
-      console.error('Error while adding user data ', err);
+      console.error('Error while adding user own details ', err);
       return res.status(500).json({ error: err.code });
     });
 };
