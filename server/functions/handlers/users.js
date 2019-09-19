@@ -118,7 +118,11 @@ exports.signup = (req, res) => {
 };
 
 // Add user details
+<<<<<<< HEAD
 exports.addUserDetails = (req, res) => {
+=======
+exports.addUserOwnDetails = (req, res) => {
+>>>>>>> 7f56e945694ffcbe606b412760a36e77fb600eab
   const { isEmptyData, details } = reduceUserDetails(req.body);
   if (isEmptyData)
     return res.status(400).json({ error: 'Details must not be empty' });
