@@ -6,10 +6,11 @@ const fbAuth = require('./utils/fbAuth');
 const { getJokes, getJoke, addJoke } = require('./handlers/jokes');
 const { likeJoke, unlikeJoke } = require('./handlers/likes');
 const {
+  getCommentReplies,
   commentOnJoke,
   deleteComment,
   replyOnComment,
-  getCommentReplies,
+  deleteCommentReply,
 } = require('./handlers/comments');
 const {
   login,
@@ -26,12 +27,18 @@ app.post('/joke', fbAuth, addJoke);
 //TODO: delete a joke route (also delete all related comments and replies and likes from the db)
 //TODO: edit a joke route
 
+// Comment routes
 app.post('/joke/:jokeId/comment', fbAuth, commentOnJoke);
 app.delete('/joke/:jokeId/comment/:commentId', fbAuth, deleteComment);
-app.post('/joke/:jokeId/comment/:commentId', fbAuth, replyOnComment);
+
+// Comment reply routes
 app.get('/joke/:jokeId/comment/:commentId/replies', getCommentReplies);
-//TODO: delete a comment route (also update commentCount field in the joke)
-//TODO: delete a comment reply (also update replyCount field in comments)
+app.post('/joke/:jokeId/comment/:commentId/reply', fbAuth, replyOnComment);
+app.delete(
+  '/joke/:jokeId/comment/:commentId/reply/:replyId',
+  fbAuth,
+  deleteCommentReply
+);
 
 app.post('/joke/:jokeId/like', fbAuth, likeJoke);
 app.post('/joke/:jokeId/unlike', fbAuth, unlikeJoke);

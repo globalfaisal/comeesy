@@ -7,10 +7,7 @@ exports.getJokes = (req, res) => {
     .orderBy('createdAt', 'desc')
     .get()
     .then(snapshot => {
-      const jokesData = snapshot.docs.map(doc => ({
-        jokeId: doc.id,
-        ...doc.data(),
-      }));
+      const jokesData = snapshot.docs.map(doc => doc.data());
       return res.status(200).json(jokesData);
     })
     .catch(err => {
@@ -31,8 +28,9 @@ exports.getJoke = (req, res) => {
       if (!doc.exists) {
         return res.status(404).json({ error: 'Joke not found' });
       }
+
       jokeData = doc.data();
-      jokeData.jokeId = doc.id;
+
       return db
         .collection('comments')
         .where('jokeId', '==', req.params.jokeId)
@@ -42,10 +40,7 @@ exports.getJoke = (req, res) => {
     .then(snapshot => {
       if (snapshot.empty) console.log('No joke comments found.');
 
-      jokeData.comments = snapshot.docs.map(doc => ({
-        commentId: doc.id,
-        ...doc.data(),
-      }));
+      jokeData.comments = snapshot.docs.map(doc => doc.data());
 
       return res.status(200).json(jokeData);
     })
@@ -75,10 +70,12 @@ exports.addJoke = (req, res) => {
 
   db.collection('jokes')
     .add(newJoke)
-    .then(doc => {
-      // added successfully
-      console.log(`Joke ${doc.id} created successfully`);
-      return res.status(201).json({ ...newJoke, jokeId: doc.id });
+    .then(async docRef => {
+      // Add the generated doc id to the joke document
+      await db.doc(`/jokes/${docRef.id}`).update({ jokeId: docRef.id });
+
+      console.log(`Joke ${docRef.id} created successfully`);
+      return res.status(201).json({ ...newJoke, jokeId: docRef.id });
     })
     .catch(err => {
       console.error('Error while adding a new joke ', err);
