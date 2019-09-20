@@ -25,7 +25,7 @@ exports.likeJoke = (req, res) => {
 
       // Add new like
       await db.collection('likes').add({
-        jokeId: req.params.jokeId,
+        jokeId: jokeData.jokeId,
         createdAt: new Date().toISOString(),
         user: {
           username: req.user.username,
@@ -43,7 +43,7 @@ exports.likeJoke = (req, res) => {
       return res.status(201).json(jokeData);
     })
     .catch(err => {
-      console.error('Error while adding a like to a joke ', err);
+      console.error('Error while like a joke ', err);
       res.status(500).json({ error: 'Something went wrong' });
     });
 };
@@ -83,7 +83,7 @@ exports.unlikeJoke = (req, res) => {
       return res.status(201).json(jokeData);
     })
     .catch(err => {
-      console.error('Error while adding a like to a joke ', err);
+      console.error('Error while unlike a joke ', err);
       res.status(500).json({ error: 'Something went wrong' });
     });
 };

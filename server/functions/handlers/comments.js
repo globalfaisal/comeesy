@@ -9,6 +9,9 @@ exports.commentOnJoke = (req, res) => {
   if (!req.params.jokeId)
     return res.status(400).json({ error: 'jokeId is required' });
 
+  let jokeData;
+  const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
+
   const newComment = {
     jokeId: req.params.jokeId,
     body: req.body.body,
@@ -22,16 +25,22 @@ exports.commentOnJoke = (req, res) => {
     },
   };
 
-  db.doc(`/jokes/${req.params.jokeId}`)
+  jokeDocument
     .get()
     .then(doc => {
       if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      jokeData = { jokeId: doc.id, ...doc.data() };
       return db.collection('comments').add(newComment);
     })
-    .then(doc => {
-      // added successfully
-      console.log(`Comment ${doc.id} created successfully`);
-      return res.status(201).json({ ...newComment, commentId: doc.id });
+    .then(async docRef => {
+      console.log(`Comment ${docRef.id} created successfully`);
+      // Add the generated doc id to the reply document
+      await db.doc(`/comments/${docRef.id}`).update({ commentId: docRef.id });
+      // Update commentCount field in joke document
+      jokeData.commentCount++;
+      await jokeDocument.update({ commentCount: jokeData.commentCount });
+
+      return res.status(201).json({ ...newComment, commentId: docRef.id });
     })
     .catch(err => {
       console.error('Error while adding a new comment ', err);
@@ -39,6 +48,84 @@ exports.commentOnJoke = (req, res) => {
     });
 };
 
+//Delete comment
+exports.deleteComment = (req, res) => {
+  if (!req.params.jokeId)
+    return res.status(400).json({ error: 'jokeId is required' });
+  else if (!req.params.commentId)
+    return res.status(400).json({ error: 'commentId is required' });
+
+  let jokeData;
+  const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
+  const commentDocument = db
+    .collection('comments')
+    .where('jokeId', '==', req.params.jokeId)
+    .where('commentId', '==', req.params.commentId)
+    .limit(1);
+
+  jokeDocument
+    .get()
+    .then(doc => {
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      jokeData = { jokeId: doc.id, ...doc.data() };
+
+      return commentDocument.get();
+    })
+    .then(async snapshot => {
+      if (snapshot.empty)
+        return res.status(404).json({ error: 'comment not found' });
+
+      const commentData = {
+        commentId: snapshot.docs[0].id,
+        ...snapshot.docs[0].data(),
+      };
+      // Allows only deletion from the joke owner of the comment owner.
+      if (
+        commentData.user.username !== req.user.username &&
+        jokeData.user.username !== req.user.username
+      ) {
+        return res
+          .status(404)
+          .json({ error: 'unauthorized comment delete request' });
+      }
+
+      // Delete the comment document from the collection
+      await db.doc(`/comments/${commentData.commentId}`).delete();
+      // Update commentCount field in joke document
+      jokeData.commentCount--;
+      await jokeDocument.update({ commentCount: jokeData.commentCount });
+
+      //Find and return all the replies for the comment
+      return await db
+        .collection('replies')
+        .where('commentId', '==', commentData.commentId)
+        .get();
+    })
+    .then(async snapshot => {
+      if (snapshot.empty) {
+        console.log(`no comment replies associated with the deleted comment`);
+        return res.status(201).json(jokeData);
+      }
+
+      // Delete all replies for the deleted comment
+      const batch = db.batch();
+      snapshot.docs.forEach(doc => {
+        // For each doc, add a delete operation to the batch
+        batch.delete(doc.ref);
+      });
+
+      // Commit the batch
+      await batch.commit();
+      // Delete completed!
+      return res.status(201).json(jokeData);
+    })
+    .catch(err => {
+      console.error('Error while deleting a comment ', err);
+      res.status(500).json({ error: 'something went wrong' });
+    });
+};
+
+// Post reply on a comment
 exports.replyOnComment = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
@@ -47,9 +134,6 @@ exports.replyOnComment = (req, res) => {
     return res.status(400).json({ error: 'jokeId is required' });
   else if (!req.params.commentId)
     return res.status(400).json({ error: 'commentId is required' });
-
-  const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
-  const commentDocument = db.doc(`/comments/${req.params.commentId}`);
 
   const newReply = {
     commentId: req.params.commentId,
@@ -63,32 +147,45 @@ exports.replyOnComment = (req, res) => {
     },
   };
 
-  jokeDocument
+  const commentDocument = db
+    .collection('comments')
+    .where('jokeId', '==', req.params.jokeId)
+    .where('commentId', '==', req.params.commentId)
+    .limit(1);
+
+  commentDocument
     .get()
-    .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
-      return commentDocument.get();
-    })
-    .then(async doc => {
-      if (!doc.exists)
-        return res.status(404).json({ error: 'Comment not found' });
+    .then(async snapshot => {
+      if (snapshot.empty)
+        return res.status(404).json({ error: 'comment not found' });
+
+      const commentData = {
+        commentId: snapshot.docs[0].id,
+        ...snapshot.docs[0].data(),
+      };
       // update replyCount field in comment document
-      const commentData = doc.data();
       commentData.replyCount++;
-      await commentDocument.update({ replyCount: commentData.replyCount });
+      await db
+        .doc(`/comments/${commentData.commentId}`)
+        .update({ replyCount: commentData.replyCount });
 
-      // add new reply to the comment
-      const response = await db.collection('replies').add(newReply);
+      // Add new reply to the comment
+      return db.collection('replies').add(newReply);
+    })
+    .then(async docRef => {
+      // Add the generated doc id to the reply document
+      await db.doc(`/replies/${docRef.id}`).update({ replyId: docRef.id });
 
-      console.log(`Comment reply ${response.id} created successfully`);
-      return res.status(201).json({ ...newReply, replyId: response.id });
+      console.log(`Comment reply ${docRef.id} created successfully`);
+      return res.status(201).json({ ...newReply, replyId: docRef.id });
     })
     .catch(err => {
       console.error('Error while adding a new comment reply ', err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: 'something went wrong' });
     });
 };
 
+// Get all comment replies
 exports.getCommentReplies = (req, res) => {
   if (!req.params.jokeId)
     return res.status(400).json({ error: 'jokeId is required' });
@@ -97,12 +194,12 @@ exports.getCommentReplies = (req, res) => {
   db.doc(`/jokes/${req.params.jokeId}`)
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
       return db.doc(`/comments/${req.params.commentId}`).get();
     })
     .then(doc => {
       if (!doc.exists)
-        return res.status(404).json({ error: 'Comment not found' });
+        return res.status(404).json({ error: 'comment not found' });
       return db
         .collection('replies')
         .where('commentId', '==', req.params.commentId)
