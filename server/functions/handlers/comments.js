@@ -115,10 +115,7 @@ exports.deleteComment = (req, res) => {
       if (snapshot.empty)
         return res.status(404).json({ error: 'comment not found' });
 
-      const commentData = {
-        commentId: snapshot.docs[0].id,
-        ...snapshot.docs[0].data(),
-      };
+      const commentData = snapshot.docs[0].data();
       // Allows only deletion from the joke owner or the comment owner.
       if (
         commentData.user.username !== req.user.username &&
@@ -130,7 +127,8 @@ exports.deleteComment = (req, res) => {
       }
 
       // Delete the comment document from the collection
-      await db.doc(`/comments/${commentData.commentId}`).delete();
+      await snapshot.docs[0].ref.delete();
+
       // Update commentCount field in joke document
       jokeData.commentCount--;
       await jokeDocument.update({ commentCount: jokeData.commentCount });
@@ -203,9 +201,7 @@ exports.replyOnComment = (req, res) => {
 
       // update replyCount field in comment document
       commentData.replyCount++;
-      await db
-        .doc(`/comments/${commentData.commentId}`)
-        .update({ replyCount: commentData.replyCount });
+      await snapshot.docs[0].ref.update({ replyCount: commentData.replyCount });
 
       // Add new reply to the comment
       return db.collection('replies').add(newReply);
@@ -253,10 +249,8 @@ exports.deleteCommentReply = (req, res) => {
       if (snapshot.empty)
         return res.status(404).json({ error: 'comment reply not found' });
 
-      const replyData = {
-        replyId: snapshot.docs[0].id,
-        ...snapshot.docs[0].data(),
-      };
+      const replyData = snapshot.docs[0].data();
+
       // Allows only deletion from the comment owner or the comment reply owner.
       if (
         replyData.user.username !== req.user.username &&
@@ -268,7 +262,7 @@ exports.deleteCommentReply = (req, res) => {
       }
 
       // Delete the comment reply document from the collection
-      await db.doc(`/replies/${replyData.replyId}`).delete();
+      await snapshot.docs[0].ref.delete();
 
       // Update replyCount field in comment document
       commentData.replyCount--;
