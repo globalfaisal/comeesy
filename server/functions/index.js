@@ -3,7 +3,7 @@ const app = require('express')();
 
 const fbAuth = require('./utils/fbAuth');
 
-const { getJokes, getJoke, addJoke } = require('./handlers/jokes');
+const { getJokes, getJoke, addJoke, deleteJoke } = require('./handlers/jokes');
 const { likeJoke, unlikeJoke } = require('./handlers/likes');
 const {
   getCommentReplies,
@@ -24,6 +24,7 @@ const {
 app.get('/jokes', getJokes);
 app.get('/joke/:jokeId', getJoke);
 app.post('/joke', fbAuth, addJoke);
+app.delete('/joke/:jokeId', fbAuth, deleteJoke);
 //TODO: delete a joke route (also delete all related comments and replies and likes from the db)
 //TODO: edit a joke route
 
