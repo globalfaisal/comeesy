@@ -141,23 +141,32 @@ exports.getUserOwnData = (req, res) => {
   const userData = {};
   db.doc(`/users/${req.user.username}`)
     .get()
-    .then(doc => {
+    .then(async doc => {
       if (doc.exists) {
+        // Get user credentials
         userData.credentials = doc.data();
-        return db
+
+        // Get all the jokes user liked
+        const likesSnapshot = await db
           .collection('likes')
           .where('user.username', '==', req.user.username)
           .get();
+        userData.likes = likesSnapshot.docs.map(doc => doc.data());
+
+        // Get all notifications
+        const notificationsSnapshot = await db
+          .collection('notifications')
+          .where('recipients', 'array-contains', req.user.username)
+          .get();
+
+        userData.notifications = notificationsSnapshot.docs.map(doc =>
+          doc.data()
+        );
+
+        return res.status(200).json(userData);
       }
+      console.error('Cannot find user in db');
       return null;
-    })
-    .then(snapshot => {
-      if (snapshot.empty) console.log('No likes found.');
-      userData.likes = snapshot.docs.map(doc => ({
-        likeId: doc.id,
-        ...doc.data(),
-      }));
-      return res.status(200).json(userData);
     })
     .catch(err => {
       console.error('Error while getting user own data ', err);
