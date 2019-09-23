@@ -24,7 +24,7 @@ exports.likeJoke = (req, res) => {
         return res.status(400).json({ error: 'Joke already liked' });
 
       // Add new like
-      await db.collection('likes').add({
+      const likeRef = await db.collection('likes').add({
         jokeId: jokeData.jokeId,
         createdAt: new Date().toISOString(),
         user: {
@@ -34,6 +34,9 @@ exports.likeJoke = (req, res) => {
           imageUrl: req.user.imageUrl,
         },
       });
+      // Add the generated doc id to the like document
+      await db.doc(`/likes/${likeRef.id}`).update({ likeId: likeRef.id });
+
       // Update likeCount field in joke document
       jokeData.likeCount++;
       return jokeDocument.update({ likeCount: jokeData.likeCount });

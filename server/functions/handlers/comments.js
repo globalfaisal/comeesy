@@ -88,7 +88,7 @@ exports.commentOnJoke = (req, res) => {
     });
 };
 
-//Delete comment
+// //Delete comment
 exports.deleteComment = (req, res) => {
   if (!req.params.jokeId)
     return res.status(400).json({ error: 'jokeId is required' });

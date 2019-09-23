@@ -5,6 +5,7 @@ const fbAuth = require('./utils/fbAuth');
 
 const { getJokes, getJoke, addJoke, deleteJoke } = require('./handlers/jokes');
 const { likeJoke, unlikeJoke } = require('./handlers/likes');
+
 const {
   getCommentReplies,
   commentOnJoke,
@@ -12,6 +13,7 @@ const {
   replyOnComment,
   deleteCommentReply,
 } = require('./handlers/comments');
+
 const {
   login,
   signup,
@@ -19,6 +21,13 @@ const {
   addUserDetails,
   uploadUserAvatar,
 } = require('./handlers/users');
+
+const {
+  createNotificationOnLike,
+  deleteNotificationOnUnLike,
+  createNotificationOnComment,
+  deleteNotificationOnCommentDelete,
+} = require('./triggers/notifications');
 
 //  joke routes
 app.get('/jokes', getJokes);
@@ -52,6 +61,12 @@ app.get('/login', login);
 app.get('/user', fbAuth, getUserOwnData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
+
+// DB triggers
+exports.createNotificationOnLike = createNotificationOnLike;
+exports.deleteNotificationOnUnLike = deleteNotificationOnUnLike;
+exports.createNotificationOnComment = createNotificationOnComment;
+exports.deleteNotificationOnCommentDelete = deleteNotificationOnCommentDelete;
 
 // https://baseurl.com/api/{route}
 exports.api = functions.region('europe-west1').https.onRequest(app);

@@ -107,6 +107,7 @@ exports.deleteJoke = (req, res) => {
       // Delete joke document from jokes collection
       await doc.ref.delete();
       console.log('joke deleted successfully');
+
       //Find and return all the replies for the comment
       return db
         .collection('comments')
@@ -126,7 +127,7 @@ exports.deleteJoke = (req, res) => {
         });
 
         if (commentIds.length > 0) {
-          const repliesBatch = db.batch();
+          const writeBatch = db.batch();
           commentIds.forEach(async id => {
             const replySnapshots = await db
               .collection('replies')
@@ -136,9 +137,9 @@ exports.deleteJoke = (req, res) => {
             // Delete all comment replies for the deleted joke
             if (!replySnapshots.empty) {
               replySnapshots.docs.forEach(doc => {
-                repliesBatch.delete(doc.ref);
+                writeBatch.delete(doc.ref);
               });
-              repliesBatch.commit();
+              writeBatch.commit();
               console.log('comment replies deleted successfully');
             }
           });
