@@ -27,6 +27,8 @@ const {
   deleteNotificationOnUnLike,
   createNotificationOnComment,
   deleteNotificationOnCommentDelete,
+  createNotificationOnCommentReply,
+  deleteNotificationOnCommentReplyDelete,
 } = require('./triggers/notifications');
 
 //  joke routes
@@ -65,8 +67,12 @@ app.post('/user/image', fbAuth, uploadUserAvatar);
 // DB triggers
 exports.createNotificationOnLike = createNotificationOnLike;
 exports.deleteNotificationOnUnLike = deleteNotificationOnUnLike;
+
 exports.createNotificationOnComment = createNotificationOnComment;
 exports.deleteNotificationOnCommentDelete = deleteNotificationOnCommentDelete;
+
+exports.createNotificationOnCommentReply = createNotificationOnCommentReply;
+exports.deleteNotificationOnCommentReplyDelete = deleteNotificationOnCommentReplyDelete;
 
 // https://baseurl.com/api/{route}
 exports.api = functions.region('europe-west1').https.onRequest(app);

@@ -174,6 +174,7 @@ exports.replyOnComment = (req, res) => {
     return res.status(400).json({ error: 'commentId is required' });
 
   const newReply = {
+    jokeId: req.params.jokeId,
     commentId: req.params.commentId,
     body: req.body.body,
     createdAt: new Date().toISOString(),
@@ -185,14 +186,22 @@ exports.replyOnComment = (req, res) => {
     },
   };
 
+  let jokeData;
+  const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
+
   const commentDocument = db
     .collection('comments')
     .where('jokeId', '==', req.params.jokeId)
     .where('commentId', '==', req.params.commentId)
     .limit(1);
 
-  commentDocument
+  jokeDocument
     .get()
+    .then(doc => {
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      jokeData = doc.data();
+      return commentDocument.get();
+    })
     .then(async snapshot => {
       if (snapshot.empty)
         return res.status(404).json({ error: 'comment not found' });

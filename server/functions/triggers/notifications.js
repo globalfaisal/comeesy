@@ -12,8 +12,8 @@ exports.createNotificationOnLike = functions
       if (jokeRef.exists) {
         // Create notification
         await db.doc(`/notifications/${snapshot.id}`).set({
-          sender: snapshot.data().user.username,
-          recipient: jokeRef.data().user.username,
+          sender: snapshot.data().user,
+          recipients: [jokeRef.data().user.username],
           jokeId: jokeRef.data().jokeId,
           createdAt: new Date().toISOString(),
           type: 'like',
@@ -53,9 +53,10 @@ exports.createNotificationOnComment = functions
       if (jokeRef.exists) {
         // Create notification
         await db.doc(`/notifications/${snapshot.id}`).set({
-          sender: snapshot.data().user.username,
-          recipient: jokeRef.data().user.username,
+          sender: snapshot.data().user,
+          recipients: [jokeRef.data().user.username],
           jokeId: jokeRef.data().jokeId,
+          commentId: snapshot.id,
           createdAt: new Date().toISOString(),
           type: 'comment',
           read: false,
@@ -78,6 +79,56 @@ exports.deleteNotificationOnCommentDelete = functions
       // Remove notification
       await db.doc(`/notifications/${snapshot.id}`).delete();
       console.log('Comment notification deleted successfully');
+    } catch (error) {
+      console.error('Error while deleting comment notification ', error);
+    }
+  });
+
+// Create notification when comment is replied
+exports.createNotificationOnCommentReply = functions
+  .region('europe-west1')
+  .firestore.document('replies/{replyId}')
+  .onCreate(async snapshot => {
+    try {
+      // Get the joke that's been commented
+      const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
+      const commentRef = await db
+        .doc(`/comments/${snapshot.data().commentId}`)
+        .get();
+
+      if (commentRef.exists && jokeRef.exists) {
+        // Create notification
+        await db.doc(`/notifications/${snapshot.id}`).set({
+          sender: snapshot.data().user,
+          recipients: [
+            commentRef.data().user.username,
+            jokeRef.data().user.username,
+          ],
+          jokeId: jokeRef.data().jokeId,
+          commentId: commentRef.data().commentId,
+          replyId: snapshot.id,
+          createdAt: new Date().toISOString(),
+          type: 'reply',
+          read: false,
+        });
+
+        console.log('Comment notification created successfully');
+      }
+      return null;
+    } catch (error) {
+      console.error('Error while creating comment notification ', error);
+    }
+  });
+
+// Delete notification when comment reply is deleted
+exports.deleteNotificationOnCommentReplyDelete = functions
+  .region('europe-west1')
+  .firestore.document('replies/{replyId}')
+  .onDelete(async snapshot => {
+    try {
+      // Remove notification
+      await db.doc(`/notifications/${snapshot.id}`).delete();
+      console.log('Comment reply notification deleted successfully');
     } catch (error) {
       console.error('Error while deleting comment notification ', error);
     }
