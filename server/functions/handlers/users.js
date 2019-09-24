@@ -136,8 +136,8 @@ exports.addUserDetails = (req, res) => {
     });
 };
 
-// Get user's own data
-exports.getUserOwnData = (req, res) => {
+// Get current logged-in user details
+exports.getCurrentUserDetails = (req, res) => {
   const userData = {};
   db.doc(`/users/${req.user.username}`)
     .get()
@@ -150,6 +150,7 @@ exports.getUserOwnData = (req, res) => {
         const likesSnapshot = await db
           .collection('likes')
           .where('user.username', '==', req.user.username)
+          .orderBy('createdAt', 'desc')
           .get();
         userData.likes = likesSnapshot.docs.map(doc => doc.data());
 
@@ -157,6 +158,7 @@ exports.getUserOwnData = (req, res) => {
         const notificationsSnapshot = await db
           .collection('notifications')
           .where('recipients', 'array-contains', req.user.username)
+          .orderBy('createdAt', 'desc')
           .get();
 
         userData.notifications = notificationsSnapshot.docs.map(doc =>
@@ -170,6 +172,10 @@ exports.getUserOwnData = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting user own data ', err);
+      if (err.code === 9)
+        return res
+          .status(500)
+          .json({ error: 'The query requires an index - check the console' });
       return res.status(500).json({ error: err.code });
     });
 };

@@ -17,7 +17,8 @@ const {
 const {
   login,
   signup,
-  getUserOwnData,
+  getCurrentUserDetails,
+  // getUserDetails,
   addUserDetails,
   uploadUserAvatar,
 } = require('./handlers/users');
@@ -36,7 +37,6 @@ app.get('/jokes', getJokes);
 app.get('/joke/:jokeId', getJoke);
 app.post('/joke', fbAuth, addJoke);
 app.delete('/joke/:jokeId', fbAuth, deleteJoke);
-//TODO: delete a joke route (also delete all related comments and replies and likes from the db)
 //TODO: edit a joke route
 
 // Comment routes
@@ -60,7 +60,8 @@ app.post('/signup', signup);
 app.get('/login', login);
 //TODO: add login options with google and facebook
 
-app.get('/user', fbAuth, getUserOwnData);
+app.get('/user', fbAuth, getCurrentUserDetails);
+// app.get('/user/:username', getUserDetails);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
 
