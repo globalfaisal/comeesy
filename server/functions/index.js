@@ -18,7 +18,6 @@ const {
   login,
   signup,
   getCurrentUserData,
-  // getUserDetails,
   addUserDetails,
   uploadUserAvatar,
 } = require('./handlers/users');
@@ -61,7 +60,6 @@ app.get('/login', login);
 //TODO: add login options with google and facebook
 
 app.get('/user', fbAuth, getCurrentUserData);
-// app.get('/user/:username', getUserDetails);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
 
