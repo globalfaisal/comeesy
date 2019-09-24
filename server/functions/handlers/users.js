@@ -136,46 +136,76 @@ exports.addUserDetails = (req, res) => {
     });
 };
 
-// Get current logged-in user details
+// Get current logged-in user data
 exports.getCurrentUserData = (req, res) => {
   const userData = {};
   db.doc(`/users/${req.user.username}`)
     .get()
     .then(async doc => {
-      if (doc.exists) {
-        // Get user credentials
-        userData.credentials = doc.data();
+      if (!doc.exists) return res.status(400).json({ error: 'user not found' });
 
-        // Get all the jokes user liked
-        const likesSnapshot = await db
-          .collection('likes')
-          .where('user.username', '==', req.user.username)
-          .orderBy('createdAt', 'desc')
-          .get();
-        userData.likes = likesSnapshot.docs.map(doc => doc.data());
+      // Get user credentials
+      userData.credentials = doc.data();
 
-        // Get all notifications
-        const notificationsSnapshot = await db
-          .collection('notifications')
-          .where('recipients', 'array-contains', req.user.username)
-          .orderBy('createdAt', 'desc')
-          .get();
+      // Get all the jokes user created
+      const jokesSnapshot = await db
+        .collection('jokes')
+        .where('user.username', '==', req.user.username)
+        .orderBy('createdAt', 'desc')
+        .get();
+      userData.jokes = jokesSnapshot.docs.map(doc => doc.data());
 
-        userData.notifications = notificationsSnapshot.docs.map(doc =>
-          doc.data()
-        );
+      // Get all like user made
+      const likesSnapshot = await db
+        .collection('likes')
+        .where('user.username', '==', req.user.username)
+        .orderBy('createdAt', 'desc')
+        .get();
 
-        return res.status(200).json(userData);
-      }
-      console.error('Cannot find user in db');
-      return null;
+      userData.likes = likesSnapshot.docs.map(doc => doc.data());
+
+      // Get all notifications user received
+      const notificationsSnapshot = await db
+        .collection('notifications')
+        .where('recipients', 'array-contains', req.user.username)
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      userData.notifications = notificationsSnapshot.docs.map(doc =>
+        doc.data()
+      );
+
+      return res.status(200).json(userData);
     })
     .catch(err => {
       console.error('Error while getting user own data ', err);
-      if (err.code === 9)
-        return res
-          .status(500)
-          .json({ error: 'The query requires an index - check the console' });
+      return res.status(500).json({ error: err.code });
+    });
+};
+
+// Get any user data
+exports.getUserData = (req, res) => {
+  const userData = {};
+  db.doc(`/users/${req.params.username}`)
+    .get()
+    .then(async doc => {
+      if (!doc.exists) return res.status(404).json({ error: 'user not found' });
+
+      // Get user credentials
+      userData.credentials = doc.data();
+
+      // Get all the jokes user created
+      const jokesSnapshot = await db
+        .collection('jokes')
+        .where('user.username', '==', req.params.username)
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      userData.jokes = jokesSnapshot.docs.map(doc => doc.data());
+      return res.status(200).json(userData);
+    })
+    .catch(err => {
+      console.error('Error while getting user data ', err);
       return res.status(500).json({ error: err.code });
     });
 };
@@ -188,9 +218,12 @@ exports.uploadUserAvatar = (req, res) => {
   const busboy = new BusBoy({ headers: req.headers });
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     if (!file || !mimetype)
-      return res.status(400).json({ error: 'Invalid file submitted' });
+      return res.status(400).json({ error: 'invalid file submitted' });
     if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
-      return res.status(400).json({ error: 'Wrong file type submitted' });
+      return res.status(400).json({
+        error:
+          'invalid file type submitted, accepted file types are .jpg and .png',
+      });
     }
     // 1. Generate unique image filename
     const imageExt = filename.split('.')[filename.split('.').length - 1];
@@ -226,7 +259,7 @@ exports.uploadUserAvatar = (req, res) => {
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });
       })
       .then(() =>
-        res.status(201).json({ message: 'Image uploaded successfully' })
+        res.status(201).json({ message: 'image uploaded successfully' })
       )
       .catch(err => {
         console.error('Error while uploading profile image ', err);

@@ -94,22 +94,40 @@ const db = {
   ],
 };
 
-/* Client app Redux Data */
+/*User own data */
+//TODO: store this data in the Redux store
 const getCurrentUserData = {
   credentials: {
-    userId: 'u2G37gulZ4YUXIltiBQsLUQzGUt2',
-    firstname: 'John',
+    firstname: 'Jane',
     lastname: 'Doe',
-    username: 'john_doe',
-    email: 'johndoe@email.com',
-    createdAt: '2019-09-12T11:59:58.903Z',
-    imageUrl:
-      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-    /*optional fields*/
+    username: 'jane_doe',
+    email: 'jane.doe@email.com',
+    birthdate: '1992-01-30',
     location: 'Stockholm, Sweden',
-    birthdate: '1990-12-08',
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+    userId: 'z13NSegbLhQ4WyofzqCb46soqgj2',
+    bio: 'Nam rick grimes malum cerebro.',
+    imageUrl:
+      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
+    createdAt: '2019-09-17T08:42:41.187Z',
   },
+  // All jokes user created
+  jokes: [
+    {
+      jokeId: 'XJki6wK5XcGpnzABKMHS',
+      body: 'Why did the M&M go to school? It wanted to be a Smartie.',
+      likeCount: 1,
+      commentCount: 1,
+      createdAt: '2019-09-23T18:25:06.105Z',
+      user: {
+        lastname: 'Doe',
+        imageUrl:
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
+        firstname: 'Jane',
+        username: 'jane_doe',
+      },
+    },
+  ],
+  // All likes user made
   likes: [
     {
       likeId: 'b7bsy0aR6WtDBV6BHaaK',
@@ -124,6 +142,7 @@ const getCurrentUserData = {
       },
     },
   ],
+  // All Notifications user received
   notifications: [
     {
       type: 'joke-like',

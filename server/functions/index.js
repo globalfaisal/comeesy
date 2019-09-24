@@ -17,6 +17,7 @@ const {
 const {
   login,
   signup,
+  getUserData,
   getCurrentUserData,
   addUserDetails,
   uploadUserAvatar,
@@ -60,6 +61,7 @@ app.get('/login', login);
 //TODO: add login options with google and facebook
 
 app.get('/user', fbAuth, getCurrentUserData);
+app.get('/user/:username', getUserData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
 

@@ -18,15 +18,12 @@ exports.getJokes = (req, res) => {
 
 // Get one joke
 exports.getJoke = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-
   let jokeData = {};
   db.doc(`/jokes/${req.params.jokeId}`)
     .get()
     .then(doc => {
       if (!doc.exists) {
-        return res.status(404).json({ error: 'Joke not found' });
+        return res.status(404).json({ error: 'joke not found' });
       }
 
       jokeData = doc.data();
@@ -85,16 +82,13 @@ exports.addJoke = (req, res) => {
 
 // Delete joke
 exports.deleteJoke = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
 
   jokeDocument
     .get()
     .then(async doc => {
-      if (!doc.exists)
-        return res.status(400).json({ error: 'jokeId not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
 
       jokeData = doc.data();
 
@@ -108,7 +102,7 @@ exports.deleteJoke = (req, res) => {
       await doc.ref.delete();
       console.log('joke deleted successfully');
 
-      //Find and return all the replies for the comment
+      //Find all the comments for this joke
       return db
         .collection('comments')
         .where('jokeId', '==', jokeData.jokeId)
@@ -116,40 +110,43 @@ exports.deleteJoke = (req, res) => {
     })
     .then(async commentsSnapshot => {
       if (!commentsSnapshot.empty) {
-        const batch = db.batch();
+        const firstBatch = db.batch();
 
         const commentIds = [];
 
-        // Delete all comments for the deleted joke
+        // Add allcomments of the joke in delete batch
         commentsSnapshot.docs.forEach(doc => {
+          // Get deleted comment ids
           commentIds.push(doc.id);
-          batch.delete(doc.ref);
+          firstBatch.delete(doc.ref);
         });
 
         if (commentIds.length > 0) {
-          const writeBatch = db.batch();
           commentIds.forEach(async id => {
+            // Get all replies of the comment
             const replySnapshots = await db
               .collection('replies')
               .where('commentId', '==', id)
               .get();
 
-            // Delete all comment replies for the deleted joke
             if (!replySnapshots.empty) {
+              const secondBatch = db.batch();
+
               replySnapshots.docs.forEach(doc => {
-                writeBatch.delete(doc.ref);
+                secondBatch.delete(doc.ref);
               });
-              writeBatch.commit();
+
+              secondBatch.commit();
               console.log('comment replies deleted successfully');
             }
           });
         }
 
         // Commit the batch
-        await batch.commit();
+        await firstBatch.commit();
         console.log('comments deleted successfully');
       }
-
+      // Get all likes of the joke
       return db
         .collection('likes')
         .where('jokeId', '==', jokeData.jokeId)
@@ -159,12 +156,10 @@ exports.deleteJoke = (req, res) => {
       if (!snapshot.empty) {
         const batch = db.batch();
 
-        // Delete all like for the deleted joke
         snapshot.docs.forEach(doc => {
           batch.delete(doc.ref);
         });
 
-        // Commit the batch
         await batch.commit();
         console.log('likes deleted successfully');
       }

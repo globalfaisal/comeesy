@@ -3,11 +3,6 @@ const { validateBodyContent } = require('../utils/validators');
 
 // Get all comment replies
 exports.getCommentReplies = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-  else if (!req.params.commentId)
-    return res.status(400).json({ error: 'commentId is required' });
-
   const commentDocument = db
     .collection('comments')
     .where('jokeId', '==', req.params.jokeId)
@@ -19,6 +14,7 @@ exports.getCommentReplies = (req, res) => {
     .then(snapshot => {
       if (snapshot.empty)
         return res.status(404).json({ error: 'comment not found' });
+
       return db
         .collection('replies')
         .where('commentId', '==', req.params.commentId)
@@ -28,7 +24,9 @@ exports.getCommentReplies = (req, res) => {
     .then(snapshot => {
       if (snapshot.empty) {
         console.log('No comment replies found.');
-        return res.status(200).json([]);
+        return res.status(200).json([
+          /* EMPTY*/
+        ]);
       }
 
       // Successfully found replies
@@ -45,9 +43,6 @@ exports.getCommentReplies = (req, res) => {
 exports.commentOnJoke = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
-
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
 
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
@@ -68,7 +63,7 @@ exports.commentOnJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
       jokeData = doc.data();
       return db.collection('comments').add(newComment);
     })
@@ -84,17 +79,12 @@ exports.commentOnJoke = (req, res) => {
     })
     .catch(err => {
       console.error('Error while adding a new comment ', err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: 'something went wrong' });
     });
 };
 
 // //Delete comment
 exports.deleteComment = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-  else if (!req.params.commentId)
-    return res.status(400).json({ error: 'commentId is required' });
-
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
   const commentDocument = db
@@ -106,7 +96,7 @@ exports.deleteComment = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
       jokeData = doc.data();
 
       return commentDocument.get();
@@ -122,7 +112,7 @@ exports.deleteComment = (req, res) => {
         jokeData.user.username !== req.user.username
       ) {
         return res
-          .status(404)
+          .status(403)
           .json({ error: 'unauthorized comment delete request' });
       }
 
@@ -142,7 +132,7 @@ exports.deleteComment = (req, res) => {
     .then(async snapshot => {
       if (snapshot.empty) {
         console.log(`no comment replies associated with the deleted comment`);
-        return res.status(201).json(jokeData);
+        return res.status(200).json(jokeData);
       }
 
       // Delete all replies for the deleted comment
@@ -167,11 +157,6 @@ exports.deleteComment = (req, res) => {
 exports.replyOnComment = (req, res) => {
   const { isValid, errors } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json(errors);
-
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-  else if (!req.params.commentId)
-    return res.status(400).json({ error: 'commentId is required' });
 
   const newReply = {
     jokeId: req.params.jokeId,
@@ -198,7 +183,7 @@ exports.replyOnComment = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
       jokeData = doc.data();
       return commentDocument.get();
     })
@@ -230,13 +215,6 @@ exports.replyOnComment = (req, res) => {
 
 //Delete comment reply
 exports.deleteCommentReply = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-  else if (!req.params.commentId)
-    return res.status(400).json({ error: 'commentId is required' });
-  else if (!req.params.replyId)
-    return res.status(400).json({ error: 'replyId is required' });
-
   let commentData;
   const commentDocument = db.doc(`/comments/${req.params.commentId}`);
   const replyDocument = db
@@ -266,7 +244,7 @@ exports.deleteCommentReply = (req, res) => {
         commentData.user.username !== req.user.username
       ) {
         return res
-          .status(404)
+          .status(403)
           .json({ error: 'unauthorized comment reply delete request' });
       }
 
@@ -278,7 +256,7 @@ exports.deleteCommentReply = (req, res) => {
       await commentDocument.update({ replyCount: commentData.replyCount });
 
       // Delete completed!
-      return res.status(201).json(commentData);
+      return res.status(200).json(commentData);
     })
     .catch(err => {
       console.error('Error while deleting a comment ', err);
