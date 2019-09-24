@@ -16,7 +16,7 @@ exports.createNotificationOnLike = functions
           recipients: [jokeRef.data().user.username],
           jokeId: jokeRef.data().jokeId,
           createdAt: new Date().toISOString(),
-          type: 'like',
+          type: 'joke-like',
           read: false,
         });
 
@@ -58,7 +58,7 @@ exports.createNotificationOnComment = functions
           jokeId: jokeRef.data().jokeId,
           commentId: snapshot.id,
           createdAt: new Date().toISOString(),
-          type: 'comment',
+          type: 'joke-comment',
           read: false,
         });
 
@@ -108,7 +108,7 @@ exports.createNotificationOnCommentReply = functions
           commentId: commentRef.data().commentId,
           replyId: snapshot.id,
           createdAt: new Date().toISOString(),
-          type: 'reply',
+          type: 'joke-comment-reply',
           read: false,
         });
 
