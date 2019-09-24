@@ -50,7 +50,10 @@ exports.reduceUserDetails = data => {
 
 exports.validateBodyContent = body => {
   const errors = {};
-  if (validator.isEmpty(body)) errors.body = 'Must not be empty';
+  if (typeof body === 'string' && validator.isEmpty(body))
+    errors.body = 'Must not be empty';
+  else if (Array.isArray(body) && body.length === 0)
+    errors.body = 'List must not be empty';
   return {
     errors,
     isValid: Object.keys(errors).length === 0 ? true : false,

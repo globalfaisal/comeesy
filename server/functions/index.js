@@ -5,6 +5,7 @@ const fbAuth = require('./utils/fbAuth');
 
 const { getJokes, getJoke, addJoke, deleteJoke } = require('./handlers/jokes');
 const { likeJoke, unlikeJoke } = require('./handlers/likes');
+const { markNotificationsRead } = require('./handlers/notifications');
 
 const {
   getCommentReplies,
@@ -64,6 +65,9 @@ app.get('/user', fbAuth, getCurrentUserData);
 app.get('/user/:username', getUserData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
+
+// notifications routes
+app.post('/notifications/markRead', fbAuth, markNotificationsRead);
 
 // DB triggers
 exports.createNotificationOnLike = createNotificationOnLike;

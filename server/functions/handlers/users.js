@@ -142,7 +142,7 @@ exports.getCurrentUserData = (req, res) => {
   db.doc(`/users/${req.user.username}`)
     .get()
     .then(async doc => {
-      if (!doc.exists) return res.status(400).json({ error: 'user not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'user not found' });
 
       // Get user credentials
       userData.credentials = doc.data();
@@ -164,11 +164,12 @@ exports.getCurrentUserData = (req, res) => {
 
       userData.likes = likesSnapshot.docs.map(doc => doc.data());
 
-      // Get all notifications user received
+      // Get last 100 notifications user received
       const notificationsSnapshot = await db
         .collection('notifications')
         .where('recipients', 'array-contains', req.user.username)
         .orderBy('createdAt', 'desc')
+        .limit(100)
         .get();
 
       userData.notifications = notificationsSnapshot.docs.map(doc =>

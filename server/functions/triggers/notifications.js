@@ -11,15 +11,17 @@ exports.createNotificationOnLike = functions
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
       if (jokeRef.exists) {
         // Create notification
-        await db.doc(`/notifications/${snapshot.id}`).set({
-          sender: snapshot.data().user,
-          recipients: [jokeRef.data().user.username],
-          jokeId: jokeRef.data().jokeId,
-          createdAt: new Date().toISOString(),
-          type: 'joke-like',
-          read: false,
-        });
-
+        const notificationRef = await db
+          .doc(`/notifications/${snapshot.id}`)
+          .set({
+            notificationId: snapshot.id,
+            sender: snapshot.data().user,
+            recipients: [jokeRef.data().user.username],
+            jokeId: jokeRef.data().jokeId,
+            createdAt: new Date().toISOString(),
+            type: 'joke-like',
+            read: false,
+          });
         console.log('Like notification created successfully');
       }
       return null;
@@ -53,6 +55,7 @@ exports.createNotificationOnComment = functions
       if (jokeRef.exists) {
         // Create notification
         await db.doc(`/notifications/${snapshot.id}`).set({
+          notificationId: snapshot.id,
           sender: snapshot.data().user,
           recipients: [jokeRef.data().user.username],
           jokeId: jokeRef.data().jokeId,
@@ -99,6 +102,7 @@ exports.createNotificationOnCommentReply = functions
       if (commentRef.exists && jokeRef.exists) {
         // Create notification
         await db.doc(`/notifications/${snapshot.id}`).set({
+          notificationId: snapshot.id,
           sender: snapshot.data().user,
           recipients: [
             commentRef.data().user.username,

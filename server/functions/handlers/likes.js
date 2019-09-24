@@ -1,9 +1,6 @@
 const { db } = require('../utils/admin');
 
 exports.likeJoke = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
   const likedDocument = db
@@ -15,13 +12,13 @@ exports.likeJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(403).json({ error: 'Joke not found' });
-      jokeData = { jokeId: doc.id, ...doc.data() };
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      jokeData = doc.data();
       return likedDocument.get();
     })
     .then(async snapshot => {
       if (!snapshot.empty)
-        return res.status(400).json({ error: 'Joke already liked' });
+        return res.status(400).json({ error: 'joke already liked' });
 
       // Add new like
       const likeRef = await db.collection('likes').add({
@@ -47,14 +44,11 @@ exports.likeJoke = (req, res) => {
     })
     .catch(err => {
       console.error('Error while like a joke ', err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: 'something went wrong' });
     });
 };
 
 exports.unlikeJoke = (req, res) => {
-  if (!req.params.jokeId)
-    return res.status(400).json({ error: 'jokeId is required' });
-
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
   const likedDocument = db
@@ -66,13 +60,13 @@ exports.unlikeJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(403).json({ error: 'Joke not found' });
-      jokeData = { jokeId: doc.id, ...doc.data() };
+      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      jokeData = doc.data();
       return likedDocument.get();
     })
     .then(async snapshot => {
       if (snapshot.empty)
-        return res.status(400).json({ error: 'Joke not liked' });
+        return res.status(400).json({ error: 'joke not liked' });
 
       // Delete the like document from the collection
       await db.doc(`/likes/${snapshot.docs[0].id}`).delete();
@@ -83,10 +77,10 @@ exports.unlikeJoke = (req, res) => {
     })
     .then(() => {
       console.log(`joke unliked successfully`);
-      return res.status(201).json(jokeData);
+      return res.status(200).json(jokeData);
     })
     .catch(err => {
       console.error('Error while unlike a joke ', err);
-      res.status(500).json({ error: 'Something went wrong' });
+      res.status(500).json({ error: 'something went wrong' });
     });
 };
