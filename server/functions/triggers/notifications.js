@@ -9,13 +9,13 @@ exports.createNotificationOnLike = functions
     try {
       // Get the joke that's been liked
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
-      if (jokeRef.exists) {
-        // Skip creating notification if sender and receiver are same user
-        if (snapshot.data().user.username === jokeRef.data().user.username)
-          return null;
-
+      // Skip creating notification if sender and receiver are same user
+      if (
+        jokeRef.exists &&
+        snapshot.data().user.username !== jokeRef.data().user.username
+      ) {
         // Create notification
-        await db
+        return db
           .doc(
             `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
           )
@@ -32,8 +32,8 @@ exports.createNotificationOnLike = functions
           })
           .then(() => console.log('Like notification created successfully'));
       }
-    } catch (error) {
-      console.error('Error while creating like notification ', error);
+    } catch (err) {
+      console.error('Error while creating like notification ', err);
     }
   });
 
@@ -46,7 +46,7 @@ exports.deleteNotificationOnUnLike = functions
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
       if (jokeRef.exists) {
         // Remove notification
-        await db
+        return db
           .doc(
             `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
           )
@@ -66,13 +66,13 @@ exports.createNotificationOnComment = functions
     try {
       // Get the joke that's been commented
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
-      if (jokeRef.exists) {
-        // Skip creating notification if sender and receiver are same user
-        if (snapshot.data().user.username === jokeRef.data().user.username)
-          return null;
-
+      // Skip creating notification if sender and receiver are same user
+      if (
+        jokeRef.exists &&
+        snapshot.data().user.username !== jokeRef.data().user.username
+      ) {
         // Create notification
-        await db
+        return db
           .doc(
             `/notifications/comment_${snapshot.id}_${
               jokeRef.data().user.username
@@ -133,9 +133,9 @@ exports.createNotificationOnCommentReply = functions
         .get();
 
       if (commentRef.exists && jokeRef.exists) {
-        // 1. Create notification for the joke owner
         if (snapshot.data().user.username !== jokeRef.data().user.username) {
-          await db
+          // 1. Create notification for the joke owner
+          return db
             .doc(
               `/notifications/reply_${snapshot.id}_${
                 jokeRef.data().user.username
@@ -157,11 +157,11 @@ exports.createNotificationOnCommentReply = functions
             .then(() =>
               console.log('Comment notification created successfully')
             );
-        }
-
-        // 2. Create notification for the comment owner
-        if (snapshot.data().user.username !== commentRef.data().user.username) {
-          await db
+        } else if (
+          snapshot.data().user.username !== commentRef.data().user.username
+        ) {
+          // 2. Create notification for the comment owner
+          return db
             .doc(
               `/notifications/reply_${snapshot.id}_${
                 commentRef.data().user.username
@@ -185,7 +185,6 @@ exports.createNotificationOnCommentReply = functions
             );
         }
       }
-      return null;
     } catch (error) {
       console.error('Error while creating comment notification ', error);
     }
@@ -212,10 +211,12 @@ exports.deleteNotificationOnCommentReplyDelete = functions
           )
           .delete()
           .then(() =>
-            console.log('Comment reply notification deleted successfully')
+            console.log(
+              'Comment reply notification for Joke owner deleted successfully'
+            )
           );
 
-        await db
+        return db
           .doc(
             `/notifications/reply_${snapshot.id}_${
               commentRef.data().user.username
@@ -223,7 +224,9 @@ exports.deleteNotificationOnCommentReplyDelete = functions
           )
           .delete()
           .then(() =>
-            console.log('Comment reply notification deleted successfully')
+            console.log(
+              'Comment reply notification for Comment Owner deleted successfully'
+            )
           );
       }
     } catch (error) {

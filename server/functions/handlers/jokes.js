@@ -49,8 +49,8 @@ exports.getJoke = (req, res) => {
 
 // Post a new joke
 exports.addJoke = (req, res) => {
-  const { isValid, errors } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json(errors);
+  const { isValid, error } = validateBodyContent(req.body.body);
+  if (!isValid) return res.status(400).json({ joke: error });
 
   const newJoke = {
     body: req.body.body,

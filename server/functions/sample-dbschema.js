@@ -78,18 +78,19 @@ const db = {
   ],
   notifications: [
     {
-      type: 'joke-like', // Other types = 'joke-comment' and 'joke-comment-reply'
+      type: 'like', // Other types = 'comment' and 'reply'
       read: false,
       createdAt: '2019-09-24T07:49:15.120Z',
-      recipients: ['jane_doe', 'allen_adam'],
+      recipients: 'jane_doe',
       sender: {
+        username: 'jane_doe',
+        firstname: 'Jane',
         lastname: 'Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-        firstname: 'Jane',
-        username: 'jane_doe',
       },
       jokeId: 'XJki6wK5XcGpnzABKMHS',
+      notificationId: 'like_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
   ],
 };
@@ -119,11 +120,11 @@ const getCurrentUserData = {
       commentCount: 1,
       createdAt: '2019-09-23T18:25:06.105Z',
       user: {
+        username: 'jane_doe',
+        firstname: 'Jane',
         lastname: 'Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
-        firstname: 'Jane',
-        username: 'jane_doe',
       },
     },
   ],
@@ -145,10 +146,10 @@ const getCurrentUserData = {
   // All Notifications user received
   notifications: [
     {
-      type: 'joke-like',
+      type: 'like',
       read: false,
       createdAt: '2019-09-24T07:49:15.120Z',
-      recipients: ['jane_doe', 'allen_adam'],
+      recipients: 'jane_doe',
       sender: {
         lastname: 'Doe',
         imageUrl:
@@ -157,38 +158,41 @@ const getCurrentUserData = {
         username: 'jane_doe',
       },
       jokeId: 'XJki6wK5XcGpnzABKMHS',
+      notificationId: 'like_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
 
     {
-      type: 'joke-comment',
+      type: 'comment',
       read: false,
-      recipients: ['jane_doe'],
+      recipients: 'jane_doe',
       createdAt: '2019-09-23T18:26:20.178Z',
       sender: {
+        username: 'alen_adam',
+        firstname: 'Alen',
+        lastname: 'Adam',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-        firstname: 'Alen',
-        username: 'alen_adam',
-        lastname: 'Adam',
       },
       jokeId: 'XJki6wK5XcGpnzABKMHS',
       commentId: 'jzNnizolstbgzfoZ4TK3',
+      notificationId: 'comment_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
     {
-      type: 'joke-comment-reply',
+      type: 'reply',
       read: false,
-      recipients: ['allen_adam', 'jane_doe'],
+      recipients: 'jane_doe',
       createdAt: '2019-09-23T18:28:47.068Z',
-      replyId: 'yLpHthk2YYLYfcv87yWH',
       sender: {
+        username: 'john_doe',
+        firstname: 'John',
         lastname: 'Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-        firstname: 'John',
-        username: 'john_doe',
       },
-      commentId: 'jzNnizolstbgzfoZ4TK3',
       jokeId: 'XJki6wK5XcGpnzABKMHS',
+      commentId: 'jzNnizolstbgzfoZ4TK3',
+      replyId: 'yLpHthk2YYLYfcv87yWH',
+      notificationId: 'reply_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
   ],
 };

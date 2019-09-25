@@ -3,8 +3,8 @@ const { validateBodyContent } = require('../utils/validators');
 
 // Mark notification read
 exports.markNotificationsRead = (req, res) => {
-  const { isValid, errors } = validateBodyContent(req.body);
-  if (!isValid) return res.status(400).json(errors);
+  const { isValid, error } = validateBodyContent(req.body);
+  if (!isValid) return res.status(400).json({ notifications: error });
   try {
     const batch = db.batch();
 
@@ -14,10 +14,10 @@ exports.markNotificationsRead = (req, res) => {
         const docRef = db.doc(`/notifications/${id}`);
         markedNotificationsIds.push(docRef.id);
         batch.update(docRef, { read: true });
-      } catch (error) {
+      } catch (err) {
         console.error(
           'Error while adding notificationRefs to the updated batch',
-          error
+          err
         );
       }
     });

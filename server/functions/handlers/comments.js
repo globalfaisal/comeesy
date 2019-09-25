@@ -41,8 +41,8 @@ exports.getCommentReplies = (req, res) => {
 
 // Add comment on joke
 exports.commentOnJoke = (req, res) => {
-  const { isValid, errors } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json(errors);
+  const { isValid, error } = validateBodyContent(req.body.body);
+  if (!isValid) return res.status(400).json({ comment: error });
 
   let jokeData;
   const jokeDocument = db.doc(`/jokes/${req.params.jokeId}`);
@@ -157,8 +157,8 @@ exports.deleteComment = (req, res) => {
 
 // Post reply on a comment
 exports.replyOnComment = (req, res) => {
-  const { isValid, errors } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json(errors);
+  const { isValid, error } = validateBodyContent(req.body.body);
+  if (!isValid) return res.status(400).json({ reply: error });
 
   const newReply = {
     jokeId: req.params.jokeId,
