@@ -14,6 +14,8 @@ const {
   deleteCommentReplyNotifications,
 } = require('./actions/comments');
 
+const { changeUserAvatarReferences } = require('./actions/users');
+
 // Triggers when joke is deleted
 exports.onJokeDelete = functions
   .region('europe-west1')
@@ -55,3 +57,9 @@ exports.onCommentReplyDelete = functions
   .region('europe-west1')
   .firestore.document('replies/{replyId}')
   .onDelete(deleteCommentReplyNotifications);
+
+// Triggers when user image (avatar) is changed
+exports.onUserAvatarChanges = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}')
+  .onUpdate(changeUserAvatarReferences);

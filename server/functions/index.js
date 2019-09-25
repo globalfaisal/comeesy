@@ -32,6 +32,7 @@ const {
   onCommentDelete,
   onCommentReplyCreate,
   onCommentReplyDelete,
+  onUserAvatarChanges,
 } = require('./triggers/index');
 
 //  Joke routes
@@ -81,6 +82,8 @@ exports.onCommentDelete = onCommentDelete;
 
 exports.onCommentReplyCreate = onCommentReplyCreate;
 exports.onCommentReplyDelete = onCommentReplyDelete;
+
+exports.onUserAvatarChanges = onUserAvatarChanges;
 
 // Base API route ( https://baseurl.com/api/{route})
 exports.api = functions.region('europe-west1').https.onRequest(app);
