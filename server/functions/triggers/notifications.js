@@ -10,21 +10,28 @@ exports.createNotificationOnLike = functions
       // Get the joke that's been liked
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
       if (jokeRef.exists) {
+        // Skip creating notification if sender and receiver are same user
+        if (snapshot.data().user.username === jokeRef.data().user.username)
+          return null;
+
         // Create notification
-        const notificationRef = await db
-          .doc(`/notifications/${snapshot.id}`)
+        await db
+          .doc(
+            `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
+          )
           .set({
-            notificationId: snapshot.id,
+            notificationId: `like_${snapshot.id}_${
+              jokeRef.data().user.username
+            }`,
             sender: snapshot.data().user,
-            recipients: [jokeRef.data().user.username],
+            recipient: jokeRef.data().user.username,
             jokeId: jokeRef.data().jokeId,
             createdAt: new Date().toISOString(),
-            type: 'joke-like',
+            type: 'like',
             read: false,
-          });
-        console.log('Like notification created successfully');
+          })
+          .then(() => console.log('Like notification created successfully'));
       }
-      return null;
     } catch (error) {
       console.error('Error while creating like notification ', error);
     }
@@ -36,9 +43,16 @@ exports.deleteNotificationOnUnLike = functions
   .firestore.document('likes/{likeId}')
   .onDelete(async snapshot => {
     try {
-      // Remove notification
-      await db.doc(`/notifications/${snapshot.id}`).delete();
-      console.log('Like notification deleted successfully');
+      const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
+      if (jokeRef.exists) {
+        // Remove notification
+        await db
+          .doc(
+            `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
+          )
+          .delete()
+          .then(() => console.log('Like notification deleted successfully'));
+      }
     } catch (error) {
       console.error('Error while deleting like notification ', error);
     }
@@ -53,21 +67,31 @@ exports.createNotificationOnComment = functions
       // Get the joke that's been commented
       const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
       if (jokeRef.exists) {
-        // Create notification
-        await db.doc(`/notifications/${snapshot.id}`).set({
-          notificationId: snapshot.id,
-          sender: snapshot.data().user,
-          recipients: [jokeRef.data().user.username],
-          jokeId: jokeRef.data().jokeId,
-          commentId: snapshot.id,
-          createdAt: new Date().toISOString(),
-          type: 'joke-comment',
-          read: false,
-        });
+        // Skip creating notification if sender and receiver are same user
+        if (snapshot.data().user.username === jokeRef.data().user.username)
+          return null;
 
-        console.log('Comment notification created successfully');
+        // Create notification
+        await db
+          .doc(
+            `/notifications/comment_${snapshot.id}_${
+              jokeRef.data().user.username
+            }`
+          )
+          .set({
+            notificationId: `comment_${snapshot.id}_${
+              jokeRef.data().user.username
+            }`,
+            sender: snapshot.data().user,
+            recipient: jokeRef.data().user.username,
+            jokeId: jokeRef.data().jokeId,
+            commentId: snapshot.id,
+            createdAt: new Date().toISOString(),
+            type: 'comment',
+            read: false,
+          })
+          .then(() => console.log('Comment notification created successfully'));
       }
-      return null;
     } catch (error) {
       console.error('Error while creating comment notification ', error);
     }
@@ -79,9 +103,18 @@ exports.deleteNotificationOnCommentDelete = functions
   .firestore.document('comments/{commentId}')
   .onDelete(async snapshot => {
     try {
-      // Remove notification
-      await db.doc(`/notifications/${snapshot.id}`).delete();
-      console.log('Comment notification deleted successfully');
+      const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
+      if (jokeRef.exists) {
+        // Remove notification
+        await db
+          .doc(
+            `/notifications/comment_${snapshot.id}_${
+              jokeRef.data().user.username
+            }`
+          )
+          .delete()
+          .then(() => console.log('Comment notification deleted successfully'));
+      }
     } catch (error) {
       console.error('Error while deleting comment notification ', error);
     }
@@ -100,23 +133,57 @@ exports.createNotificationOnCommentReply = functions
         .get();
 
       if (commentRef.exists && jokeRef.exists) {
-        // Create notification
-        await db.doc(`/notifications/${snapshot.id}`).set({
-          notificationId: snapshot.id,
-          sender: snapshot.data().user,
-          recipients: [
-            commentRef.data().user.username,
-            jokeRef.data().user.username,
-          ],
-          jokeId: jokeRef.data().jokeId,
-          commentId: commentRef.data().commentId,
-          replyId: snapshot.id,
-          createdAt: new Date().toISOString(),
-          type: 'joke-comment-reply',
-          read: false,
-        });
+        // 1. Create notification for the joke owner
+        if (snapshot.data().user.username !== jokeRef.data().user.username) {
+          await db
+            .doc(
+              `/notifications/reply_${snapshot.id}_${
+                jokeRef.data().user.username
+              }`
+            )
+            .set({
+              notificationId: `reply_${snapshot.id}_${
+                jokeRef.data().user.username
+              }`,
+              sender: snapshot.data().user,
+              recipient: jokeRef.data().user.username,
+              jokeId: jokeRef.data().jokeId,
+              commentId: commentRef.data().commentId,
+              replyId: snapshot.id,
+              createdAt: new Date().toISOString(),
+              type: 'reply',
+              read: false,
+            })
+            .then(() =>
+              console.log('Comment notification created successfully')
+            );
+        }
 
-        console.log('Comment notification created successfully');
+        // 2. Create notification for the comment owner
+        if (snapshot.data().user.username !== commentRef.data().user.username) {
+          await db
+            .doc(
+              `/notifications/reply_${snapshot.id}_${
+                commentRef.data().user.username
+              }`
+            )
+            .set({
+              notificationId: `reply_${snapshot.id}_${
+                commentRef.data().user.username
+              }`,
+              sender: snapshot.data().user,
+              recipient: commentRef.data().user.username,
+              jokeId: jokeRef.data().jokeId,
+              commentId: commentRef.data().commentId,
+              replyId: snapshot.id,
+              createdAt: new Date().toISOString(),
+              type: 'reply',
+              read: false,
+            })
+            .then(() =>
+              console.log('Comment reply notification created successfully')
+            );
+        }
       }
       return null;
     } catch (error) {
@@ -130,9 +197,35 @@ exports.deleteNotificationOnCommentReplyDelete = functions
   .firestore.document('replies/{replyId}')
   .onDelete(async snapshot => {
     try {
-      // Remove notification
-      await db.doc(`/notifications/${snapshot.id}`).delete();
-      console.log('Comment reply notification deleted successfully');
+      const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
+      const commentRef = await db
+        .doc(`/comments/${snapshot.data().commentId}`)
+        .get();
+
+      if (commentRef.exists && jokeRef.exists) {
+        // 1. Delete notification for the joke owner
+        await db
+          .doc(
+            `/notifications/reply_${snapshot.id}_${
+              jokeRef.data().user.username
+            }`
+          )
+          .delete()
+          .then(() =>
+            console.log('Comment reply notification deleted successfully')
+          );
+
+        await db
+          .doc(
+            `/notifications/reply_${snapshot.id}_${
+              commentRef.data().user.username
+            }`
+          )
+          .delete()
+          .then(() =>
+            console.log('Comment reply notification deleted successfully')
+          );
+      }
     } catch (error) {
       console.error('Error while deleting comment notification ', error);
     }

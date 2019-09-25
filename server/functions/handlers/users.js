@@ -43,7 +43,9 @@ exports.login = (req, res) => {
           .status(403)
           .json({ password: 'Wrong password. Please try again' });
       }
-      return res.status(500).json({ error: err.code });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -117,7 +119,9 @@ exports.signup = (req, res) => {
           .json({ password: 'Weak password, please choose a strong password' });
       }
 
-      return res.status(500).json({ error: err.code });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -125,7 +129,7 @@ exports.signup = (req, res) => {
 exports.addUserDetails = (req, res) => {
   const { isEmptyData, details } = reduceUserDetails(req.body);
   if (isEmptyData)
-    return res.status(400).json({ error: 'No data found in the request body' });
+    return res.status(400).json({ error: 'Invalid data submitted' });
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)
@@ -142,7 +146,7 @@ exports.getCurrentUserData = (req, res) => {
   db.doc(`/users/${req.user.username}`)
     .get()
     .then(async doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'user not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'User not found' });
 
       // Get user credentials
       userData.credentials = doc.data();
@@ -167,7 +171,7 @@ exports.getCurrentUserData = (req, res) => {
       // Get last 100 notifications user received
       const notificationsSnapshot = await db
         .collection('notifications')
-        .where('recipients', 'array-contains', req.user.username)
+        .where('recipient', '==', req.user.username)
         .orderBy('createdAt', 'desc')
         .limit(100)
         .get();
@@ -190,7 +194,7 @@ exports.getUserData = (req, res) => {
   db.doc(`/users/${req.params.username}`)
     .get()
     .then(async doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'user not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'User not found' });
 
       // Get user credentials
       userData.credentials = doc.data();
@@ -219,11 +223,11 @@ exports.uploadUserAvatar = (req, res) => {
   const busboy = new BusBoy({ headers: req.headers });
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
     if (!file || !mimetype)
-      return res.status(400).json({ error: 'invalid file submitted' });
+      return res.status(400).json({ error: 'Invalid file submitted' });
     if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
       return res.status(400).json({
         error:
-          'invalid file type submitted, accepted file types are .jpg and .png',
+          'Invalid file-type uploaded, accepted file-types are .jpg or .png',
       });
     }
     // 1. Generate unique image filename
@@ -264,6 +268,9 @@ exports.uploadUserAvatar = (req, res) => {
       )
       .catch(err => {
         console.error('Error while uploading profile image ', err);
+        return res
+          .status(500)
+          .json({ general: 'Something went wrong, please try again' });
       });
   });
   // get the response from the server

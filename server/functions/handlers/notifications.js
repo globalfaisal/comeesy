@@ -28,6 +28,8 @@ exports.markNotificationsRead = (req, res) => {
     });
   } catch (err) {
     console.error('Error marking notification(s) ', err);
-    return res.status(500).json({ error: err.code });
+    return res
+      .status(500)
+      .json({ general: 'Something went wrong, please try again' });
   }
 };

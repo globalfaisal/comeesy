@@ -12,13 +12,13 @@ exports.likeJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
       jokeData = doc.data();
       return likedDocument.get();
     })
     .then(async snapshot => {
       if (!snapshot.empty)
-        return res.status(400).json({ error: 'joke already liked' });
+        return res.status(400).json({ error: 'Joke already liked' });
 
       // Add new like
       const likeRef = await db.collection('likes').add({
@@ -39,12 +39,14 @@ exports.likeJoke = (req, res) => {
       return jokeDocument.update({ likeCount: jokeData.likeCount });
     })
     .then(() => {
-      console.log(`joke liked successfully`);
+      console.log(`Joke liked successfully`);
       return res.status(201).json(jokeData);
     })
     .catch(err => {
       console.error('Error while like a joke ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -60,13 +62,13 @@ exports.unlikeJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
       jokeData = doc.data();
       return likedDocument.get();
     })
     .then(async snapshot => {
       if (snapshot.empty)
-        return res.status(400).json({ error: 'joke not liked' });
+        return res.status(400).json({ error: 'Joke not liked' });
 
       // Delete the like document from the collection
       await db.doc(`/likes/${snapshot.docs[0].id}`).delete();
@@ -76,11 +78,13 @@ exports.unlikeJoke = (req, res) => {
       return jokeDocument.update({ likeCount: jokeData.likeCount });
     })
     .then(() => {
-      console.log(`joke unliked successfully`);
+      console.log(`Joke unliked successfully`);
       return res.status(200).json(jokeData);
     })
     .catch(err => {
       console.error('Error while unlike a joke ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };

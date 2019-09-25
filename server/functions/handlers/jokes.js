@@ -12,7 +12,7 @@ exports.getJokes = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting jokes ', err);
-      res.status(500).json({ error: err.code });
+      return res.status(500).json({ error: err.code });
     });
 };
 
@@ -23,7 +23,7 @@ exports.getJoke = (req, res) => {
     .get()
     .then(doc => {
       if (!doc.exists) {
-        return res.status(404).json({ error: 'joke not found' });
+        return res.status(404).json({ error: 'Joke not found' });
       }
 
       jokeData = doc.data();
@@ -76,7 +76,9 @@ exports.addJoke = (req, res) => {
     })
     .catch(err => {
       console.error('Error while adding a new joke ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -88,19 +90,17 @@ exports.deleteJoke = (req, res) => {
   jokeDocument
     .get()
     .then(async doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
 
       jokeData = doc.data();
 
       if (jokeData.user.username !== req.user.username) {
-        return res
-          .status(404)
-          .json({ error: 'unauthorized joke delete request' });
+        return res.status(403).json({ error: 'Unauthorized delete request' });
       }
 
       // Delete joke document from jokes collection
       await doc.ref.delete();
-      console.log('joke deleted successfully');
+      console.log('Joke deleted successfully');
 
       //Find all the comments for this joke
       return db
@@ -137,14 +137,14 @@ exports.deleteJoke = (req, res) => {
               });
 
               secondBatch.commit();
-              console.log('comment replies deleted successfully');
+              console.log('Comment replies deleted successfully');
             }
           });
         }
 
         // Commit the batch
         await firstBatch.commit();
-        console.log('comments deleted successfully');
+        console.log('Comments deleted successfully');
       }
       // Get all likes of the joke
       return db
@@ -161,15 +161,17 @@ exports.deleteJoke = (req, res) => {
         });
 
         await batch.commit();
-        console.log('likes deleted successfully');
+        console.log('Likes deleted successfully');
       }
 
       return res
         .status(200)
-        .json({ message: `joke ${jokeData.jokeId} deleted successfully` });
+        .json({ message: `Joke ${jokeData.jokeId} deleted successfully` });
     })
     .catch(err => {
       console.error('Error while deleting joke ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };

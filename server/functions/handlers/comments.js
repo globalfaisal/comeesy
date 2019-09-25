@@ -13,7 +13,7 @@ exports.getCommentReplies = (req, res) => {
     .get()
     .then(snapshot => {
       if (snapshot.empty)
-        return res.status(404).json({ error: 'comment not found' });
+        return res.status(404).json({ error: 'Comment not found' });
 
       return db
         .collection('replies')
@@ -35,7 +35,7 @@ exports.getCommentReplies = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting comment replies ', err);
-      res.status(500).json({ error: err.code });
+      return res.status(500).json({ error: err.code });
     });
 };
 
@@ -63,7 +63,7 @@ exports.commentOnJoke = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
       jokeData = doc.data();
       return db.collection('comments').add(newComment);
     })
@@ -79,7 +79,9 @@ exports.commentOnJoke = (req, res) => {
     })
     .catch(err => {
       console.error('Error while adding a new comment ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -96,14 +98,14 @@ exports.deleteComment = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
       jokeData = doc.data();
 
       return commentDocument.get();
     })
     .then(async snapshot => {
       if (snapshot.empty)
-        return res.status(404).json({ error: 'comment not found' });
+        return res.status(404).json({ error: 'Comment not found' });
 
       const commentData = snapshot.docs[0].data();
       // Allows only deletion from the joke owner or the comment owner.
@@ -111,9 +113,7 @@ exports.deleteComment = (req, res) => {
         commentData.user.username !== req.user.username &&
         jokeData.user.username !== req.user.username
       ) {
-        return res
-          .status(403)
-          .json({ error: 'unauthorized comment delete request' });
+        return res.status(403).json({ error: 'Unauthorized delete request' });
       }
 
       // Delete the comment document from the collection
@@ -149,7 +149,9 @@ exports.deleteComment = (req, res) => {
     })
     .catch(err => {
       console.error('Error while deleting a comment ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -183,13 +185,13 @@ exports.replyOnComment = (req, res) => {
   jokeDocument
     .get()
     .then(doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'joke not found' });
+      if (!doc.exists) return res.status(404).json({ error: 'Joke not found' });
       jokeData = doc.data();
       return commentDocument.get();
     })
     .then(async snapshot => {
       if (snapshot.empty)
-        return res.status(404).json({ error: 'comment not found' });
+        return res.status(404).json({ error: 'Comment not found' });
 
       const commentData = snapshot.docs[0].data();
 
@@ -209,7 +211,9 @@ exports.replyOnComment = (req, res) => {
     })
     .catch(err => {
       console.error('Error while adding a new comment reply ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -227,14 +231,14 @@ exports.deleteCommentReply = (req, res) => {
     .get()
     .then(doc => {
       if (!doc.exists)
-        return res.status(404).json({ error: 'comment not found' });
+        return res.status(404).json({ error: 'Comment not found' });
       commentData = doc.data();
 
       return replyDocument.get();
     })
     .then(async snapshot => {
       if (snapshot.empty)
-        return res.status(404).json({ error: 'comment reply not found' });
+        return res.status(404).json({ error: 'Comment reply not found' });
 
       const replyData = snapshot.docs[0].data();
 
@@ -243,9 +247,7 @@ exports.deleteCommentReply = (req, res) => {
         replyData.user.username !== req.user.username &&
         commentData.user.username !== req.user.username
       ) {
-        return res
-          .status(403)
-          .json({ error: 'unauthorized comment reply delete request' });
+        return res.status(403).json({ error: 'Unauthorized delete request' });
       }
 
       // Delete the comment reply document from the collection
@@ -260,6 +262,8 @@ exports.deleteCommentReply = (req, res) => {
     })
     .catch(err => {
       console.error('Error while deleting a comment ', err);
-      res.status(500).json({ error: 'something went wrong' });
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
