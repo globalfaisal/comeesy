@@ -49,13 +49,13 @@ exports.reduceUserDetails = data => {
 };
 
 exports.validateBodyContent = body => {
-  let error;
+  let error = '';
   if (typeof body === 'string' && validator.isEmpty(body))
     error = 'Must not be empty';
   else if (Array.isArray(body) && body.length === 0)
     error = 'Must not be empty';
   return {
     error,
-    isValid: Object.keys(error).length === 0 ? true : false,
+    isValid: error === '' ? true : false,
   };
 };

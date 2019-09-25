@@ -25,15 +25,16 @@ const {
 } = require('./handlers/users');
 
 const {
-  createNotificationOnLike,
-  deleteNotificationOnUnLike,
-  createNotificationOnComment,
-  deleteNotificationOnCommentDelete,
-  createNotificationOnCommentReply,
-  deleteNotificationOnCommentReplyDelete,
-} = require('./triggers/notifications');
+  onJokeDelete,
+  onLikeCreate,
+  onLikeDelete,
+  onCommentCreate,
+  onCommentDelete,
+  onCommentReplyCreate,
+  onCommentReplyDelete,
+} = require('./triggers/index');
 
-//  joke routes
+//  Joke routes
 app.get('/jokes', getJokes);
 app.get('/joke/:jokeId', getJoke);
 app.post('/joke', fbAuth, addJoke);
@@ -66,18 +67,20 @@ app.get('/user/:username', getUserData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/image', fbAuth, uploadUserAvatar);
 
-// notifications routes
+// Notifications routes
 app.post('/notifications/markRead', fbAuth, markNotificationsRead);
 
-// DB triggers
-exports.createNotificationOnLike = createNotificationOnLike;
-exports.deleteNotificationOnUnLike = deleteNotificationOnUnLike;
+// Setup DB triggers
+exports.onJokeDelete = onJokeDelete;
 
-exports.createNotificationOnComment = createNotificationOnComment;
-exports.deleteNotificationOnCommentDelete = deleteNotificationOnCommentDelete;
+exports.onLikeCreate = onLikeCreate;
+exports.onLikeDelete = onLikeDelete;
 
-exports.createNotificationOnCommentReply = createNotificationOnCommentReply;
-exports.deleteNotificationOnCommentReplyDelete = deleteNotificationOnCommentReplyDelete;
+exports.onCommentCreate = onCommentCreate;
+exports.onCommentDelete = onCommentDelete;
 
-// https://baseurl.com/api/{route}
+exports.onCommentReplyCreate = onCommentReplyCreate;
+exports.onCommentReplyDelete = onCommentReplyDelete;
+
+// Base API route ( https://baseurl.com/api/{route})
 exports.api = functions.region('europe-west1').https.onRequest(app);
