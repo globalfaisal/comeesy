@@ -1,6 +1,48 @@
-const { db } = require('../../utils/admin');
+const { db } = require('../utils/admin');
 
-exports.createCommentNotification = async snapshot => {
+exports.onCommentCreate = snapshot => {
+  createCommentNotification(snapshot);
+};
+
+exports.onCommentDelete = snapshot => {
+  deleteCommentReplies(snapshot);
+  deleteCommentNotification(snapshot);
+};
+
+exports.onCommentReplyCreate = snapshot => {
+  createCommentReplyNotifications(snapshot);
+};
+exports.onCommentReplyDelete = snapshot => {
+  deleteCommentReplyNotifications(snapshot);
+};
+
+// Other actions
+const deleteCommentReplies = async snapshot => {
+  try {
+    return await db
+      .collection('replies')
+      .where('jokeId', '==', snapshot.data().jokeId)
+      .where('commentId', '==', snapshot.data().commentId)
+      .get()
+      .then(doc => {
+        if (doc.empty) return console.log('No replies found to delete');
+        const batch = db.batch();
+
+        doc.docs.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+
+        return batch.commit();
+      })
+      .then(() => console.log('Joke comment replies deleted successfully'));
+  } catch (error) {
+    console.error('Error while deleting joke comment replies ', error);
+  }
+};
+
+//Notifications
+
+const createCommentNotification = async snapshot => {
   try {
     // Get the joke that's been commented
     const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
@@ -35,7 +77,7 @@ exports.createCommentNotification = async snapshot => {
   }
 };
 
-exports.deleteCommentNotification = async snapshot => {
+const deleteCommentNotification = async snapshot => {
   try {
     const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
     const replyNotificationsSnapshot = await db
@@ -79,7 +121,7 @@ exports.deleteCommentNotification = async snapshot => {
   }
 };
 
-exports.createCommentReplyNotifications = async snapshot => {
+const createCommentReplyNotifications = async snapshot => {
   try {
     // Get the joke that's been commented
     const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
@@ -143,7 +185,7 @@ exports.createCommentReplyNotifications = async snapshot => {
   }
 };
 
-exports.deleteCommentReplyNotifications = async snapshot => {
+const deleteCommentReplyNotifications = async snapshot => {
   try {
     const replyNotificationsSnapshot = await db
       .collection('notifications')

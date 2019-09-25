@@ -123,29 +123,8 @@ exports.deleteComment = (req, res) => {
       jokeData.commentCount--;
       await jokeDocument.update({ commentCount: jokeData.commentCount });
 
-      //Find and return all the replies for the comment
-      return await db
-        .collection('replies')
-        .where('commentId', '==', commentData.commentId)
-        .get();
-    })
-    .then(async snapshot => {
-      if (snapshot.empty) {
-        console.log(`no comment replies associated with the deleted comment`);
-        return res.status(200).json(jokeData);
-      }
-
-      // Delete all replies for the deleted comment
-      const batch = db.batch();
-      snapshot.docs.forEach(doc => {
-        // For each doc, add a delete operation to the batch
-        batch.delete(doc.ref);
-      });
-
-      // Commit the batch
-      await batch.commit();
       // Delete completed!
-      return res.status(201).json(jokeData);
+      return res.status(200).json(jokeData);
     })
     .catch(err => {
       console.error('Error while deleting a comment ', err);

@@ -1,6 +1,15 @@
-const { db } = require('../../utils/admin');
+const { db } = require('../utils/admin');
 
-exports.createLikeNotification = async snapshot => {
+exports.onLikeCreate = snapshot => {
+  createLikeNotification(snapshot);
+};
+
+exports.onLikeDelete = snapshot => {
+  deleteLikeNotification(snapshot);
+};
+
+// Create notification when joke is unliked
+const createLikeNotification = async snapshot => {
   try {
     // Get the joke that's been liked
     const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
@@ -29,9 +38,8 @@ exports.createLikeNotification = async snapshot => {
     console.error('Error while creating like notification ', err);
   }
 };
-
 // Delete notification when joke is unliked
-exports.deleteLikeNotification = async snapshot => {
+const deleteLikeNotification = async snapshot => {
   try {
     const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
     if (jokeRef.exists) {

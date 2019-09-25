@@ -24,17 +24,20 @@ const {
   uploadUserAvatar,
 } = require('./handlers/users');
 
+// Get all db trigger handlers
+const { onJokeDelete } = require('./triggers/jokes');
+const { onLikeCreate, onLikeDelete } = require('./triggers/likes');
+
 const {
-  onJokeDelete,
-  onLikeCreate,
-  onLikeDelete,
   onCommentCreate,
   onCommentDelete,
   onCommentReplyCreate,
   onCommentReplyDelete,
-  onUserAvatarChanges,
-} = require('./triggers/index');
+} = require('./triggers/comments');
 
+const { onUserAvatarChange } = require('./triggers/users');
+
+/* Setup all api routes */
 //  Joke routes
 app.get('/jokes', getJokes);
 app.get('/joke/:jokeId', getJoke);
@@ -71,19 +74,55 @@ app.post('/user/image', fbAuth, uploadUserAvatar);
 // Notifications routes
 app.post('/notifications/markRead', fbAuth, markNotificationsRead);
 
-// Setup DB triggers
-exports.onJokeDelete = onJokeDelete;
-
-exports.onLikeCreate = onLikeCreate;
-exports.onLikeDelete = onLikeDelete;
-
-exports.onCommentCreate = onCommentCreate;
-exports.onCommentDelete = onCommentDelete;
-
-exports.onCommentReplyCreate = onCommentReplyCreate;
-exports.onCommentReplyDelete = onCommentReplyDelete;
-
-exports.onUserAvatarChanges = onUserAvatarChanges;
-
 // Base API route ( https://baseurl.com/api/{route})
 exports.api = functions.region('europe-west1').https.onRequest(app);
+
+/* Setup all firestore(db) triggers */
+
+// Triggers when joke is deleted
+exports.jokeDeleteTrigger = functions
+  .region('europe-west1')
+  .firestore.document('jokes/{jokeId}')
+  .onDelete(onJokeDelete);
+
+// Triggers when like is created
+exports.likeCreateTrigger = functions
+  .region('europe-west1')
+  .firestore.document('likes/{likeId}')
+  .onCreate(onLikeCreate);
+
+// Triggers when like is deleted
+exports.likeDeleteTrigger = functions
+  .region('europe-west1')
+  .firestore.document('likes/{likeId}')
+  .onDelete(onLikeDelete);
+
+// Triggers when comment is created
+exports.commentCreateTrigger = functions
+  .region('europe-west1')
+  .firestore.document('comments/{commentId}')
+  .onCreate(onCommentCreate);
+
+// Triggers joke comment is deleted
+exports.commentDeleteTrigger = functions
+  .region('europe-west1')
+  .firestore.document('comments/{commentId}')
+  .onDelete(onCommentDelete);
+
+// Triggers when comment reply is created
+exports.commentReplyCreateTrigger = functions
+  .region('europe-west1')
+  .firestore.document('replies/{replyId}')
+  .onCreate(onCommentReplyCreate);
+
+// Triggers when comment reply is deleted
+exports.commentReplyDeleteTrigger = functions
+  .region('europe-west1')
+  .firestore.document('replies/{replyId}')
+  .onDelete(onCommentReplyDelete);
+
+// Triggers when user image (avatar) is changed
+exports.userAvatarChangeTrigger = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}')
+  .onUpdate(onUserAvatarChange);

@@ -102,68 +102,6 @@ exports.deleteJoke = (req, res) => {
       await doc.ref.delete();
       console.log('Joke deleted successfully');
 
-      //Find all the comments for this joke
-      return db
-        .collection('comments')
-        .where('jokeId', '==', jokeData.jokeId)
-        .get();
-    })
-    .then(async commentsSnapshot => {
-      if (!commentsSnapshot.empty) {
-        const firstBatch = db.batch();
-
-        const commentIds = [];
-
-        // Add allcomments of the joke in delete batch
-        commentsSnapshot.docs.forEach(doc => {
-          // Get deleted comment ids
-          commentIds.push(doc.id);
-          firstBatch.delete(doc.ref);
-        });
-
-        if (commentIds.length > 0) {
-          commentIds.forEach(async id => {
-            // Get all replies of the comment
-            const replySnapshots = await db
-              .collection('replies')
-              .where('commentId', '==', id)
-              .get();
-
-            if (!replySnapshots.empty) {
-              const secondBatch = db.batch();
-
-              replySnapshots.docs.forEach(doc => {
-                secondBatch.delete(doc.ref);
-              });
-
-              secondBatch.commit();
-              console.log('Comment replies deleted successfully');
-            }
-          });
-        }
-
-        // Commit the batch
-        await firstBatch.commit();
-        console.log('Comments deleted successfully');
-      }
-      // Get all likes of the joke
-      return db
-        .collection('likes')
-        .where('jokeId', '==', jokeData.jokeId)
-        .get();
-    })
-    .then(async snapshot => {
-      if (!snapshot.empty) {
-        const batch = db.batch();
-
-        snapshot.docs.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-
-        await batch.commit();
-        console.log('Likes deleted successfully');
-      }
-
       return res
         .status(200)
         .json({ message: `Joke ${jokeData.jokeId} deleted successfully` });
