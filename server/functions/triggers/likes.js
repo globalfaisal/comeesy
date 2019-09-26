@@ -8,26 +8,30 @@ exports.onLikeDelete = snapshot => {
   deleteLikeNotification(snapshot);
 };
 
-// Create notification when joke is unliked
+// Create notification when scream is unliked
 const createLikeNotification = async snapshot => {
   try {
-    // Get the joke that's been liked
-    const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
+    // Get the scream that's been liked
+    const screamRef = await db
+      .doc(`/screams/${snapshot.data().screamId}`)
+      .get();
     // Skip creating notification if sender and receiver are same user
     if (
-      jokeRef.exists &&
-      snapshot.data().user.username !== jokeRef.data().user.username
+      screamRef.exists &&
+      snapshot.data().user.username !== screamRef.data().user.username
     ) {
       // Create notification
       return db
         .doc(
-          `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
+          `/notifications/like_${snapshot.id}_${screamRef.data().user.username}`
         )
         .set({
-          notificationId: `like_${snapshot.id}_${jokeRef.data().user.username}`,
+          notificationId: `like_${snapshot.id}_${
+            screamRef.data().user.username
+          }`,
           sender: snapshot.data().user,
-          recipient: jokeRef.data().user.username,
-          jokeId: jokeRef.data().jokeId,
+          recipient: screamRef.data().user.username,
+          screamId: screamRef.data().screamId,
           createdAt: new Date().toISOString(),
           type: 'like',
           read: false,
@@ -38,15 +42,17 @@ const createLikeNotification = async snapshot => {
     console.error('Error while creating like notification ', err);
   }
 };
-// Delete notification when joke is unliked
+// Delete notification when scream is unliked
 const deleteLikeNotification = async snapshot => {
   try {
-    const jokeRef = await db.doc(`/jokes/${snapshot.data().jokeId}`).get();
-    if (jokeRef.exists) {
+    const screamRef = await db
+      .doc(`/screams/${snapshot.data().screamId}`)
+      .get();
+    if (screamRef.exists) {
       // Remove notification
       return db
         .doc(
-          `/notifications/like_${snapshot.id}_${jokeRef.data().user.username}`
+          `/notifications/like_${snapshot.id}_${screamRef.data().user.username}`
         )
         .delete()
         .then(() => console.log('Like notification deleted successfully'));

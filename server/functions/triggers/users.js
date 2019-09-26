@@ -8,22 +8,22 @@ exports.onUserAvatarChange = snapshot => {
 const changeUserImageUrlReferences = async snapshot => {
   if (snapshot.before.data().imageUrl !== snapshot.after.data().imageUrl) {
     try {
-      //1. Change avatar reference at all docs in jokes collections
+      //1. Change avatar reference at all docs in screams collections
       await db
-        .collection('jokes')
+        .collection('screams')
         .where('user.username', '==', snapshot.before.data().username)
         .get()
         .then(data => {
           if (!data.empty) {
             const batch = db.batch();
             data.forEach(doc => {
-              const jokeRef = db.doc(`/jokes/${doc.id}`);
-              batch.update(jokeRef, {
+              const screamRef = db.doc(`/screams/${doc.id}`);
+              batch.update(screamRef, {
                 'user.imageUrl': snapshot.after.data().imageUrl,
               });
             });
             console.log(
-              'Changed avatar reference at all docs in jokes collection '
+              'Changed avatar reference at all docs in screams collection '
             );
             return batch.commit();
           }

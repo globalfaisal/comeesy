@@ -40,6 +40,8 @@ module.exports = (req, res, next) => {
           error: 'invalid id-token provided',
         });
       }
-      return res.status(500).json(err);
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };

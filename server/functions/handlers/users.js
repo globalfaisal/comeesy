@@ -151,13 +151,13 @@ exports.getCurrentUserData = (req, res) => {
       // Get user credentials
       userData.credentials = doc.data();
 
-      // Get all the jokes user created
-      const jokesSnapshot = await db
-        .collection('jokes')
+      // Get all the screams user created
+      const screamsSnapshot = await db
+        .collection('screams')
         .where('user.username', '==', req.user.username)
         .orderBy('createdAt', 'desc')
         .get();
-      userData.jokes = jokesSnapshot.docs.map(doc => doc.data());
+      userData.screams = screamsSnapshot.docs.map(doc => doc.data());
 
       // Get all like user made
       const likesSnapshot = await db
@@ -199,14 +199,14 @@ exports.getUserData = (req, res) => {
       // Get user credentials
       userData.credentials = doc.data();
 
-      // Get all the jokes user created
-      const jokesSnapshot = await db
-        .collection('jokes')
+      // Get all the screams user created
+      const screamsSnapshot = await db
+        .collection('screams')
         .where('user.username', '==', req.params.username)
         .orderBy('createdAt', 'desc')
         .get();
 
-      userData.jokes = jokesSnapshot.docs.map(doc => doc.data());
+      userData.screams = screamsSnapshot.docs.map(doc => doc.data());
       return res.status(200).json(userData);
     })
     .catch(err => {
