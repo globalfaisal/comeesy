@@ -1,7 +1,7 @@
 const db = {
-  screams: [
+  posts: [
     {
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       body: 'Why did the M&M go to school? It wanted to be a Smartie.',
       likeCount: 1,
       commentCount: 1,
@@ -32,7 +32,7 @@ const db = {
   ],
   comments: [
     {
-      screamId: 'wgNarnumWwwggTyOMKtA',
+      postId: 'wgNarnumWwwggTyOMKtA',
       commentId: 'jzNnizolstbgzfoZ4TK3',
       body: 'wow! that is so funny 🤣',
       createdAt: '2019-09-14T11:11:58.903Z',
@@ -48,7 +48,7 @@ const db = {
   ],
   replies: [
     {
-      screamId: 'wgNarnumWwwggTyOMKtA',
+      postId: 'wgNarnumWwwggTyOMKtA',
       commentId: 'jzNnizolstbgzfoZ4TK3',
       replyId: 'yLpHthk2YYLYfcv87yWH',
       body: 'lol! very funny',
@@ -65,7 +65,7 @@ const db = {
   likes: [
     {
       likeId: 'b7bsy0aR6WtDBV6BHaaK',
-      screamId: 'wgNarnumWwwggTyOMKtA',
+      postId: 'wgNarnumWwwggTyOMKtA',
       createdAt: '2019-09-18T07:49:10.204Z',
       user: {
         username: 'alen_adam',
@@ -89,14 +89,14 @@ const db = {
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       notificationId: 'like_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
   ],
 };
 
-/*User own data */
-//TODO: store this data in the Redux store
+/* User own data */
+// TODO: store this data in the Redux store
 const getCurrentUserData = {
   credentials: {
     firstname: 'Jane',
@@ -111,10 +111,10 @@ const getCurrentUserData = {
       'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
     createdAt: '2019-09-17T08:42:41.187Z',
   },
-  // All screams user created
-  screams: [
+  // All posts user created
+  posts: [
     {
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       body: 'Why did the M&M go to school? It wanted to be a Smartie.',
       likeCount: 1,
       commentCount: 1,
@@ -132,7 +132,7 @@ const getCurrentUserData = {
   likes: [
     {
       likeId: 'b7bsy0aR6WtDBV6BHaaK',
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       createdAt: '2019-09-24T07:49:10.204Z',
       user: {
         lastname: 'Doe',
@@ -157,7 +157,7 @@ const getCurrentUserData = {
         firstname: 'Jane',
         username: 'jane_doe',
       },
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       notificationId: 'like_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
 
@@ -173,7 +173,7 @@ const getCurrentUserData = {
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       commentId: 'jzNnizolstbgzfoZ4TK3',
       notificationId: 'comment_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName
     },
@@ -189,7 +189,7 @@ const getCurrentUserData = {
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
-      screamId: 'XJki6wK5XcGpnzABKMHS',
+      postId: 'XJki6wK5XcGpnzABKMHS',
       commentId: 'jzNnizolstbgzfoZ4TK3',
       replyId: 'yLpHthk2YYLYfcv87yWH',
       notificationId: 'reply_D7rJ0dZh8Vmpm1KGDmPi_jane_doe', // notifTyp_notifId_recipientUserName

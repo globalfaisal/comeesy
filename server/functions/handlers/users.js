@@ -93,9 +93,7 @@ exports.signup = (req, res) => {
         username: newUser.username,
         email: newUser.email,
         createdAt: new Date().toISOString(),
-        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
-          config.storageBucket
-        }/o/${defaultAvatarFileName}?alt=media`,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${defaultAvatarFileName}?alt=media`,
         userId,
       };
       // Persist the newly created user credentials to the db
@@ -151,13 +149,13 @@ exports.getCurrentUserData = (req, res) => {
       // Get user credentials
       userData.credentials = doc.data();
 
-      // Get all the screams user created
-      const screamsSnapshot = await db
-        .collection('screams')
+      // Get all the posts user created
+      const postsSnapshot = await db
+        .collection('posts')
         .where('user.username', '==', req.user.username)
         .orderBy('createdAt', 'desc')
         .get();
-      userData.screams = screamsSnapshot.docs.map(doc => doc.data());
+      userData.posts = postsSnapshot.docs.map(doc => doc.data());
 
       // Get all like user made
       const likesSnapshot = await db
@@ -199,14 +197,14 @@ exports.getUserData = (req, res) => {
       // Get user credentials
       userData.credentials = doc.data();
 
-      // Get all the screams user created
-      const screamsSnapshot = await db
-        .collection('screams')
+      // Get all the posts user created
+      const postsSnapshot = await db
+        .collection('posts')
         .where('user.username', '==', req.params.username)
         .orderBy('createdAt', 'desc')
         .get();
 
-      userData.screams = screamsSnapshot.docs.map(doc => doc.data());
+      userData.posts = postsSnapshot.docs.map(doc => doc.data());
       return res.status(200).json(userData);
     })
     .catch(err => {
@@ -256,9 +254,7 @@ exports.uploadUserAvatar = (req, res) => {
       })
       .then(() => {
         // 2. Get the file url from the storage
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
-          config.storageBucket
-        }/o/${imageFileName}?alt=media`;
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
 
         // 2. Add the imageUrl to the db
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });

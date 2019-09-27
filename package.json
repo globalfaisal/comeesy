@@ -9,15 +9,15 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/fsl-mo/kydding.git"
+		"url": "git+https://github.com/fsl-mo/comeesy.git"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/fsl-mo/kydding/issues"
+		"url": "https://github.com/fsl-mo/comeesy/issues"
 	},
-	"homepage": "https://github.com/fsl-mo/kydding#readme",
+	"homepage": "https://github.com/fsl-mo/comeesy#readme",
 	"devDependencies": {
 		"babel-eslint": "^9.0.0",
 		"eslint": "^5.14.1",

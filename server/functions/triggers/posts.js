@@ -1,17 +1,17 @@
 const { db } = require('../utils/admin');
 
-exports.onScreamDelete = snapshot => {
-  deleteScreamLikes(snapshot);
-  deleteScreamNotification(snapshot);
-  deleteScreamComments(snapshot);
-  deleteScreamCommentReplies(snapshot);
+exports.onPostDelete = snapshot => {
+  deletePostLikes(snapshot);
+  deletePostNotifications(snapshot);
+  deletePostComments(snapshot);
+  deletePostCommentReplies(snapshot);
 };
 
-const deleteScreamNotification = async snapshot => {
+const deletePostNotifications = async snapshot => {
   try {
     return await db
       .collection('notifications')
-      .where('screamId', '==', snapshot.data().screamId)
+      .where('postId', '==', snapshot.data().postId)
       .get()
       .then(doc => {
         if (doc.empty) return console.log('No notifications found to delete');
@@ -23,17 +23,17 @@ const deleteScreamNotification = async snapshot => {
 
         return batch.commit();
       })
-      .then(() => console.log('Scream notifications deleted successfully'));
+      .then(() => console.log('Post notifications deleted successfully'));
   } catch (error) {
-    console.error('Error while deleting scream notification ', error);
+    console.error('Error while deleting post notification ', error);
   }
 };
 
-const deleteScreamComments = async snapshot => {
+const deletePostComments = async snapshot => {
   try {
     return await db
       .collection('comments')
-      .where('screamId', '==', snapshot.data().screamId)
+      .where('postId', '==', snapshot.data().postId)
       .get()
       .then(doc => {
         if (doc.empty) return console.log('No comments found to delete');
@@ -45,17 +45,17 @@ const deleteScreamComments = async snapshot => {
 
         return batch.commit();
       })
-      .then(() => console.log('Scream comments deleted successfully'));
+      .then(() => console.log('Post comments deleted successfully'));
   } catch (error) {
-    console.error('Error while deleting scream comment ', error);
+    console.error('Error while deleting post comment ', error);
   }
 };
 
-const deleteScreamCommentReplies = async snapshot => {
+const deletePostCommentReplies = async snapshot => {
   try {
     return await db
       .collection('replies')
-      .where('screamId', '==', snapshot.data().screamId)
+      .where('postId', '==', snapshot.data().postId)
       .get()
       .then(doc => {
         if (doc.empty) return console.log('No replies found to delete');
@@ -67,17 +67,17 @@ const deleteScreamCommentReplies = async snapshot => {
 
         return batch.commit();
       })
-      .then(() => console.log('Scream comment replies deleted successfully'));
+      .then(() => console.log('Post comment replies deleted successfully'));
   } catch (error) {
-    console.error('Error while deleting scream comment replies ', error);
+    console.error('Error while deleting post comment replies ', error);
   }
 };
 
-const deleteScreamLikes = async snapshot => {
+const deletePostLikes = async snapshot => {
   try {
     return await db
       .collection('likes')
-      .where('screamId', '==', snapshot.data().screamId)
+      .where('postId', '==', snapshot.data().postId)
       .get()
       .then(doc => {
         if (doc.empty) return console.log('No likes found to delete');
@@ -89,8 +89,8 @@ const deleteScreamLikes = async snapshot => {
 
         return batch.commit();
       })
-      .then(() => console.log('Scream likes deleted successfully'));
+      .then(() => console.log('Post likes deleted successfully'));
   } catch (error) {
-    console.error('Error while deleting scream likes ', error);
+    console.error('Error while deleting post likes ', error);
   }
 };

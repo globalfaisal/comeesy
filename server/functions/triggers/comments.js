@@ -21,7 +21,7 @@ const deleteCommentReplies = async snapshot => {
   try {
     return await db
       .collection('replies')
-      .where('screamId', '==', snapshot.data().screamId)
+      .where('postId', '==', snapshot.data().postId)
       .where('commentId', '==', snapshot.data().commentId)
       .get()
       .then(doc => {
@@ -34,9 +34,9 @@ const deleteCommentReplies = async snapshot => {
 
         return batch.commit();
       })
-      .then(() => console.log('Scream comment replies deleted successfully'));
+      .then(() => console.log('Post comment replies deleted successfully'));
   } catch (error) {
-    console.error('Error while deleting scream comment replies ', error);
+    console.error('Error while deleting post comment replies ', error);
   }
 };
 
@@ -44,29 +44,27 @@ const deleteCommentReplies = async snapshot => {
 
 const createCommentNotification = async snapshot => {
   try {
-    // Get the scream that's been commented
-    const screamRef = await db
-      .doc(`/screams/${snapshot.data().screamId}`)
-      .get();
+    // Get the post that's been commented
+    const postRef = await db.doc(`/posts/${snapshot.data().postId}`).get();
     // Skip creating notification if sender and receiver are same user
     if (
-      screamRef.exists &&
-      snapshot.data().user.username !== screamRef.data().user.username
+      postRef.exists &&
+      snapshot.data().user.username !== postRef.data().user.username
     ) {
       // Create notification
       return db
         .doc(
           `/notifications/comment_${snapshot.id}_${
-            screamRef.data().user.username
+            postRef.data().user.username
           }`
         )
         .set({
           notificationId: `comment_${snapshot.id}_${
-            screamRef.data().user.username
+            postRef.data().user.username
           }`,
           sender: snapshot.data().user,
-          recipient: screamRef.data().user.username,
-          screamId: screamRef.data().screamId,
+          recipient: postRef.data().user.username,
+          postId: postRef.data().postId,
           commentId: snapshot.id,
           createdAt: new Date().toISOString(),
           type: 'comment',
@@ -81,21 +79,19 @@ const createCommentNotification = async snapshot => {
 
 const deleteCommentNotification = async snapshot => {
   try {
-    const screamRef = await db
-      .doc(`/screams/${snapshot.data().screamId}`)
-      .get();
+    const postRef = await db.doc(`/posts/${snapshot.data().postId}`).get();
     const replyNotificationsSnapshot = await db
       .collection('notifications')
       .where('type', '==', 'reply')
       .where('commentId', '==', snapshot.data().commentId)
       .get();
 
-    if (screamRef.exists) {
-      // 1. Delete comment notifications for the scream owner
+    if (postRef.exists) {
+      // 1. Delete comment notifications for the post owner
       await db
         .doc(
           `/notifications/comment_${snapshot.id}_${
-            screamRef.data().user.username
+            postRef.data().user.username
           }`
         )
         .delete()
@@ -127,30 +123,28 @@ const deleteCommentNotification = async snapshot => {
 
 const createCommentReplyNotifications = async snapshot => {
   try {
-    // Get the scream that's been commented
-    const screamRef = await db
-      .doc(`/screams/${snapshot.data().screamId}`)
-      .get();
+    // Get the post that's been commented
+    const postRef = await db.doc(`/posts/${snapshot.data().postId}`).get();
     const commentRef = await db
       .doc(`/comments/${snapshot.data().commentId}`)
       .get();
 
-    if (commentRef.exists && screamRef.exists) {
-      if (snapshot.data().user.username !== screamRef.data().user.username) {
-        // 1. Create notification for the scream owner
+    if (commentRef.exists && postRef.exists) {
+      if (snapshot.data().user.username !== postRef.data().user.username) {
+        // 1. Create notification for the post owner
         await db
           .doc(
             `/notifications/reply_${snapshot.id}_${
-              screamRef.data().user.username
+              postRef.data().user.username
             }`
           )
           .set({
             notificationId: `reply_${snapshot.id}_${
-              screamRef.data().user.username
+              postRef.data().user.username
             }`,
             sender: snapshot.data().user,
-            recipient: screamRef.data().user.username,
-            screamId: screamRef.data().screamId,
+            recipient: postRef.data().user.username,
+            postId: postRef.data().postId,
             commentId: commentRef.data().commentId,
             replyId: snapshot.id,
             createdAt: new Date().toISOString(),
@@ -174,7 +168,7 @@ const createCommentReplyNotifications = async snapshot => {
             }`,
             sender: snapshot.data().user,
             recipient: commentRef.data().user.username,
-            screamId: screamRef.data().screamId,
+            postId: postRef.data().postId,
             commentId: commentRef.data().commentId,
             replyId: snapshot.id,
             createdAt: new Date().toISOString(),

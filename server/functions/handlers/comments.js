@@ -5,7 +5,7 @@ const { validateBodyContent } = require('../utils/validators');
 exports.getCommentReplies = (req, res) => {
   const commentDocument = db
     .collection('comments')
-    .where('screamId', '==', req.params.screamId)
+    .where('postId', '==', req.params.postId)
     .where('commentId', '==', req.params.commentId)
     .limit(1);
 
@@ -39,16 +39,16 @@ exports.getCommentReplies = (req, res) => {
     });
 };
 
-// Add comment on scream
-exports.commentOnScream = (req, res) => {
+// Add comment on post
+exports.commentOnPost = (req, res) => {
   const { isValid, error } = validateBodyContent(req.body.body);
   if (!isValid) return res.status(400).json({ comment: error });
 
-  let screamData;
-  const screamDocument = db.doc(`/screams/${req.params.screamId}`);
+  let postData;
+  const postDocument = db.doc(`/posts/${req.params.postId}`);
 
   const newComment = {
-    screamId: req.params.screamId,
+    postId: req.params.postId,
     body: req.body.body,
     replyCount: 0,
     createdAt: new Date().toISOString(),
@@ -60,21 +60,20 @@ exports.commentOnScream = (req, res) => {
     },
   };
 
-  screamDocument
+  postDocument
     .get()
     .then(doc => {
-      if (!doc.exists)
-        return res.status(404).json({ error: 'Scream not found' });
-      screamData = doc.data();
+      if (!doc.exists) return res.status(404).json({ error: 'Post not found' });
+      postData = doc.data();
       return db.collection('comments').add(newComment);
     })
     .then(async docRef => {
       console.log(`Comment ${docRef.id} created successfully`);
       // Add the generated doc id to the reply document
       await db.doc(`/comments/${docRef.id}`).update({ commentId: docRef.id });
-      // Update commentCount field in scream document
-      screamData.commentCount++;
-      await screamDocument.update({ commentCount: screamData.commentCount });
+      // Update commentCount field in post document
+      postData.commentCount++;
+      await postDocument.update({ commentCount: postData.commentCount });
 
       return res.status(201).json({ ...newComment, commentId: docRef.id });
     })
@@ -88,20 +87,19 @@ exports.commentOnScream = (req, res) => {
 
 // //Delete comment
 exports.deleteComment = (req, res) => {
-  let screamData;
-  const screamDocument = db.doc(`/screams/${req.params.screamId}`);
+  let postData;
+  const postDocument = db.doc(`/posts/${req.params.postId}`);
   const commentDocument = db
     .collection('comments')
-    .where('screamId', '==', req.params.screamId)
+    .where('postId', '==', req.params.postId)
     .where('commentId', '==', req.params.commentId)
     .limit(1);
 
-  screamDocument
+  postDocument
     .get()
     .then(doc => {
-      if (!doc.exists)
-        return res.status(404).json({ error: 'Scream not found' });
-      screamData = doc.data();
+      if (!doc.exists) return res.status(404).json({ error: 'Post not found' });
+      postData = doc.data();
 
       return commentDocument.get();
     })
@@ -110,10 +108,10 @@ exports.deleteComment = (req, res) => {
         return res.status(404).json({ error: 'Comment not found' });
 
       const commentData = snapshot.docs[0].data();
-      // Allows only deletion from the scream owner or the comment owner.
+      // Allows only deletion from the post owner or the comment owner.
       if (
         commentData.user.username !== req.user.username &&
-        screamData.user.username !== req.user.username
+        postData.user.username !== req.user.username
       ) {
         return res.status(403).json({ error: 'Unauthorized delete request' });
       }
@@ -121,12 +119,12 @@ exports.deleteComment = (req, res) => {
       // Delete the comment document from the collection
       await snapshot.docs[0].ref.delete();
 
-      // Update commentCount field in scream document
-      screamData.commentCount--;
-      await screamDocument.update({ commentCount: screamData.commentCount });
+      // Update commentCount field in post document
+      postData.commentCount--;
+      await postDocument.update({ commentCount: postData.commentCount });
 
       // Delete completed!
-      return res.status(200).json(screamData);
+      return res.status(200).json(postData);
     })
     .catch(err => {
       console.error('Error while deleting a comment ', err);
@@ -142,7 +140,7 @@ exports.replyOnComment = (req, res) => {
   if (!isValid) return res.status(400).json({ reply: error });
 
   const newReply = {
-    screamId: req.params.screamId,
+    postId: req.params.postId,
     commentId: req.params.commentId,
     body: req.body.body,
     createdAt: new Date().toISOString(),
@@ -154,21 +152,20 @@ exports.replyOnComment = (req, res) => {
     },
   };
 
-  let screamData;
-  const screamDocument = db.doc(`/screams/${req.params.screamId}`);
+  let postData;
+  const postDocument = db.doc(`/posts/${req.params.postId}`);
 
   const commentDocument = db
     .collection('comments')
-    .where('screamId', '==', req.params.screamId)
+    .where('postId', '==', req.params.postId)
     .where('commentId', '==', req.params.commentId)
     .limit(1);
 
-  screamDocument
+  postDocument
     .get()
     .then(doc => {
-      if (!doc.exists)
-        return res.status(404).json({ error: 'Scream not found' });
-      screamData = doc.data();
+      if (!doc.exists) return res.status(404).json({ error: 'Post not found' });
+      postData = doc.data();
       return commentDocument.get();
     })
     .then(async snapshot => {

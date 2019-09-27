@@ -3,18 +3,13 @@ const app = require('express')();
 
 const fbAuth = require('./utils/fbAuth');
 
-const {
-  getScreams,
-  getScream,
-  addScream,
-  deleteScream,
-} = require('./handlers/screams');
-const { likeScream, unlikeScream } = require('./handlers/likes');
+const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');
+const { likePost, unlikePost } = require('./handlers/likes');
 const { markNotificationsRead } = require('./handlers/notifications');
 
 const {
   getCommentReplies,
-  commentOnScream,
+  commentOnPost,
   deleteComment,
   replyOnComment,
   deleteCommentReply,
@@ -30,7 +25,7 @@ const {
 } = require('./handlers/users');
 
 // Get all db trigger handlers
-const { onScreamDelete } = require('./triggers/screams');
+const { onPostDelete } = require('./triggers/posts');
 const { onLikeCreate, onLikeDelete } = require('./triggers/likes');
 
 const {
@@ -43,28 +38,29 @@ const {
 const { onUserAvatarChange } = require('./triggers/users');
 
 /* Setup all api routes */
-//  Scream routes
-app.get('/screams', getScreams);
-app.get('/scream/:screamId', getScream);
-app.post('/scream', fbAuth, addScream);
-app.delete('/scream/:screamId', fbAuth, deleteScream);
-//TODO: edit a scream route
+
+// Post routes
+app.get('/posts', getPosts);
+app.get('/post/:postId', getPost);
+app.post('/post', fbAuth, addPost);
+app.delete('/post/:postId', fbAuth, deletePost);
+//TODO: edit a post route
 
 // Comment routes
-app.post('/scream/:screamId/comment', fbAuth, commentOnScream);
-app.delete('/scream/:screamId/comment/:commentId', fbAuth, deleteComment);
+app.post('/post/:postId/comment', fbAuth, commentOnPost);
+app.delete('/post/:postId/comment/:commentId', fbAuth, deleteComment);
 
 // Comment reply routes
-app.get('/scream/:screamId/comment/:commentId/replies', getCommentReplies);
-app.post('/scream/:screamId/comment/:commentId/reply', fbAuth, replyOnComment);
+app.get('/post/:postId/comment/:commentId/replies', getCommentReplies);
+app.post('/post/:postId/comment/:commentId/reply', fbAuth, replyOnComment);
 app.delete(
-  '/scream/:screamId/comment/:commentId/reply/:replyId',
+  '/post/:postId/comment/:commentId/reply/:replyId',
   fbAuth,
   deleteCommentReply
 );
 
-app.post('/scream/:screamId/like', fbAuth, likeScream);
-app.post('/scream/:screamId/unlike', fbAuth, unlikeScream);
+app.post('/post/:postId/like', fbAuth, likePost);
+app.post('/post/:postId/unlike', fbAuth, unlikePost);
 
 // users routes
 app.post('/signup', signup);
@@ -84,11 +80,11 @@ exports.api = functions.region('europe-west1').https.onRequest(app);
 
 /* Setup all firestore(db) triggers */
 
-// Triggers when scream is deleted
-exports.screamDeleteTrigger = functions
+// Triggers when post is deleted
+exports.postDeleteTrigger = functions
   .region('europe-west1')
-  .firestore.document('screams/{screamId}')
-  .onDelete(onScreamDelete);
+  .firestore.document('posts/{postId}')
+  .onDelete(onPostDelete);
 
 // Triggers when like is created
 exports.likeCreateTrigger = functions
@@ -108,7 +104,7 @@ exports.commentCreateTrigger = functions
   .firestore.document('comments/{commentId}')
   .onCreate(onCommentCreate);
 
-// Triggers scream comment is deleted
+// Triggers post comment is deleted
 exports.commentDeleteTrigger = functions
   .region('europe-west1')
   .firestore.document('comments/{commentId}')
