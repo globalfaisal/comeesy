@@ -1,18 +1,11 @@
 {
 	"extends": ["wesbos"],
 	"rules": {
-		"prettier/prettier": [
-			"error",
-			{
-				"trailingComma": "es5",
-				"singleQuote": true,
-				"printWidth": 80
-			}
-		],
 		"no-var": 2,
 		"no-console": 1,
 		"no-const-assign": 2,
-		"jsx-a11y/anchor-is-valid": 0,
-		"no-use-before-define": ["error", { "functions": false, "variables": false }]
+		"no-unused-vars": 1,
+		"no-use-before-define": ["error", { "functions": false, "variables": true }],
+		"jsx-a11y/anchor-is-valid": 0
 	}
 }
