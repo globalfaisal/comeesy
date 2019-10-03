@@ -1,7 +1,6 @@
 /* -- libs -- */
 import React from 'react';
-import { Link } from 'react-router-dom';
-import clsx from 'clsx';
+import Link from 'react-router-dom/Link';
 
 /* -- logo -- */
 import logo from '../asset/images/logo.svg';

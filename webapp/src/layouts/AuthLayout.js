@@ -19,8 +19,8 @@ const AuthLayout = props => {
       return null;
     });
   return (
-    <div className="auth-layout">
-      <main className="content">
+    <div className="authLayout">
+      <main className="authLayout-content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>

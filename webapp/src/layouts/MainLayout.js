@@ -25,9 +25,9 @@ const MainLayout = props => {
     });
 
   return (
-    <div className="main-layout">
+    <div className="mainLayout">
       <Navbar />
-      <main className="content">
+      <main className="mainLayout-content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>
