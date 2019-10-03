@@ -1,7 +1,10 @@
 /* -- libs -- */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
+/* -- actions -- */
+import { setDefaultTheme } from './actions/layoutActions';
 /* -- layouts -- */
 import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
@@ -16,23 +19,23 @@ import { createTheme } from './utils/theme/theme';
 /* -- styles -- */
 import './App.scss';
 
-const App = () => {
+const App = props => {
+  // dispatch action creators
+  const dispatch = useDispatch();
+
+  // set app default theme based on user preference
+  useEffect(() => {
+    dispatch(setDefaultTheme());
+  }, []);
+
   const theme = createTheme();
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <Switch>
-        <Route
-          exact
-          path="/auth/:page"
-          render={props => <AuthLayout {...props} />}
-        />
-        <Route
-          exact
-          path="/:page"
-          render={props => <MainLayout {...props} />}
-        />
-        <Route exact path="/" render={props => <MainLayout {...props} />} />
+        <Route exact path="/auth/:page" render={p => <AuthLayout {...p} />} />
+        <Route exact path="/:page" render={p => <MainLayout {...p} />} />
+        <Route exact path="/" render={p => <MainLayout {...p} />} />
       </Switch>
     </MuiThemeProvider>
   );

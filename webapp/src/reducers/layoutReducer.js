@@ -5,10 +5,10 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  switch (action) {
-    case layoutTypes.TOGGLE_DARK_THEME:
+  switch (action.type) {
+    case layoutTypes.SET_DEFAULT_THEME:
       return { ...state, isDarkTheme: action.payload };
-    case layoutTypes.GET_DEFAULT_THEME:
+    case layoutTypes.TOGGLE_DARK_THEME:
       return { ...state, isDarkTheme: action.payload };
     default:
       return state;
