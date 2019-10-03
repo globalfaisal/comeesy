@@ -1,6 +1,6 @@
 /* -- libs -- */
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 /* -- styles -- */
 import './App.scss';
@@ -10,7 +10,7 @@ import MainLayout from './layouts/MainLayout';
 import AuthLayout from './layouts/AuthLayout';
 
 const App = () => (
-  <div>
+  <div className="app-wrapper">
     <Switch>
       <Route
         exact

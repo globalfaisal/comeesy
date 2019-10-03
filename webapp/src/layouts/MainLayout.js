@@ -1,7 +1,12 @@
+/* -- libs -- */
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+/* -- routes -- */
 import routes from '../routes/routes';
+
+/* -- components -- */
+import Navbar from '../components/Navbar';
 
 const MainLayout = props => {
   const getRoutes = appRoutes =>
@@ -21,6 +26,7 @@ const MainLayout = props => {
 
   return (
     <div className="main-layout">
+      <Navbar />
       <main className="content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>

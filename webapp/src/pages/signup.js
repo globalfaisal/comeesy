@@ -1,9 +1,6 @@
-import React, { Component } from 'react';
+/* -- libs -- */
+import React from 'react';
 
-class signup extends Component {
-  render() {
-    return <div className="signup-page">Signup Page</div>;
-  }
-}
+const signup = props => <div className="signup-page">Signup Page</div>;
 
 export default signup;
