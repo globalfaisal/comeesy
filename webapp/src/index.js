@@ -1,16 +1,22 @@
+/* -- libs -- */
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
+import store from './store';
 import histroy from './utils/history/history';
+
 import App from './App';
 
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <Router history={histroy}>
-    <App />
-  </Router>,
+  <Provider store={store}>
+    <Router history={histroy}>
+      <App />
+    </Router>
+  </Provider>,
   document.getElementById('root')
 );
 
