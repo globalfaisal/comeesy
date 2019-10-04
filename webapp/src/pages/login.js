@@ -1,6 +1,6 @@
 /* -- libs -- */
 import React from 'react';
 
-const login = props => <div className="login-page">Login Page</div>;
+const Login = props => <div className="signup-page">Signup Page</div>;
 
-export default login;
+export default Login;

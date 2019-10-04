@@ -6,8 +6,8 @@ import { Switch, Route } from 'react-router-dom';
 /* -- actions -- */
 import { setDefaultTheme } from './actions/layoutActions';
 /* -- layouts -- */
-import MainLayout from './layouts/MainLayout';
-import AuthLayout from './layouts/AuthLayout';
+import MainLayout from './layouts/MainLayout/MainLayout';
+import AuthLayout from './layouts/AuthLayout/AuthLayout';
 
 /* -- mui -- */
 import CssBaseline from '@material-ui/core/CssBaseline';

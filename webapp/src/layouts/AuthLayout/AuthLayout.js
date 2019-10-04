@@ -3,19 +3,19 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 /* -- routes -- */
-import routes from '../routes/routes';
+import routes from '../../routes/routes';
 
-/* -- components -- */
-import Navbar from '../components/Navbar';
+/* -- styles -- */
+import './AuthLayout.scss';
 
-const MainLayout = props => {
+const AuthLayout = props => {
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
-      if (route.layout === '/main') {
+      if (route.layout === '/auth') {
         return (
           <Route
             exact
-            path={route.path}
+            path={route.layout + route.path}
             component={route.component}
             key={idx}
           />
@@ -23,15 +23,13 @@ const MainLayout = props => {
       }
       return null;
     });
-
   return (
-    <div className="mainLayout">
-      <Navbar />
-      <main className="mainLayout-content">
+    <div className="authLayout">
+      <main className="authLayout-content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>
   );
 };
 
-export default MainLayout;
+export default AuthLayout;

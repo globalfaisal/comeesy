@@ -1,16 +1,21 @@
+/* -- libs -- */
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import routes from '../routes/routes';
+/* -- routes -- */
+import routes from '../../routes/routes';
 
-const AuthLayout = props => {
+/* -- components -- */
+import Navbar from '../../components/Navbar';
+
+const MainLayout = props => {
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
-      if (route.layout === '/auth') {
+      if (route.layout === '/main') {
         return (
           <Route
             exact
-            path={route.layout + route.path}
+            path={route.path}
             component={route.component}
             key={idx}
           />
@@ -18,13 +23,15 @@ const AuthLayout = props => {
       }
       return null;
     });
+
   return (
-    <div className="authLayout">
-      <main className="authLayout-content">
+    <div className="mainLayout">
+      <Navbar />
+      <main className="mainLayout-content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>
   );
 };
 
-export default AuthLayout;
+export default MainLayout;

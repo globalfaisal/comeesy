@@ -12,4 +12,7 @@ export const createTheme = darkMode =>
       colors: colors.colors,
       type: darkMode ? 'dark' : 'light',
     },
+    typography: {
+      useNextVariants: true,
+    },
   });

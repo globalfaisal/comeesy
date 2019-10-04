@@ -1,24 +1,24 @@
-import home from '../pages/home';
-import login from '../pages/login';
-import signup from '../pages/signup';
+import Home from '../pages/Home';
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 
 export default [
   {
     path: '/',
     name: 'Home',
-    component: home,
+    component: Home,
     layout: '/main',
   },
   {
     path: '/login',
     name: 'Login',
-    component: login,
+    component: Login,
     layout: '/auth',
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: signup,
+    component: Signup,
     layout: '/auth',
   },
 ];
