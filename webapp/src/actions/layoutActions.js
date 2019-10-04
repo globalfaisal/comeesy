@@ -23,6 +23,7 @@ export const setDefaultTheme = () => {
   if (isDarkTheme === 'true') {
     isDarkTheme = true;
   } else if (isDarkTheme === null || isDarkTheme === 'false') {
+    window.localStorage.setItem('dark_theme', false);
     isDarkTheme = false;
   }
 

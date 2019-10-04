@@ -1,14 +1,14 @@
 export const colors = {
   primary: {
-    light: '#6ec6ff',
-    main: '#2196f3',
-    dark: '#0069c0',
+    light: '#7679f2',
+    main: '#3e4dbf',
+    dark: '#00258e',
     contrastText: '#ffffff',
   },
   secondary: {
-    light: '#df78ef',
-    main: '#ab47bc',
-    dark: '#790e8b',
+    light: '#ffbd45',
+    main: '#fb8c00',
+    dark: '#c25e00',
     contrastText: '#ffffff',
   },
   colors: {
