@@ -6,7 +6,7 @@ import Link from 'react-router-dom/Link';
 import logo from '../asset/images/logo.svg';
 
 /* -- components -- */
-import DarkModeToggler from './DarkModeToggler';
+import DarkModeToggler from '../containers/DarkModeToggler';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';

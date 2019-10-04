@@ -21,6 +21,11 @@ export const createTheme = darkMode =>
       useNextVariants: true,
     },
     overrides: {
+      MuiAppBar: {
+        root: {
+          height: 50,
+        },
+      },
       MuiButton: {
         root: {
           color: colors.light,
