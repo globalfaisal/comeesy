@@ -7,9 +7,10 @@ import { Router } from 'react-router-dom';
 import store from './store';
 import histroy from './utils/history/history';
 
-import App from './App';
-
 import * as serviceWorker from './serviceWorker';
+
+import App from './App';
+import './asset/styles/core.scss';
 
 ReactDOM.render(
   <Provider store={store}>

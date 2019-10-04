@@ -1,7 +1,6 @@
 /* -- libs -- */
 import React from 'react';
 import Link from 'react-router-dom/Link';
-import clsx from 'clsx';
 
 /* -- logo -- */
 import logo from '../asset/images/logo.svg';
@@ -32,24 +31,17 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   navMenu: {
-    // border: '1px solid red',
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(3),
   },
   navLink: {
-    fontWeight: 200,
-    textTransform: 'capitalize',
-    color: theme.palette.colors.grey.main,
-    '&:hover': {
-      background: 'transparent',
-    },
-  },
-  btnDark: {
-    marginRight: theme.spacing(1),
+    margin: theme.spacing(1),
   },
   btnDarkOn: {
-    color: theme.palette.secondary.dark,
+    color: theme.palette.secondary.light,
   },
   btnDarkOff: {
-    color: theme.palette.colors.grey.dark,
+    color: theme.palette.colors.grey,
   },
 }));
 
@@ -68,28 +60,32 @@ const Navbar = props => {
           {(isOn, onToggle) => (
             <IconButton
               onClick={onToggle}
-              className={clsx(
-                classes.btnDark,
-                `${isOn ? classes.btnDarkOn : classes.btnDarkOff}`
-              )}
-              size="small"
+              className={`${isOn ? classes.btnDarkOn : classes.btnDarkOff}`}
               aria-label="toggle-dark-mode"
+              size="small"
             >
               <Brightness2Icon />
             </IconButton>
           )}
         </DarkModeToggler>
-
         <nav className={classes.navMenu}>
-          <Button component={Link} to="/auth/login" className={classes.navLink}>
+          <Button
+            component={Link}
+            to="/auth/login"
+            size="small"
+            className={classes.navLink}
+          >
             Login
           </Button>
           <Button
             component={Link}
             to="/auth/signup"
+            variant="contained"
+            color="primary"
+            size="small"
             className={classes.navLink}
           >
-            Signup
+            Sign Up
           </Button>
         </nav>
       </Toolbar>

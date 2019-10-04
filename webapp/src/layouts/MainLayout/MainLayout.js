@@ -8,6 +8,9 @@ import routes from '../../routes/routes';
 /* -- components -- */
 import Navbar from '../../components/Navbar';
 
+/* -- components -- */
+import './MainLayout.scss';
+
 const MainLayout = props => {
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
@@ -25,9 +28,9 @@ const MainLayout = props => {
     });
 
   return (
-    <div className="mainLayout">
+    <div className="main-layout">
       <Navbar />
-      <main className="mainLayout-content">
+      <main className="content">
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>

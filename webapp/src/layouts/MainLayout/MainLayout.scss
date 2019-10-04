@@ -1,0 +1,6 @@
+.main-layout {
+	& > .content {
+		height: calc(100vh - 48px);
+		margin-top: 48px;
+	}
+}

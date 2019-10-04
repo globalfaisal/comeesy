@@ -1,6 +1,6 @@
 /* -- libs -- */
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
 /* -- actions -- */
@@ -16,19 +16,17 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 /* -- utils -- */
 import { createTheme } from './utils/theme/theme';
 
-/* -- styles -- */
-import './App.scss';
-
 const App = props => {
   // dispatch action creators
   const dispatch = useDispatch();
 
+  const isDarkTheme = useSelector(state => state.layout.isDarkTheme);
   // set app default theme based on user preference
   useEffect(() => {
     dispatch(setDefaultTheme());
-  }, []);
+  }, [dispatch]);
 
-  const theme = createTheme();
+  const theme = createTheme(isDarkTheme);
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
