@@ -6,7 +6,7 @@ import { Switch, Route } from 'react-router-dom';
 import routes from '../../routes/routes';
 
 /* -- components -- */
-import Navbar from '../../components/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 
 /* -- components -- */
 import './MainLayout.scss';

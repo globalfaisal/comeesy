@@ -3,10 +3,10 @@ import React from 'react';
 import Link from 'react-router-dom/Link';
 
 /* -- logo -- */
-import logo from '../asset/images/logo.svg';
+import logo from '../../asset/images/logo.svg';
 
 /* -- components -- */
-import DarkModeToggler from '../containers/DarkModeToggler';
+import DarkModeToggler from '../../containers/DarkModeToggler';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
