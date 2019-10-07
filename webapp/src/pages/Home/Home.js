@@ -1,6 +1,8 @@
 /* -- libs -- */
 import React from 'react';
 
+/* -- components -- */
+import Posts from '../../components/Posts/Posts';
 /* -- mui -- */
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -14,10 +16,7 @@ const Home = props => (
     <Container>
       <Grid container>
         <Grid item sm={8} xs={12} className="left-container">
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iure cumque
-          culpa tempora necessitatibus perferendis deserunt voluptate, debitis
-          delectus nam possimus, animi odit optio expedita quo aliquam obcaecati
-          eius distinctio modi!
+          <Posts />
         </Grid>
         <Hidden only="xs">
           <Grid item sm={4} className="right-container">
