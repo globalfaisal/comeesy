@@ -26,17 +26,27 @@ export const createTheme = darkMode =>
           height: 50,
         },
       },
+
       MuiButton: {
         root: {
-          color: colors.light,
           fontWeight: 200,
           textTransform: 'none',
-          borderRadius: 2,
+          borderRadius: 1,
         },
         text: {
           '&:hover': {
             background: 'transparent',
           },
+        },
+      },
+      MuiCard: {
+        root: {
+          borderRadius: 1,
+        },
+      },
+      MuiAvatar: {
+        root: {
+          border: `1px solid rgba(0,0,0, 0.05)`,
         },
       },
     },

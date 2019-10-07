@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
   navLink: {
     margin: theme.spacing(1),
+    color: theme.palette.colors.light,
   },
   btnDarkOn: {
     color: theme.palette.secondary.light,

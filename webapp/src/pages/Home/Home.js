@@ -2,7 +2,8 @@
 import React from 'react';
 
 /* -- components -- */
-import Posts from '../../components/Posts/Posts';
+import Posts from '../../components/Posts/Posts.js';
+
 /* -- mui -- */
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -14,8 +15,8 @@ import './Home.scss';
 const Home = props => (
   <div className="home-page">
     <Container>
-      <Grid container>
-        <Grid item sm={8} xs={12} className="left-container">
+      <Grid container spacing={4}>
+        <Grid item xs={12} sm={8} md={6} className="left-container">
           <Posts />
         </Grid>
         <Hidden only="xs">
