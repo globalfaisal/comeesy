@@ -5,8 +5,8 @@ import Link from 'react-router-dom/Link';
 /* -- logo -- */
 import logo from '../../asset/images/logo.svg';
 
-/* -- components -- */
-import DarkModeToggler from '../../containers/DarkModeToggler';
+/* -- custom hooks -- */
+import useDarkTheme from '../../hooks/useDarkTheme';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
@@ -47,6 +47,8 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = props => {
   const classes = useStyles();
+  const { isDarkTheme, onToggle } = useDarkTheme();
+
   return (
     <AppBar className={classes.appBar}>
       <Toolbar variant="dense">
@@ -56,18 +58,14 @@ const Navbar = props => {
           </Link>
         </div>
         <div className={classes.grow} />
-        <DarkModeToggler>
-          {(isOn, onToggle) => (
-            <IconButton
-              onClick={onToggle}
-              className={`${isOn ? classes.btnDarkOn : classes.btnDarkOff}`}
-              aria-label="toggle-dark-mode"
-              size="small"
-            >
-              <Brightness2Icon />
-            </IconButton>
-          )}
-        </DarkModeToggler>
+        <IconButton
+          onClick={onToggle}
+          className={`${isDarkTheme ? classes.btnDarkOn : classes.btnDarkOff}`}
+          aria-label="toggle-dark-mode"
+          size="small"
+        >
+          <Brightness2Icon />
+        </IconButton>
         <nav className={classes.navMenu}>
           <Button
             component={Link}
