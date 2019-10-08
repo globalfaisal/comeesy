@@ -1,24 +1,29 @@
 :root {
 	/*--- colors ---*/
-	--primary-light-color: #7679f2;
-	--primary-main-color: #3e4dbf;
-	--primary-dark-color: #00258e;
+	--color-primary-light: #7679f2;
+	--color-primary-main: #3e4dbf;
+	--color-primary-dark: #00258e;
 
-	--secondary-light-color: #ffbd45;
-	--secondary-main-color: #fb8c00;
-	--secondary-dark-color: #c25e00;
+	--color-secondary-light: #ffbd45;
+	--color-secondary-main: #fb8c00;
+	--color-secondary-dark: #c25e00;
 
-	--black-color: #24292e;
-	--white-color: #ffffff;
+	--color-black: #24292e;
+	--color-white: #ffffff;
 
-	--grey-light-color: #f0f2f5;
-	--grey-main-color: #bdbdbd;
-	--grey-dark-color: #8d8d8d;
+	--color-grey-light: #f0f2f5;
+	--color-grey-main: #bdbdbd;
+	--color-grey-dark: #8d8d8d;
 
 	/*--- sizes ---*/
 	--header-height: 50px;
 	--footer-height: 40px;
 	--page-padding: 60px 0;
+
+	--width-xs: 600px;
+	--width-sm: 960px;
+	--width-lg: 1280px;
+	--width-xl: 1920px;
 }
 
 /* -- global --*/

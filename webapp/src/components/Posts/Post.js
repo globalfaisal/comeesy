@@ -22,6 +22,10 @@ const useStyle = makeStyles(theme => ({
       marginTop: theme.spacing(2),
     },
   },
+  createdAt: {
+    display: 'block',
+    marginTop: -theme.spacing(0.5),
+  },
 }));
 
 const Post = ({ post }) => {
@@ -43,15 +47,23 @@ const Post = ({ post }) => {
               component={Link}
               to={`/users/${post.user.username}`}
               variant="body1"
-              color="primary"
+              color="secondary"
             >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
           }
-          subheader={formatDateToRelTime(post.createdAt)}
-          action={
-            <IconButton aria-label="actions">
-              <MoreHorizIcon />
-            </IconButton>
+          subheader={
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              className={classes.createdAt}
+            >
+              {formatDateToRelTime(post.createdAt)}
+            </Typography>
           }
+          // action={
+          //   <IconButton aria-label="actions">
+          //     <MoreHorizIcon />
+          //   </IconButton>
+          // }
         />
         <CardContent>
           <Typography variant="body1" color="textSecondary">

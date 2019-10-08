@@ -11,8 +11,11 @@ export const colors = {
     dark: '#c25e00',
     contrastText: '#ffffff',
   },
-  black: '#24292e',
   white: '#ffffff',
-  light: '#f0f2f5',
+  whitesmoke: '#f9f9f9',
+  black: '#24292e',
+  dark: '#444444',
+  greylight: '#f0f2f5',
   grey: '#bdbdbd',
+  lightsteelblue: '#c3c4db',
 };

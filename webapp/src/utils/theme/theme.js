@@ -12,8 +12,11 @@ export const createTheme = darkMode =>
       colors: {
         black: colors.black,
         white: colors.white,
-        light: colors.light,
+        whitesmoke: colors.whitesmoke,
+        dark: colors.dark,
         grey: colors.grey,
+        greylight: colors.greylight,
+        lightsteelblue: colors.lightsteelblue,
       },
       type: darkMode ? 'dark' : 'light',
     },

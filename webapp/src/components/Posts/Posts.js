@@ -8,7 +8,7 @@ import { fetchPosts } from '../../actions/postsActions';
 /* -- components -- */
 import Post from './Post';
 
-const Posts = props => {
+const Posts = () => {
   const dispatch = useDispatch();
   const posts = Object.values(useSelector(state => state.posts));
 

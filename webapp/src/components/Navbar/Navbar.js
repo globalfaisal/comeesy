@@ -36,10 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   navLink: {
     margin: theme.spacing(1),
-    color: theme.palette.colors.light,
+    color: theme.palette.colors.greylight,
   },
   btnDarkOn: {
-    color: theme.palette.secondary.light,
+    color: theme.palette.secondary.greylight,
   },
   btnDarkOff: {
     color: theme.palette.colors.grey,
