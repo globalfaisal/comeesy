@@ -43,7 +43,7 @@ const Navbar = props => {
       <Toolbar variant="dense">
         <div className={classes.brand}>
           <Link to="/">
-            <img src={logoImage} alt="comeesy logo" />
+            <img src={logoImage} alt="comeesy" />
           </Link>
         </div>
         <div className={classes.grow} />

@@ -29,7 +29,7 @@ const useStyle = makeStyles(theme => ({
   },
   grid: {
     margin: 'auto',
-    maxWidth: 1280,
+    maxWidth: 1024,
   },
   gridLeft: {
     minHeight: '100%',
@@ -47,15 +47,19 @@ const useStyle = makeStyles(theme => ({
   card: {
     display: 'flex',
     width: '100%',
-    minHeight: 680,
+    minHeight: 580,
     borderRadius: 0,
     background: theme.palette.colors.white,
   },
   cardContent: {
     height: '100%',
+    width: 'fit-content',
     display: 'flex',
     flexDirection: 'column',
     padding: theme.spacing(4),
+    [theme.breakpoints.down('sm')]: {
+      margin: 'auto',
+    },
   },
   logoWrapper: {
     width: 24,
@@ -107,14 +111,14 @@ const AuthLayout = props => {
       <main className={classes.root}>
         <Grid container className={classes.grid}>
           <Card className={classes.card}>
-            <Hidden smDown>
-              <Grid item md={6} className={classes.gridLeft} />
+            <Hidden xsDown>
+              <Grid item sm={6} className={classes.gridLeft} />
             </Hidden>
-            <Grid item xs={12} md={6} className={classes.gridRight}>
+            <Grid item xs={12} sm={6} className={classes.gridRight}>
               <CardContent className={classes.cardContent}>
                 <div className={classes.logoWrapper}>
-                  <Link to="/">
-                    <img src={logoImage} alt="comeesy logo" />
+                  <Link to="/" title="Go Home">
+                    <img src={logoImage} alt="comeesy" />
                   </Link>
                 </div>
                 <Tabs

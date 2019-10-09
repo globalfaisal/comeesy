@@ -1,6 +1,10 @@
 /* -- libs -- */
-import React, { useState } from 'react';
-import clsx from 'clsx';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+/* -- actions -- */
+import { login } from '../../actions/authActions';
 
 /* -- custom hooks -- */
 import useAuthForm from '../../hooks/useAuthForm';
@@ -8,7 +12,6 @@ import useAuthForm from '../../hooks/useAuthForm';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -17,26 +20,27 @@ const useStyle = makeStyles(theme => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     maxWidth: 320,
-    '& > form': {
-      display: 'flex',
-      flexDirection: 'column',
-    },
   },
   textField: {
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(1),
   },
   button: {
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
     minWidth: 100,
     maxWidth: 100,
+    [theme.breakpoints.down('xs')]: {
+      marginTop: theme.spacing(2),
+    },
+  },
+  signupHelperButton: {
+    color: theme.palette.secondary.main,
   },
 }));
 const Login = props => {
+  const { inputs, handleChange, handleSubmit } = useAuthForm(login);
+  const errors = useSelector(state => state.auth.errors);
   const classes = useStyle();
-  const action = data => {
-    console.log(data);
-  };
-  const { inputs, handleChange, handleSubmit } = useAuthForm(action);
   return (
     <div className="login-page">
       <div className={classes.content}>
@@ -60,19 +64,26 @@ const Login = props => {
             type="email"
             value={inputs.email}
             onChange={handleChange}
+            helperText={errors && errors.email}
+            error={!!(errors && errors.email)}
             label="Email"
             autoFocus
             color="primary"
+            fullWidth
             className={classes.textField}
           />
+
           <TextField
             id="password"
             name="password"
             type="password"
             value={inputs.password}
             onChange={handleChange}
+            helperText={errors && errors.password}
+            error={errors && errors.password}
             label="Password"
             color="primary"
+            fullWidth
             className={classes.textField}
           />
           <div>
@@ -85,6 +96,16 @@ const Login = props => {
             >
               Login
             </Button>
+            <Typography variant="body2">
+              New to Comeesy?
+              <Button
+                component={Link}
+                to="/auth/signup"
+                className={classes.signupHelperButton}
+              >
+                Sign up now »
+              </Button>
+            </Typography>
           </div>
         </form>
       </div>

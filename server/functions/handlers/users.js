@@ -17,35 +17,33 @@ firebase.initializeApp(config);
 
 // Login existing user
 exports.login = (req, res) => {
-  const user = {
+  const userData = {
     email: req.body.email,
     password: req.body.password,
   };
 
   // Validate incoming data
-  const { isValid, errors } = validateLoginData(user);
+  const { isValid, errors } = validateLoginData(userData);
   if (!isValid) return res.status(400).json({ errors });
 
   firebase
     .auth()
-    .signInWithEmailAndPassword(user.email, user.password)
+    .signInWithEmailAndPassword(userData.email, userData.password)
     .then(data => data.user.getIdToken())
     .then(token => res.status(200).json({ token }))
     .catch(err => {
       console.error('Error while user login ', err);
+      const errors = {};
       if (err.code === 'auth/user-not-found') {
-        return res
-          .status(403)
-          .json({ email: 'This email does not exist. Please try again' });
+        errors.email = 'This email does not exist. Please try again';
+        return res.status(403).json({ errors });
       }
       if (err.code === 'auth/wrong-password') {
-        return res
-          .status(403)
-          .json({ password: 'Wrong password. Please try again' });
+        errors.password = 'Wrong password. Please try again';
+        return res.status(403).json({ errors });
       }
-      return res
-        .status(500)
-        .json({ general: 'Something went wrong, please try again' });
+      errors.general = 'Something went wrong, please try again';
+      return res.status(500).json({ errors });
     });
 };
 
@@ -93,7 +91,9 @@ exports.signup = (req, res) => {
         username: newUser.username,
         email: newUser.email,
         createdAt: new Date().toISOString(),
-        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${defaultAvatarFileName}?alt=media`,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${defaultAvatarFileName}?alt=media`,
         userId,
       };
       // Persist the newly created user credentials to the db
@@ -254,7 +254,9 @@ exports.uploadUserAvatar = (req, res) => {
       })
       .then(() => {
         // 2. Get the file url from the storage
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${imageFileName}?alt=media`;
 
         // 2. Add the imageUrl to the db
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });

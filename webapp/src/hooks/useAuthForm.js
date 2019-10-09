@@ -1,7 +1,9 @@
 /* -- libs -- */
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 
-const useAuthForm = callback => {
+const useAuthForm = action => {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
 
   const handleChange = event => {
@@ -12,9 +14,9 @@ const useAuthForm = callback => {
     }));
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     if (event) event.preventDefault();
-    callback(inputs);
+    dispatch(action(inputs));
   };
   return {
     inputs,

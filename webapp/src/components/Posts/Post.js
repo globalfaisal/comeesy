@@ -47,7 +47,7 @@ const Post = ({ post }) => {
               component={Link}
               to={`/users/${post.user.username}`}
               variant="body1"
-              color="secondary"
+              color="primary"
             >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
           }
           subheader={
