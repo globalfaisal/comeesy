@@ -2,8 +2,8 @@
 import React from 'react';
 import Link from 'react-router-dom/Link';
 
-/* -- logo -- */
-import logo from '../../asset/images/logo.svg';
+/* -- images -- */
+import logoImage from '../../asset/images/logo-white.svg';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
@@ -43,7 +43,7 @@ const Navbar = props => {
       <Toolbar variant="dense">
         <div className={classes.brand}>
           <Link to="/">
-            <img src={logo} alt="comeesy logo" />
+            <img src={logoImage} alt="comeesy logo" />
           </Link>
         </div>
         <div className={classes.grow} />

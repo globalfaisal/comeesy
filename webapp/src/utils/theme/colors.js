@@ -11,6 +11,9 @@ export const colors = {
     dark: '#c25e00',
     contrastText: '#ffffff',
   },
+  textPrimary: 'rgba(52, 61, 72, 0.85);',
+  textSecondary: 'rgba(0,0,0, 0.54)',
+
   white: '#ffffff',
   whitesmoke: '#f9f9f9',
   whiteghost: '#f6f9fc',

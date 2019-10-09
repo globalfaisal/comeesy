@@ -13,6 +13,10 @@ export default () =>
       background: {
         default: colors.whiteghost,
       },
+      text: {
+        primary: colors.textPrimary,
+        secondary: colors.textSecondary,
+      },
       colors: {
         black: colors.black,
         white: colors.white,
@@ -35,7 +39,7 @@ export default () =>
 
       MuiButton: {
         root: {
-          fontWeight: 200,
+          fontWeight: 400,
           textTransform: 'none',
           borderRadius: 1,
         },
