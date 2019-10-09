@@ -64,7 +64,7 @@ app.post('/post/:postId/unlike', fbAuth, unlikePost);
 
 // users routes
 app.post('/signup', signup);
-app.get('/login', login);
+app.post('/login', login);
 //TODO: add login options with google and facebook
 
 app.get('/user', fbAuth, getCurrentUserData);
