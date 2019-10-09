@@ -16,11 +16,11 @@ const Home = props => (
   <div className="home-page">
     <Container>
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={8} md={6} className="left-container">
+        <Grid item xs={12} sm={8} md={6} className="left-grid">
           <Posts />
         </Grid>
         <Hidden only="xs">
-          <Grid item sm={4} className="right-container">
+          <Grid item sm={4} className="right-grid">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Assumenda
             voluptatum aut fugit? Id dolor deleniti aliquam excepturi explicabo
             voluptatibus delectus nam nisi illo, corporis ad. Voluptate

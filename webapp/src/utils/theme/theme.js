@@ -4,11 +4,15 @@ import { createMuiTheme } from '@material-ui/core/styles';
 /* -- utils-- */
 import { colors } from './colors';
 
-export const createTheme = darkMode =>
+export default () =>
   createMuiTheme({
     palette: {
+      type: 'light',
       primary: colors.primary,
       secondary: colors.secondary,
+      background: {
+        default: colors.whiteghost,
+      },
       colors: {
         black: colors.black,
         white: colors.white,
@@ -18,7 +22,6 @@ export const createTheme = darkMode =>
         greylight: colors.greylight,
         lightsteelblue: colors.lightsteelblue,
       },
-      type: darkMode ? 'dark' : 'light',
     },
     typography: {
       useNextVariants: true,

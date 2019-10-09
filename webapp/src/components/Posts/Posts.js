@@ -16,13 +16,18 @@ const Posts = () => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
-  return (
-    <div className="posts">
-      {posts.map((post, key) => (
-        <Post key={key} post={post} />
-      ))}
-    </div>
-  );
+  const renderPosts = () => {
+    // TODO: extract loading logic to a seprate component
+    if (!posts || !posts.length) return <p>Loading...</p>;
+    return (
+      <div className="posts">
+        {posts.map((post, key) => (
+          <Post key={key} post={post} />
+        ))}
+      </div>
+    );
+  };
+  return renderPosts();
 };
 
 export default Posts;

@@ -24,36 +24,36 @@ import loginSketchSrc from '../../asset/images/sketch-login.svg';
 import './AuthLayout.scss';
 
 const useStyle = makeStyles(theme => ({
-  gridContainer: {
+  grid: {
     margin: 'auto',
     maxWidth: 1280,
+  },
+  gridLeft: {
+    minHeight: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    background: theme.palette.colors.white,
+  },
+  gridRight: {
+    minHeight: '100%',
+    background: theme.palette.colors.whitesmoke,
   },
   card: {
     display: 'flex',
     width: '100%',
-    height: 580,
-    // minHeight: 480,
+    minHeight: 680,
     borderRadius: 0,
-  },
-  contentLeft: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
     background: theme.palette.colors.white,
   },
-  media: {
-    width: '80%',
-  },
-  contentRight: {
-    flex: 1,
-    background: theme.palette.colors.whitesmoke,
-    color: theme.palette.colors.dark,
-  },
-
+  media: { width: '80%' },
   tab: {
-    color: theme.palette.colors.lightsteelblue,
-    borderBottom: `2px solid ${theme.palette.colors.lightsteelblue}`,
+    color: theme.palette.colors.dark,
+    borderBottom: `1.8px solid ${theme.palette.colors.greylight}`,
+  },
+  content: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
 }));
 /* -- styles -- */
@@ -86,48 +86,49 @@ const AuthLayout = props => {
   return (
     <div className="authLayout">
       <main className="authLayout-content">
-        <Grid container spacing={10} className={classes.gridContainer}>
-          <Grid item>
-            <Card className={classes.card}>
-              <Hidden smDown>
-                <CardContent className={classes.contentLeft}>
-                  <CardMedia
-                    component="img"
-                    src={loginSketchSrc}
-                    className={classes.media}
+        <Grid container className={classes.grid}>
+          <Card className={classes.card}>
+            <Hidden smDown>
+              <Grid item md={6} className={classes.gridLeft}>
+                <CardMedia
+                  component="img"
+                  src={loginSketchSrc}
+                  className={classes.media}
+                />
+              </Grid>
+            </Hidden>
+            <Grid item xs={12} md={6} className={classes.gridRight}>
+              <CardContent>
+                <Tabs
+                  value={selectedTab}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  component="nav"
+                  variant="standard"
+                  centered
+                >
+                  <Tab
+                    component={Link}
+                    to="/auth/signup"
+                    label="Sign Up"
+                    disableRipple
+                    classes={{ root: classes.tab }}
                   />
-                </CardContent>
-              </Hidden>
-              <CardContent className={classes.contentRight}>
-                <Container>
-                  <Tabs
-                    value={selectedTab}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    component="nav"
-                    variant="fullWidth"
-                  >
-                    <Tab
-                      component={Link}
-                      to="/auth/signup"
-                      label="Sign Up"
-                      disableRipple
-                      classes={{ root: classes.tab }}
-                    />
-                    <Tab
-                      component={Link}
-                      to="/auth/login"
-                      label="Login"
-                      disableRipple
-                      classes={{ root: classes.tab }}
-                    />
-                  </Tabs>
+                  <Tab
+                    component={Link}
+                    to="/auth/login"
+                    label="Login"
+                    disableRipple
+                    classes={{ root: classes.tab }}
+                  />
+                </Tabs>
+                <Container className={classes.content}>
                   {/* Render pages here. */}
                   <Switch>{getRoutes(routes)}</Switch>
                 </Container>
               </CardContent>
-            </Card>
-          </Grid>
+            </Grid>
+          </Card>
         </Grid>
       </main>
     </div>

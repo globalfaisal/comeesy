@@ -1,8 +1,8 @@
 export const colors = {
   primary: {
-    light: '#7679f2',
-    main: '#3e4dbf',
-    dark: '#00258e',
+    light: '#69a1ff',
+    main: '#1a73e8',
+    dark: '#0049b5',
     contrastText: '#ffffff',
   },
   secondary: {
@@ -13,6 +13,7 @@ export const colors = {
   },
   white: '#ffffff',
   whitesmoke: '#f9f9f9',
+  whiteghost: '#f6f9fc',
   black: '#24292e',
   dark: '#444444',
   greylight: '#f0f2f5',
