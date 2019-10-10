@@ -15,6 +15,8 @@
 		// Removed rule "disallow the use of debugger" from recommended eslint rules
 		"no-debugger": "off",
 
+		"no-use-before-define": "warn",
+
 		// Removed rule "disallow unused variables" from recommended eslint rules
 		"no-unused-vars": "off",
 

@@ -1,6 +1,6 @@
 const functions = require('firebase-functions');
 const app = require('express')();
-
+const cors = require('cors');
 const fbAuth = require('./utils/fbAuth');
 
 const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');
@@ -36,6 +36,21 @@ const {
 } = require('./triggers/comments');
 
 const { onUserAvatarChange } = require('./triggers/users');
+
+/* Enable CORS */
+
+//TODO: for Production change whitelist of allowed origin
+const whitelistOrigins = ['http://localhost:3000'];
+const corsOptions = {
+  origin: (origin, callback) => {
+    // eslint-disable-next-line callback-return
+    if (whitelistOrigins.includes(origin)) callback(null, true);
+    // eslint-disable-next-line callback-return
+    else callback(new Error('Not allowed by CORS'));
+  },
+};
+
+app.use(cors(corsOptions)); // by default allows requests from any origin.
 
 /* Setup all api routes */
 
