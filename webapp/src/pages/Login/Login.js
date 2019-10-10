@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyle = makeStyles(theme => ({
   content: {
@@ -29,17 +30,24 @@ const useStyle = makeStyles(theme => ({
     marginBottom: theme.spacing(3),
     minWidth: 100,
     maxWidth: 100,
+    position: 'relative',
     [theme.breakpoints.down('xs')]: {
       marginTop: theme.spacing(2),
     },
+  },
+  loginProgress: {
+    position: 'absolute',
+    color: theme.palette.colors.dark,
   },
   signupHelperButton: {
     color: theme.palette.secondary.main,
   },
 }));
+
 const Login = props => {
   const { inputs, handleChange, handleSubmit } = useAuthForm(login);
-  const errors = useSelector(state => state.auth.errors);
+  const auth = useSelector(state => state.auth);
+  const { loading, errors } = auth;
   const classes = useStyle();
   return (
     <div className="login-page">
@@ -65,7 +73,7 @@ const Login = props => {
             value={inputs.email}
             onChange={handleChange}
             helperText={errors && errors.email}
-            error={!!(errors && errors.email)}
+            error={errors && errors.email}
             label="Email"
             autoFocus
             color="primary"
@@ -92,9 +100,13 @@ const Login = props => {
               variant="contained"
               color="primary"
               size="small"
+              disabled={loading}
               className={classes.button}
             >
               Login
+              {loading && (
+                <CircularProgress size={22} className={classes.loginProgress} />
+              )}
             </Button>
             <Typography variant="body2">
               New to Comeesy?

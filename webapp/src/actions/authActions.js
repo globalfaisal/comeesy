@@ -1,29 +1,36 @@
 import axios from 'axios';
-import { authTypes } from './types';
+
+import { userTypes } from './types';
+import variables from '../config/config';
+
 import history from '../utils/history/history';
 
-export const login = ({ email = '', password = '' }) => async dispatch => {
-  try {
-    // send user data
-    const userData = { email, password };
-    const response = await axios.post('/login', userData);
+const BASE_URL = variables.BASE_API_URL;
 
-    // redirect to home
-    history.push('/');
+const authStart = () => ({ type: userTypes.AUTH_START });
+const authSuccess = token => ({
+  type: userTypes.AUTH_SUCCESS,
+  payload: { token },
+});
+const authFailure = errors => ({
+  type: userTypes.AUTH_FAILURE,
+  payload: { errors },
+});
 
-    // dispatch action
-    dispatch({
-      type: authTypes.LOGIN,
-      payload: { token: response.data.token, errors: null },
+export const login = ({ email = '', password = '' }) => dispatch => {
+  dispatch(authStart());
+
+  // send user data
+  const userData = { email, password };
+  axios
+    .post(`${BASE_URL}/login`, userData)
+    .then(response => {
+      const { token } = response.data;
+      localStorage.setItem('token', `Bearer ${token}`);
+      dispatch(authSuccess(token));
+      history.push('/');
+    })
+    .catch(error => {
+      dispatch(authFailure(error.response.data.errors));
     });
-  } catch (err) {
-    // dispatch action with errors found
-    dispatch({
-      type: authTypes.LOGIN,
-      payload: {
-        token: undefined,
-        errors: err.response.data.errors,
-      },
-    });
-  }
 };
