@@ -2,9 +2,9 @@ import _ from 'lodash';
 import { userTypes } from '../actions/types';
 
 const INITIAL_STATE = {
-  token: null,
-  errors: null,
   loading: false,
+  errors: null,
+  token: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,6 +15,8 @@ export default (state = INITIAL_STATE, action) => {
       return { loading: false, errors: null, token: action.payload.token };
     case userTypes.AUTH_FAILURE:
       return { loading: false, errors: action.payload.errors };
+    case userTypes.RESET_AUTH_FORM_ERRORS:
+      return { loading: false, errors: null };
     default:
       return state;
   }

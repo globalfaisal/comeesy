@@ -1,10 +1,18 @@
 /* -- libs -- */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-const useAuthForm = action => {
+/* -- actions -- */
+import { resetAuthFormErrors } from '../actions/authActions.js';
+
+const useAuthForm = callback => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
+
+  // RESET AUTH ERRORS
+  useEffect(() => {
+    dispatch(resetAuthFormErrors());
+  }, []);
 
   const handleChange = event => {
     event.persist();
@@ -16,7 +24,7 @@ const useAuthForm = action => {
 
   const handleSubmit = async event => {
     if (event) event.preventDefault();
-    dispatch(action(inputs));
+    dispatch(callback(inputs));
   };
   return {
     inputs,

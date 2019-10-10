@@ -18,7 +18,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyle = makeStyles(theme => ({
   content: {
-    marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
     maxWidth: 320,
   },
@@ -40,7 +39,7 @@ const useStyle = makeStyles(theme => ({
     color: theme.palette.colors.dark,
   },
   signupHelperButton: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -103,7 +102,7 @@ const Login = props => {
               disabled={loading}
               className={classes.button}
             >
-              Login
+              Log In
               {loading && (
                 <CircularProgress size={22} className={classes.loginProgress} />
               )}

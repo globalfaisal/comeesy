@@ -48,6 +48,7 @@ const useStyle = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     minHeight: 580,
+    maxHeight: 580,
     borderRadius: 0,
     background: theme.palette.colors.white,
   },
@@ -116,11 +117,11 @@ const AuthLayout = props => {
             </Hidden>
             <Grid item xs={12} sm={6} className={classes.gridRight}>
               <CardContent className={classes.cardContent}>
-                <div className={classes.logoWrapper}>
-                  <Link to="/" title="Go Home">
+                <Link to="/" title="Go Home">
+                  <div className={classes.logoWrapper}>
                     <img src={logoImage} alt="comeesy" />
-                  </Link>
-                </div>
+                  </div>
+                </Link>
                 <Tabs
                   value={selectedTab}
                   indicatorColor="primary"
@@ -131,7 +132,7 @@ const AuthLayout = props => {
                   <Tab
                     component={Link}
                     to="/auth/login"
-                    label="Login"
+                    label="Log In"
                     disableRipple
                     classes={{ root: classes.tab }}
                   />
