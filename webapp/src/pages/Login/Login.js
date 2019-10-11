@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 /* -- actions -- */
-import { login } from '../../actions/authActions';
+import { login } from '../../actions/userActions';
 
 /* -- custom hooks -- */
 import useAuthForm from '../../hooks/useAuthForm';
@@ -44,17 +44,16 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const Login = props => {
+const Login = () => {
   const { inputs, handleChange, handleSubmit } = useAuthForm(login);
-  const auth = useSelector(state => state.auth);
-  const { loading, errors } = auth;
+  const { isLoading, errors } = useSelector(state => state.UI);
   const classes = useStyle();
   return (
     <div className="login-page">
       <div className={classes.content}>
         <div>
-          <Typography variant="h4" gutterBottom>
-            Welcome Back!
+          <Typography variant="h5" gutterBottom>
+            Login
           </Typography>
           <Typography variant="body1" color="textSecondary" paragraph>
             To keep connected with us please login with your personal info.
@@ -100,11 +99,11 @@ const Login = props => {
               variant="contained"
               color="primary"
               size="small"
-              disabled={loading}
+              disabled={isLoading}
               className={classes.button}
             >
               Log In
-              {loading && (
+              {isLoading && (
                 <CircularProgress size={22} className={classes.loginProgress} />
               )}
             </Button>

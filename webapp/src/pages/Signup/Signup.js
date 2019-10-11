@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 /* -- actions -- */
-import { signup } from '../../actions/authActions';
+import { signup } from '../../actions/userActions';
 
 /* -- custom hooks -- */
 import useAuthForm from '../../hooks/useAuthForm';
@@ -45,16 +45,15 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const Signup = props => {
+const Signup = () => {
   const { inputs, handleChange, handleSubmit } = useAuthForm(signup);
-  const auth = useSelector(state => state.auth);
-  const { loading, errors } = auth;
+  const { isLoading, errors } = useSelector(state => state.UI);
   const classes = useStyle();
   return (
     <div className="login-page">
       <div className={classes.content}>
         <div>
-          <Typography variant="h5" gutterBottom>
+          <Typography variant="h5" paragraph>
             Join Us!
           </Typography>
         </div>
@@ -159,11 +158,11 @@ const Signup = props => {
               variant="contained"
               color="primary"
               size="small"
-              disabled={loading}
+              disabled={isLoading}
               className={classes.button}
             >
               Sign Up
-              {loading && (
+              {isLoading && (
                 <CircularProgress
                   size={22}
                   className={classes.singupProgress}

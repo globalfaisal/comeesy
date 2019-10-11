@@ -1,6 +1,6 @@
 /* -- libs -- */
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 /* -- routes -- */
 import routes from '../../routes/routes';
@@ -8,10 +8,10 @@ import routes from '../../routes/routes';
 /* -- components -- */
 import Navbar from '../../components/Navbar/Navbar';
 
-/* -- components -- */
+/* -- styles -- */
 import './MainLayout.scss';
 
-const MainLayout = props => {
+const MainLayout = () => {
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
       if (route.layout === '/main') {

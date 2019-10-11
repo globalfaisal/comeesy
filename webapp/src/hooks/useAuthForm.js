@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 /* -- actions -- */
-import { resetAuthFormErrors } from '../actions/authActions.js';
+import { clearErrors } from '../actions/uiActions';
 
 const useAuthForm = callback => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
 
-  // RESET AUTH ERRORS
+  // Clear form errors
   useEffect(() => {
-    dispatch(resetAuthFormErrors());
+    dispatch(clearErrors());
   }, []);
 
   const handleChange = event => {

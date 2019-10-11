@@ -3,14 +3,13 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /* -- actions -- */
-import { fetchPosts } from '../../actions/postsActions';
-
+import { fetchPosts } from '../../actions/dataActions';
 /* -- components -- */
 import Post from './Post';
 
 const Posts = () => {
   const dispatch = useDispatch();
-  const posts = Object.values(useSelector(state => state.posts));
+  const { posts } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(fetchPosts());

@@ -4,6 +4,9 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 /* -- routes -- */
 import routes from '../../routes/routes';
+import AuthRoute from '../../routes/AuthRoute';
+
+/* -- utils -- */
 import history from '../../utils/history/history';
 
 /* -- mui -- */
@@ -17,6 +20,7 @@ import Tab from '@material-ui/core/Tab';
 
 /* -- components -- */
 import Logo from '../../components/UI/Logo/Logo';
+import { useSelector } from 'react-redux';
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -85,6 +89,7 @@ const AuthLayout = props => {
   const classes = useStyle();
 
   const [selectedTab, setSelectedTab] = useState(0);
+  const { isAuthenticated } = useSelector(state => state.user);
 
   const { location } = history;
   useEffect(() => {
@@ -96,8 +101,9 @@ const AuthLayout = props => {
     appRoutes.map((route, idx) => {
       if (route.layout === '/auth') {
         return (
-          <Route
+          <AuthRoute
             exact
+            isAuthenticated={isAuthenticated}
             path={route.layout + route.path}
             component={route.component}
             key={idx}

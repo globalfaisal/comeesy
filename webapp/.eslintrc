@@ -7,7 +7,7 @@
 		"no-unused-vars": 0,
 		"jsx-a11y/anchor-is-valid": 0,
 		"import/order": 0,
-		"react-hooks/exhaustive-deps": 0,
+		"react-hooks/exhaustive-deps": 2,
 		"no-use-before-define": ["error", { "functions": false, "variables": false }]
 	}
 }

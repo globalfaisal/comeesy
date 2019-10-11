@@ -2,10 +2,12 @@
 import { combineReducers } from 'redux';
 
 /* -- reducers -- */
-import authReducer from './authReducer';
-import postsReducer from './postsReducer';
+import userReducer from './userReducer';
+import dataReducer from './dataReducer';
+import UIReducer from './UIReducer';
 
 export default combineReducers({
-  auth: authReducer,
-  posts: postsReducer,
+  user: userReducer,
+  data: dataReducer,
+  UI: UIReducer,
 });
