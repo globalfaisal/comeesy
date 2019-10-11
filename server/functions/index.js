@@ -39,7 +39,7 @@ const { onUserAvatarChange } = require('./triggers/users');
 
 /* Enable CORS */
 
-//TODO: for Production change whitelist of allowed origin
+//TODO: for Production change whitelist of allowed origin and pass to cors()
 const whitelistOrigins = ['http://localhost:3000'];
 const corsOptions = {
   origin: (origin, callback) => {
@@ -50,7 +50,7 @@ const corsOptions = {
   },
 };
 
-app.use(cors(corsOptions)); // by default allows requests from any origin.
+app.use(cors()); // by default allows requests from any origin.
 
 /* Setup all api routes */
 
