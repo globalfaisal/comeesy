@@ -11,13 +11,12 @@ import { makeStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
-/* -- images -- */
-import logoImage from '../../asset/images/logo-black.svg';
+/* -- components -- */
+import Logo from '../../components/UI/Logo/Logo';
 
 const useStyle = makeStyles(theme => ({
   root: {
@@ -117,11 +116,7 @@ const AuthLayout = props => {
             </Hidden>
             <Grid item xs={12} sm={6} className={classes.gridRight}>
               <CardContent className={classes.cardContent}>
-                <Link to="/" title="Go Home">
-                  <div className={classes.logoWrapper}>
-                    <img src={logoImage} alt="comeesy" />
-                  </div>
-                </Link>
+                <Logo variant="black" />
                 <Tabs
                   value={selectedTab}
                   indicatorColor="primary"

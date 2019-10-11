@@ -39,6 +39,7 @@ const useStyle = makeStyles(theme => ({
     color: theme.palette.colors.dark,
   },
   signupHelperButton: {
+    marginLeft: theme.spacing(1),
     color: theme.palette.primary.main,
   },
 }));
@@ -109,13 +110,14 @@ const Login = props => {
             </Button>
             <Typography variant="body2">
               New to Comeesy?
-              <Button
+              <Typography
+                variant="body2"
                 component={Link}
                 to="/auth/signup"
                 className={classes.signupHelperButton}
               >
                 Sign up now »
-              </Button>
+              </Typography>
             </Typography>
           </div>
         </form>

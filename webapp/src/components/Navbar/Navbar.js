@@ -2,8 +2,8 @@
 import React from 'react';
 import Link from 'react-router-dom/Link';
 
-/* -- images -- */
-import logoImage from '../../asset/images/logo-white.svg';
+/* -- components -- */
+import Logo from '../UI/Logo/Logo';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
@@ -14,13 +14,6 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles(theme => ({
   appBar: {
     backgroundColor: theme.palette.colors.black,
-  },
-  brand: {
-    width: 24,
-    height: 24,
-    '& img': {
-      height: '100%',
-    },
   },
   grow: {
     flexGrow: 1,
@@ -41,11 +34,7 @@ const Navbar = props => {
   return (
     <AppBar className={classes.appBar}>
       <Toolbar variant="dense">
-        <div className={classes.brand}>
-          <Link to="/">
-            <img src={logoImage} alt="comeesy" />
-          </Link>
-        </div>
+        <Logo variant="white" />
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
           <Button

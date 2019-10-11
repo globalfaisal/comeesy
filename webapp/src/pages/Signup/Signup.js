@@ -54,7 +54,9 @@ const Signup = props => {
     <div className="login-page">
       <div className={classes.content}>
         <div>
-          <Typography variant="h4">Join Us!</Typography>
+          <Typography variant="h5" gutterBottom>
+            Join Us!
+          </Typography>
         </div>
         <form
           noValidate
@@ -63,22 +65,6 @@ const Signup = props => {
           className={classes.form}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                id="username"
-                name="username"
-                type="text"
-                value={inputs.username}
-                onChange={handleChange}
-                helperText={errors && errors.username}
-                error={errors && errors.username}
-                label="Username"
-                autoFocus
-                color="primary"
-                fullWidth
-                className={classes.textField}
-              />
-            </Grid>
             <Grid item xs={6}>
               <TextField
                 id="firstname"
@@ -90,6 +76,7 @@ const Signup = props => {
                 error={errors && errors.firstname}
                 label="First Name"
                 color="primary"
+                autoFocus
                 className={classes.textField}
               />
             </Grid>
@@ -104,6 +91,21 @@ const Signup = props => {
                 error={errors && errors.lastname}
                 label="Last Name"
                 color="primary"
+                className={classes.textField}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                id="username"
+                name="username"
+                type="text"
+                value={inputs.username}
+                onChange={handleChange}
+                helperText={errors && errors.username}
+                error={errors && errors.username}
+                label="Username"
+                color="primary"
+                fullWidth
                 className={classes.textField}
               />
             </Grid>

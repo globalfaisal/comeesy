@@ -21,12 +21,15 @@ export const resetAuthFormErrors = () => ({
   type: userTypes.RESET_AUTH_FORM_ERRORS,
 });
 
-export const login = ({ email = '', password = '' }) => dispatch => {
+export const login = formData => dispatch => {
   dispatch(authStart());
 
-  const userData = { email, password };
+  const userData = {
+    email: formData.email || '',
+    password: formData.password || '',
+  };
 
-  // send user data
+  // Make loging request
   axios
     .post(`${BASE_URL}/login`, userData)
     .then(response => {
@@ -43,7 +46,6 @@ export const login = ({ email = '', password = '' }) => dispatch => {
 export const signup = formData => dispatch => {
   dispatch(authStart());
 
-  // send user data
   const userData = {
     email: formData.email || '',
     password: formData.password || '',
@@ -53,7 +55,7 @@ export const signup = formData => dispatch => {
     lastname: formData.lastname || '',
   };
 
-  // send user data
+  // Make signup request
   axios
     .post(`${BASE_URL}/signup`, userData)
     .then(response => {

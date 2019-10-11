@@ -4,13 +4,17 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 
+/* -- redux stuff -- */
 import store from './store';
 import histroy from './utils/history/history';
 
 import * as serviceWorker from './serviceWorker';
 
+/* -- components -- */
 import App from './App';
-import './asset/styles/core.scss';
+
+/* -- styles -- */
+import './index.css';
 
 ReactDOM.render(
   <Provider store={store}>
