@@ -29,6 +29,22 @@ export const login = formData => dispatch => {
     });
 };
 
+export const logout = () => dispatch => {
+  const { token } = window.localStorage;
+  if (!token) return null;
+  comeesyAPI
+    .get('/logout', { headers: { Authorization: token } })
+    .then(res => {
+      // Delete token from local storage
+      window.localStorage.removeItem('token');
+      dispatch({ type: userTypes.SET_UNAUTHENTICATED });
+      dispatch(clearErrors());
+    })
+    .catch(err => {
+      console.error(err);
+    });
+};
+
 export const signup = formData => dispatch => {
   dispatch({ type: uiTypes.LOADING_UI });
 
@@ -67,11 +83,4 @@ export const getUserData = token => dispatch => {
     .catch(err => {
       console.error(err);
     });
-};
-
-export const logout = () => dispatch => {
-  // Delete token from local storage
-  window.localStorage.removeItem('token');
-  dispatch({ type: userTypes.SET_UNAUTHENTICATED });
-  history.push('/auth/login');
 };

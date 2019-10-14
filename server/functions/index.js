@@ -17,6 +17,7 @@ const {
 
 const {
   login,
+  logout,
   signup,
   getUserData,
   getCurrentUserData,
@@ -80,6 +81,7 @@ app.post('/post/:postId/unlike', fbAuth, unlikePost);
 // users routes
 app.post('/signup', signup);
 app.post('/login', login);
+app.get('/logout', logout);
 //TODO: add login options with google and facebook
 
 app.get('/user', fbAuth, getCurrentUserData);

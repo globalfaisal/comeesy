@@ -163,7 +163,7 @@ const Signup = () => {
               disabled={isLoading}
               className={classes.button}
             >
-              Sign Up
+              Sign up
               {isLoading && (
                 <CircularProgress
                   size={22}

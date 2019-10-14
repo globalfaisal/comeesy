@@ -104,7 +104,7 @@ const Login = () => {
               disabled={isLoading}
               className={classes.button}
             >
-              Log In
+              Log in
               {isLoading && (
                 <CircularProgress size={22} className={classes.loginProgress} />
               )}

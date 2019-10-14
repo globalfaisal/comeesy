@@ -57,7 +57,7 @@ const Navbar = () => {
                 size="small"
                 className={classes.navLink}
               >
-                Login
+                Log in
               </Button>
               <Button
                 component={Link}
@@ -67,7 +67,7 @@ const Navbar = () => {
                 size="small"
                 className={classes.navLink}
               >
-                Sign Up
+                Sign up
               </Button>
             </React.Fragment>
           )}
