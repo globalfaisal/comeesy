@@ -12,7 +12,7 @@ const useAuthForm = callback => {
   // Clear form errors
   useEffect(() => {
     dispatch(clearErrors());
-  }, []);
+  }, [dispatch]);
 
   const handleChange = event => {
     event.persist();

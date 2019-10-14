@@ -8,7 +8,7 @@ import { logout } from '../../actions/userActions';
 
 /* -- components -- */
 import Logo from '../UI/Logo/Logo';
-import UserMenu from '../Header/UserMenu';
+import UserMenu from './UserMenu';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
@@ -16,6 +16,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 
+/* -- styles -- */
 const useStyles = makeStyles(theme => ({
   appBar: {
     backgroundColor: theme.palette.colors.black,

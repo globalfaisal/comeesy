@@ -6,7 +6,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import routes from '../../routes/routes';
 
 /* -- components -- */
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Header/Navbar';
 
 /* -- styles -- */
 import './MainLayout.scss';
