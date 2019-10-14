@@ -7,7 +7,7 @@ import Link from 'react-router-dom/Link';
 import { logout } from '../../actions/userActions';
 
 /* -- components -- */
-import Logo from '../UI/Logo/Logo';
+import Logo from '../UI/Logo';
 import UserMenu from './UserMenu';
 
 /* -- mui -- */

@@ -6,6 +6,7 @@ export const userTypes = {
 };
 export const uiTypes = {
   SET_ERRORS: 'SET_ERRORS',
+  CLEAR_ERROR: 'CLEAR_ERROR',
   CLEAR_ERRORS: 'CLEAR_ERRORS',
   LOADING_UI: 'LOADING_UI',
 };

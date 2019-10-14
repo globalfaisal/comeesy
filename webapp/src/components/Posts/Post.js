@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
+/* -- styles -- */
 const useStyle = makeStyles(theme => ({
   post: {
     '&:not(:first-child)': {

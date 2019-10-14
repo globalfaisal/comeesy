@@ -3,16 +3,20 @@ import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 /* -- actions -- */
-import { clearErrors } from '../actions/uiActions';
+import { clearError } from '../actions/UIActions';
 
 const useAuthForm = callback => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
 
-  // Clear form errors
-  useEffect(() => {
-    dispatch(clearErrors());
-  }, [dispatch]);
+  // Clear form errors on componentWillUnmount
+  useEffect(
+    () =>
+      function() {
+        dispatch(clearError('form'));
+      },
+    [dispatch]
+  );
 
   const handleChange = event => {
     event.persist();

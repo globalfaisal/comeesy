@@ -9,7 +9,21 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case uiTypes.SET_ERRORS:
-      return { ...state, isLoading: false, errors: action.payload };
+      return {
+        ...state,
+        isLoading: false,
+        errors: {
+          ...state.errors,
+          [_.keys(action.payload)[0]]: _.values(action.payload)[0],
+        },
+      };
+    case uiTypes.CLEAR_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        errors: { ..._.omit(state.errors, action.payload) },
+      };
+
     case uiTypes.CLEAR_ERRORS:
       return { ...state, isLoading: false, errors: null };
     case uiTypes.LOADING_UI:

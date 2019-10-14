@@ -57,6 +57,13 @@ export default () =>
       MuiAvatar: {
         root: {
           border: `1px solid rgba(0,0,0, 0.05)`,
+          width: 32,
+          height: 32,
+        },
+      },
+      MuiMenu: {
+        paper: {
+          borderRadius: 0,
         },
       },
     },

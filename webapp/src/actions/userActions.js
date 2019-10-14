@@ -2,7 +2,7 @@ import comeesyAPI from '../api/comeesy';
 import { userTypes, uiTypes } from './types';
 import history from '../utils/history/history';
 
-import { setErrors, clearErrors, loadingUI } from './uiActions';
+import { setErrors, clearErrors, loadingUI } from './UIActions';
 
 export const login = formData => dispatch => {
   dispatch(loadingUI());
@@ -25,7 +25,7 @@ export const login = formData => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data));
+      dispatch(setErrors({ form: err.response.data }));
     });
 };
 
@@ -54,7 +54,7 @@ export const signup = formData => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data));
+      dispatch(setErrors({ form: err.response.data }));
     });
 };
 
@@ -66,7 +66,6 @@ export const getUserData = token => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      // dispatch(setErrors(err.response.data));
     });
 };
 

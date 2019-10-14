@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const logoWhitePath = '../assets/images/logo-white.svg';
 const logoBlackPath = '../assets/images/logo-black.svg';
 
+/* -- styles -- */
 const useStyles = makeStyles({
   logo: {
     width: 32,

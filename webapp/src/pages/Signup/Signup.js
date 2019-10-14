@@ -46,9 +46,11 @@ const useStyle = makeStyles(theme => ({
 }));
 
 const Signup = () => {
+  const classes = useStyle();
   const { inputs, handleChange, handleSubmit } = useAuthForm(signup);
   const { isLoading, errors } = useSelector(state => state.UI);
-  const classes = useStyle();
+  const error = errors && errors.form;
+
   return (
     <div className="signup-page">
       <div className={classes.content}>
@@ -71,8 +73,8 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.firstname}
                 onChange={handleChange}
-                helperText={errors && errors.firstname}
-                error={errors && !!errors.firstname}
+                helperText={error && error.firstname}
+                error={error && !!error.firstname}
                 label="First Name"
                 color="primary"
                 autoFocus
@@ -86,8 +88,8 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.lastname}
                 onChange={handleChange}
-                helperText={errors && errors.lastname}
-                error={errors && !!errors.lastname}
+                helperText={error && error.lastname}
+                error={error && !!error.lastname}
                 label="Last Name"
                 color="primary"
                 className={classes.textField}
@@ -100,8 +102,8 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.username}
                 onChange={handleChange}
-                helperText={errors && errors.username}
-                error={errors && !!errors.username}
+                helperText={error && error.username}
+                error={error && !!error.username}
                 label="Username"
                 color="primary"
                 fullWidth
@@ -115,8 +117,8 @@ const Signup = () => {
                 type="email"
                 defaultValue={inputs.email}
                 onChange={handleChange}
-                helperText={errors && errors.email}
-                error={errors && !!errors.email}
+                helperText={error && error.email}
+                error={error && !!error.email}
                 label="Email"
                 color="primary"
                 fullWidth
@@ -130,8 +132,8 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.password}
                 onChange={handleChange}
-                helperText={errors && errors.password}
-                error={errors && !!errors.password}
+                helperText={error && error.password}
+                error={error && !!error.password}
                 label="Password"
                 color="primary"
                 className={classes.textField}
@@ -144,8 +146,8 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.confirmPassword}
                 onChange={handleChange}
-                helperText={errors && errors.confirmPassword}
-                error={errors && !!errors.confirmPassword}
+                helperText={error && error.confirmPassword}
+                error={error && !!error.confirmPassword}
                 label="Confirm Password"
                 color="primary"
                 className={classes.textField}

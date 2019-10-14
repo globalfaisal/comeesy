@@ -45,9 +45,11 @@ const useStyle = makeStyles(theme => ({
 }));
 
 const Login = () => {
+  const classes = useStyle();
   const { inputs, handleChange, handleSubmit } = useAuthForm(login);
   const { isLoading, errors } = useSelector(state => state.UI);
-  const classes = useStyle();
+  const error = errors && errors.form;
+
   return (
     <div className="login-page">
       <div className={classes.content}>
@@ -71,8 +73,8 @@ const Login = () => {
             type="email"
             defaultValue={inputs.email}
             onChange={handleChange}
-            helperText={errors && errors.email}
-            error={errors && !!errors.email}
+            helperText={error && error.email}
+            error={error && !!error.email}
             label="Email"
             autoFocus
             color="primary"
@@ -86,8 +88,8 @@ const Login = () => {
             type="password"
             defaultValue={inputs.password}
             onChange={handleChange}
-            helperText={errors && errors.password}
-            error={errors && !!errors.password}
+            helperText={error && error.password}
+            error={error && !!error.password}
             label="Password"
             color="primary"
             fullWidth

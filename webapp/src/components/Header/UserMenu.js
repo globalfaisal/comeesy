@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 /* -- components -- */
-import DropMenu from '../UI/DropMenu/DropMenu';
+import PopupMenu from '../UI/PopupMenu';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -44,7 +44,7 @@ const UserMenu = ({ user, onLogout }) => {
         <Avatar alt={user.username} src={user.imageUrl} />
         <ArrowDropDownIcon htmlColor="white" />
       </IconButton>
-      <DropMenu
+      <PopupMenu
         id="userMenu"
         anchorEl={anchorEl}
         open={!!anchorEl}
@@ -59,7 +59,7 @@ const UserMenu = ({ user, onLogout }) => {
         <MenuItem component={Link} to="#" onClick={onLogout}>
           Logout
         </MenuItem>
-      </DropMenu>
+      </PopupMenu>
     </div>
   );
 };

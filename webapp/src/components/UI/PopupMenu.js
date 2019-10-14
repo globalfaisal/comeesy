@@ -10,14 +10,13 @@ import { Menu as MuiMenu } from '@material-ui/core';
 const Menu = withStyles({
   paper: {
     minWidth: 120,
-    marginTop: -6,
+    marginTop: -1,
     borderRadius: 0,
   },
 })(MuiMenu);
 
-const DropMenu = ({ children, ...props }) => (
+const PopupMenu = ({ children, ...props }) => (
   <Menu
-    elevation={3}
     getContentAnchorEl={null}
     anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     transformOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -27,7 +26,7 @@ const DropMenu = ({ children, ...props }) => (
   </Menu>
 );
 
-DropMenu.propTypes = {
+PopupMenu.propTypes = {
   children: PropTypes.node.isRequired,
 };
-export default DropMenu;
+export default PopupMenu;
