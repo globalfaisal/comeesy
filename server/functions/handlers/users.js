@@ -24,7 +24,7 @@ exports.login = (req, res) => {
 
   // Validate incoming data
   const { isValid, errors } = validateLoginData(userData);
-  if (!isValid) return res.status(400).json({ errors });
+  if (!isValid) return res.status(400).json(errors);
 
   firebase
     .auth()
@@ -33,17 +33,20 @@ exports.login = (req, res) => {
     .then(token => res.status(200).json({ token }))
     .catch(err => {
       console.error('Error while user login ', err);
-      const errors = {};
       if (err.code === 'auth/user-not-found') {
-        errors.email = 'This email does not exist. Please try again';
-        return res.status(403).json({ errors });
+        return res
+          .status(403)
+          .json({ email: 'This email does not exist. Please try again' });
       }
       if (err.code === 'auth/wrong-password') {
-        errors.password = 'Wrong password. Please try again';
-        return res.status(403).json({ errors });
+        return res
+          .status(403)
+          .json({ password: 'Wrong password. Please try again' });
       }
-      errors.general = 'Something went wrong, please try again';
-      return res.status(500).json({ errors });
+      console.error('Error while login user ', err);
+      return res
+        .status(500)
+        .json({ general: 'Something went wrong, please try again' });
     });
 };
 
@@ -60,7 +63,7 @@ exports.signup = (req, res) => {
 
   // Validate incoming data
   const { isValid, errors } = validateSignupData(newUser);
-  if (!isValid) return res.status(400).json({ errors });
+  if (!isValid) return res.status(400).json(errors);
 
   let token, userId;
   const defaultAvatarFileName = 'default-avatar.png';
@@ -114,9 +117,9 @@ exports.signup = (req, res) => {
       } else if (err.code === 'auth/weak-password') {
         return res
           .status(400)
-          .json({ password: 'Weak password, please choose a strong password' });
+          .json({ password: 'Weak password, please choose a strong one' });
       }
-
+      console.error('Error while signup new user ', err);
       return res
         .status(500)
         .json({ general: 'Something went wrong, please try again' });
@@ -272,6 +275,5 @@ exports.uploadUserAvatar = (req, res) => {
       });
   });
   // get the response from the server
-  // once the request is completed
   busboy.end(req.rawBody);
 };

@@ -26,6 +26,8 @@ exports.validateSignupData = data => {
     errors.email = 'Must be a valid email address';
 
   if (validator.isEmpty(data.password)) errors.password = 'Must not be empty';
+  if (validator.isEmpty(data.confirmPassword))
+    errors.confirmPassword = 'Must not be empty';
   if (!validator.equals(data.password, data.confirmPassword))
     errors.confirmPassword = 'Password must match';
 
