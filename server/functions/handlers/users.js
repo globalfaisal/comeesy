@@ -15,7 +15,7 @@ const config = require('../config');
 
 firebase.initializeApp(config);
 
-// Login existing user
+// Login user
 exports.login = (req, res) => {
   const userData = {
     email: req.body.email,
@@ -47,6 +47,18 @@ exports.login = (req, res) => {
       return res
         .status(500)
         .json({ general: 'Something went wrong, please try again' });
+    });
+};
+
+// Logout user
+exports.logout = (req, res) => {
+  firebase
+    .auth()
+    .signOut()
+    .then(() => res.json({ message: 'Logged out successfully' }))
+    .catch(err => {
+      console.error('Error while logout ', err);
+      return res.status(500).json({ error: err.code });
     });
 };
 
