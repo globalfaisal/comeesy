@@ -31,7 +31,7 @@ const Logo = ({ variant = 'white', title }) => {
   );
 };
 Logo.propTypes = {
-  variant: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
+  variant: PropTypes.string,
+  title: PropTypes.string,
 };
 export default Logo;

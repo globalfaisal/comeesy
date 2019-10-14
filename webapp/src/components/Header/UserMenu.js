@@ -2,27 +2,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
-/* -- actions -- */
-import { logout } from '../../actions/userActions';
 
 /* -- mui -- */
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { Menu as MuiMenu } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
-const Menu = withStyles({
-  paper: {
-    width: 120,
-    marginTop: -6,
-    borderRadius: 0,
-  },
-})(MuiMenu);
+/* -- components -- */
+import DropMenu from '../UI/DropMenu/DropMenu';
 
+/* -- styles -- */
 const useStyles = makeStyles(theme => ({
   userMenuIconBtn: {
     '&:hover': {
@@ -30,9 +21,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
-const UserMenu = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.user.credentials);
+
+const UserMenu = ({ user, onLogout }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
@@ -41,10 +31,6 @@ const UserMenu = () => {
   };
   const onCloseMenu = e => {
     setAnchorEl(null);
-  };
-
-  const onLogout = e => {
-    dispatch(logout());
   };
 
   return (
@@ -58,15 +44,11 @@ const UserMenu = () => {
         <Avatar alt={user.username} src={user.imageUrl} />
         <ArrowDropDownIcon htmlColor="white" />
       </IconButton>
-      <Menu
+      <DropMenu
         id="userMenu"
         anchorEl={anchorEl}
         open={!!anchorEl}
         onClose={onCloseMenu}
-        elevation={3}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
         <MenuItem component={Link} to={`/u/${user.username}`}>
           Profile
@@ -77,9 +59,12 @@ const UserMenu = () => {
         <MenuItem component={Link} to="#" onClick={onLogout}>
           Logout
         </MenuItem>
-      </Menu>
+      </DropMenu>
     </div>
   );
 };
-UserMenu.propTypes = {};
+UserMenu.propTypes = {
+  user: PropTypes.object.isRequired,
+  onLogout: PropTypes.func.isRequired,
+};
 export default UserMenu;
