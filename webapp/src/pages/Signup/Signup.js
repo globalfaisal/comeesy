@@ -50,7 +50,7 @@ const Signup = () => {
   const { isLoading, errors } = useSelector(state => state.UI);
   const classes = useStyle();
   return (
-    <div className="login-page">
+    <div className="signup-page">
       <div className={classes.content}>
         <div>
           <Typography variant="h5" paragraph>
@@ -69,7 +69,7 @@ const Signup = () => {
                 id="firstname"
                 name="firstname"
                 type="text"
-                value={inputs.firstname}
+                defaultValue={inputs.firstname}
                 onChange={handleChange}
                 helperText={errors && errors.firstname}
                 error={errors && !!errors.firstname}
@@ -84,7 +84,7 @@ const Signup = () => {
                 id="lastname"
                 name="lastname"
                 type="text"
-                value={inputs.lastname}
+                defaultValue={inputs.lastname}
                 onChange={handleChange}
                 helperText={errors && errors.lastname}
                 error={errors && !!errors.lastname}
@@ -98,7 +98,7 @@ const Signup = () => {
                 id="username"
                 name="username"
                 type="text"
-                value={inputs.username}
+                defaultValue={inputs.username}
                 onChange={handleChange}
                 helperText={errors && errors.username}
                 error={errors && !!errors.username}
@@ -113,7 +113,7 @@ const Signup = () => {
                 id="email"
                 name="email"
                 type="email"
-                value={inputs.email}
+                defaultValue={inputs.email}
                 onChange={handleChange}
                 helperText={errors && errors.email}
                 error={errors && !!errors.email}
@@ -128,7 +128,7 @@ const Signup = () => {
                 id="password"
                 name="password"
                 type="password"
-                value={inputs.password}
+                defaultValue={inputs.password}
                 onChange={handleChange}
                 helperText={errors && errors.password}
                 error={errors && !!errors.password}
@@ -142,7 +142,7 @@ const Signup = () => {
                 id="confirmPassword"
                 name="confirmPassword"
                 type="password"
-                value={inputs.confirmPassword}
+                defaultValue={inputs.confirmPassword}
                 onChange={handleChange}
                 helperText={errors && errors.confirmPassword}
                 error={errors && !!errors.confirmPassword}

@@ -3,11 +3,9 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'react-router-dom/Link';
 
-/* -- actions -- */
-import { logout } from '../../actions/userActions';
-
 /* -- components -- */
 import Logo from '../UI/Logo/Logo';
+import UserMenu from '../UserMenu/UserMenu';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/styles';
@@ -34,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = props => {
   const classes = useStyles();
-  const dispatch = useDispatch();
+
   const { isAuthenticated } = useSelector(state => state.user);
   return (
     <AppBar className={classes.appBar}>
@@ -42,17 +40,7 @@ const Navbar = props => {
         <Logo variant="white" />
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
-          {isAuthenticated && (
-            <Button
-              onClick={() => dispatch(logout())}
-              variant="contained"
-              color="primary"
-              size="small"
-              className={classes.navLink}
-            >
-              Logout
-            </Button>
-          )}
+          {isAuthenticated && <UserMenu />}
           {!isAuthenticated && (
             <React.Fragment>
               <Button

@@ -122,7 +122,7 @@ const AuthLayout = props => {
             </Hidden>
             <Grid item xs={12} sm={6} className={classes.gridRight}>
               <CardContent className={classes.cardContent}>
-                <Logo variant="black" />
+                <Logo variant="black" title="⬅ Back to home" />
                 <Tabs
                   value={selectedTab}
                   indicatorColor="primary"

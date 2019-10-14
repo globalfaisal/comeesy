@@ -69,7 +69,7 @@ const Login = () => {
             id="email"
             name="email"
             type="email"
-            value={inputs.email}
+            defaultValue={inputs.email}
             onChange={handleChange}
             helperText={errors && errors.email}
             error={errors && !!errors.email}
@@ -84,7 +84,7 @@ const Login = () => {
             id="password"
             name="password"
             type="password"
-            value={inputs.password}
+            defaultValue={inputs.password}
             onChange={handleChange}
             helperText={errors && errors.password}
             error={errors && !!errors.password}

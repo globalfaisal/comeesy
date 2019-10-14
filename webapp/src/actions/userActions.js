@@ -66,7 +66,7 @@ export const getUserData = token => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data));
+      // dispatch(setErrors(err.response.data));
     });
 };
 
