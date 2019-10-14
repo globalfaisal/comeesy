@@ -53,7 +53,7 @@ const UserMenu = ({ user, onLogout }) => {
         <MenuItem component={Link} to={`/u/${user.username}`}>
           Profile
         </MenuItem>
-        <MenuItem component={Link} to="/u/settings">
+        <MenuItem component={Link} to="/u/settings" divider>
           Settings
         </MenuItem>
         <MenuItem component={Link} to="#" onClick={onLogout}>
