@@ -72,7 +72,7 @@ const Login = () => {
             value={inputs.email}
             onChange={handleChange}
             helperText={errors && errors.email}
-            error={errors && errors.email}
+            error={errors && !!errors.email}
             label="Email"
             autoFocus
             color="primary"
@@ -87,7 +87,7 @@ const Login = () => {
             value={inputs.password}
             onChange={handleChange}
             helperText={errors && errors.password}
-            error={errors && errors.password}
+            error={errors && !!errors.password}
             label="Password"
             color="primary"
             fullWidth

@@ -25,7 +25,7 @@ export const login = formData => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data.errors));
+      dispatch(setErrors(err.response.data));
     });
 };
 
@@ -54,7 +54,7 @@ export const signup = formData => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data.errors));
+      dispatch(setErrors(err.response.data));
     });
 };
 
@@ -66,7 +66,7 @@ export const getUserData = token => dispatch => {
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors(err.response.data.errors));
+      dispatch(setErrors(err.response.data));
     });
 };
 

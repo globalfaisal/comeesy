@@ -72,7 +72,7 @@ const Signup = () => {
                 value={inputs.firstname}
                 onChange={handleChange}
                 helperText={errors && errors.firstname}
-                error={errors && errors.firstname}
+                error={errors && !!errors.firstname}
                 label="First Name"
                 color="primary"
                 autoFocus
@@ -87,7 +87,7 @@ const Signup = () => {
                 value={inputs.lastname}
                 onChange={handleChange}
                 helperText={errors && errors.lastname}
-                error={errors && errors.lastname}
+                error={errors && !!errors.lastname}
                 label="Last Name"
                 color="primary"
                 className={classes.textField}
@@ -101,7 +101,7 @@ const Signup = () => {
                 value={inputs.username}
                 onChange={handleChange}
                 helperText={errors && errors.username}
-                error={errors && errors.username}
+                error={errors && !!errors.username}
                 label="Username"
                 color="primary"
                 fullWidth
@@ -116,7 +116,7 @@ const Signup = () => {
                 value={inputs.email}
                 onChange={handleChange}
                 helperText={errors && errors.email}
-                error={errors && errors.email}
+                error={errors && !!errors.email}
                 label="Email"
                 color="primary"
                 fullWidth
@@ -131,7 +131,7 @@ const Signup = () => {
                 value={inputs.password}
                 onChange={handleChange}
                 helperText={errors && errors.password}
-                error={errors && errors.password}
+                error={errors && !!errors.password}
                 label="Password"
                 color="primary"
                 className={classes.textField}
@@ -145,7 +145,7 @@ const Signup = () => {
                 value={inputs.confirmPassword}
                 onChange={handleChange}
                 helperText={errors && errors.confirmPassword}
-                error={errors && errors.confirmPassword}
+                error={errors && !!errors.confirmPassword}
                 label="Confirm Password"
                 color="primary"
                 className={classes.textField}
