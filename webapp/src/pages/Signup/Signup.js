@@ -10,43 +10,17 @@ import { signup } from '../../actions/userActions';
 import useAuthForm from '../../hooks/useAuthForm';
 
 /* -- mui -- */
-import { makeStyles } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyle = makeStyles(theme => ({
-  content: {
-    marginBottom: theme.spacing(1),
-    maxWidth: 320,
-  },
-  textField: {
-    margin: 0,
-  },
-  button: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
-    minWidth: 100,
-    maxWidth: 100,
-    position: 'relative',
-    [theme.breakpoints.down('xs')]: {
-      marginTop: theme.spacing(1),
-    },
-  },
-  singupProgress: {
-    position: 'absolute',
-    color: theme.palette.colors.dark,
-  },
-  loginHelperButton: {
-    marginLeft: theme.spacing(3),
-    color: theme.palette.primary.main,
-  },
-}));
+/* -- styles -- */
+import useStyles from './SignupStyles';
 
 const Signup = () => {
-  const classes = useStyle();
+  const classes = useStyles();
   const { inputs, handleChange, handleSubmit } = useAuthForm(signup);
   const { isLoading, errors } = useSelector(state => state.UI);
   const error = errors && errors.form;

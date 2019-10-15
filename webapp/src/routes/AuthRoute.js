@@ -1,23 +1,24 @@
 /* -- libs -- */
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-/* -- utils -- */
-import history from '../utils/history/history';
+const AuthRoute = ({ component: AuthComponent, ...rest }) => {
+  const { isAuthenticated } = useSelector(state => state.user);
 
-const AuthRoute = ({ component: Component, isAuthenticated, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      isAuthenticated !== false ? <Redirect to="/" /> : <Component {...props} />
-    }
-  />
-);
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isAuthenticated ? <Redirect to="/" /> : <AuthComponent {...props} />
+      }
+    />
+  );
+};
 
 AuthRoute.propTypes = {
   component: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 export default AuthRoute;
