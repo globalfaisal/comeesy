@@ -7,6 +7,7 @@ import routes from '../../routes/routes';
 
 /* -- components -- */
 import Navbar from '../../components/Header/Navbar';
+import ProtectedRoute from '../../routes/ProtectedRoute';
 
 import { makeStyles } from '@material-ui/core/styles';
 /* -- styles -- */
@@ -21,6 +22,16 @@ const MainLayout = () => {
 
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
+      if (route.protected && route.layout === '/main') {
+        return (
+          <ProtectedRoute
+            exact
+            path={route.path}
+            component={route.component}
+            key={idx}
+          />
+        );
+      }
       if (route.layout === '/main') {
         return (
           <Route

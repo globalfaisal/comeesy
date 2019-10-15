@@ -13,3 +13,8 @@ export const formatDateToRelTime = dateString => {
   dayjs.extend(relativeTime);
   return dayjs(dateString).fromNow();
 };
+
+export const formatToMonthAndYear = dateString => {
+  if (!dateString) return null;
+  return `${dayjs(dateString).format('MMMM YYYY')}`;
+};

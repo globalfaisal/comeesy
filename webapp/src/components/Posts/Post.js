@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
-import { formatDateToRelTime } from '../../utils/helpers/formatDateToRelTime';
+import { formatDateToRelTime } from '../../utils/helpers/dates';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';

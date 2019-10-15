@@ -50,10 +50,19 @@ const UserMenu = ({ user, onLogout }) => {
         open={!!anchorEl}
         onClose={onCloseMenu}
       >
-        <MenuItem component={Link} to={`/u/${user.username}`}>
+        <MenuItem
+          component={Link}
+          to={`/u/${user.username}`}
+          onClick={onCloseMenu}
+        >
           Profile
         </MenuItem>
-        <MenuItem component={Link} to="/u/settings" divider>
+        <MenuItem
+          component={Link}
+          to="/u/settings"
+          divider
+          onClick={onCloseMenu}
+        >
           Settings
         </MenuItem>
         <MenuItem component={Link} to="#" onClick={onLogout}>

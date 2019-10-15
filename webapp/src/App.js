@@ -1,7 +1,7 @@
 /* -- libs -- */
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 /* -- layouts -- */
 import MainLayout from './layouts/MainLayout/MainLayout';
@@ -34,8 +34,9 @@ const App = () => {
       <CssBaseline />
       <Switch>
         <Route exact path="/auth/:page" render={p => <AuthLayout {...p} />} />
-        <Route exact path="/:page" render={p => <MainLayout {...p} />} />
+        <Route exact path="/u/:page" render={p => <MainLayout {...p} />} />
         <Route exact path="/" render={p => <MainLayout {...p} />} />
+        <Redirect from="*" to="/" />
       </Switch>
     </MuiThemeProvider>
   );

@@ -1,5 +1,9 @@
 /* -- libs -- */
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+/* -- actions -- */
+import { fetchPosts } from '../../actions/dataActions';
 
 /* -- components -- */
 import Posts from '../../components/Posts/Posts.js';
@@ -19,12 +23,20 @@ const useStyles = makeStyles(theme => ({
 
 const Home = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { posts } = useSelector(state => state.data);
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className={classes.homeWrapper}>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <Posts />
+            <Posts posts={posts} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>

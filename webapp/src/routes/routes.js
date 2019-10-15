@@ -1,6 +1,7 @@
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
+import Profile from '../pages/Profile/Profile';
 
 export default [
   {
@@ -8,6 +9,13 @@ export default [
     name: 'Home',
     component: Home,
     layout: '/main',
+  },
+  {
+    path: '/u/:username',
+    name: 'Profile',
+    component: Profile,
+    layout: '/main',
+    protected: true,
   },
   {
     path: '/login',

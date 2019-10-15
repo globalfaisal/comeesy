@@ -39,6 +39,7 @@ export const logout = () => dispatch => {
       window.localStorage.removeItem('token');
       dispatch({ type: userTypes.SET_UNAUTHENTICATED });
       dispatch(clearErrors());
+      history.push('/');
     })
     .catch(err => {
       console.error(err);
