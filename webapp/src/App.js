@@ -16,19 +16,16 @@ import { logout, getUserData } from './actions/userActions';
 
 /* -- utils -- */
 import getTheme from './utils/theme/theme';
-import { checkTokenStatus } from './utils/helpers/checkTokenStatus';
+import verifyIdToken from './utils/helpers/verifyIdToken';
 
 const App = () => {
   const dispatch = useDispatch();
   const { token } = window.localStorage;
 
   useEffect(() => {
-    const { expired } = checkTokenStatus(token);
-    if (expired === true) {
-      dispatch(logout());
-    } else if (expired === false) {
-      dispatch(getUserData(token));
-    }
+    const valid = verifyIdToken(token);
+    if (valid) dispatch(getUserData(token));
+    else if (!valid) dispatch(logout());
   });
 
   const theme = getTheme();
