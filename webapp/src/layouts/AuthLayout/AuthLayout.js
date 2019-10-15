@@ -19,7 +19,6 @@ import Tab from '@material-ui/core/Tab';
 
 /* -- components -- */
 import Logo from '../../components/UI/Logo';
-import { useSelector } from 'react-redux';
 
 /* -- components -- */
 import useStyles from './AuthLayoutStyles';
@@ -51,7 +50,7 @@ const AuthLayout = props => {
     });
   return (
     <div className="auth-layout">
-      <main className={classes.root}>
+      <main className={classes.main}>
         <Grid container className={classes.grid}>
           <Card className={classes.card}>
             <Hidden xsDown>

@@ -2,7 +2,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export default makeStyles(theme => ({
-  root: {
+  main: {
     overflow: 'hidden',
     height: '100vh',
     display: 'flex',

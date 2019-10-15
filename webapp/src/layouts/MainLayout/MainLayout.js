@@ -8,10 +8,17 @@ import routes from '../../routes/routes';
 /* -- components -- */
 import Navbar from '../../components/Header/Navbar';
 
+import { makeStyles } from '@material-ui/core/styles';
 /* -- styles -- */
-import './MainLayout.scss';
+const useStyles = makeStyles(theme => ({
+  mainLayoutWrapper: {
+    marginTop: theme.spacing(6) + 2, // --> 50px
+  },
+}));
 
 const MainLayout = () => {
+  const classes = useStyles();
+
   const getRoutes = appRoutes =>
     appRoutes.map((route, idx) => {
       if (route.layout === '/main') {
@@ -28,9 +35,9 @@ const MainLayout = () => {
     });
 
   return (
-    <div className="main-layout">
+    <div className={classes.mainLayoutWrapper}>
       <Navbar />
-      <main className="content">
+      <main>
         <Switch>{getRoutes(routes)}</Switch>
       </main>
     </div>
