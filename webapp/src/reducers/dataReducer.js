@@ -6,7 +6,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case dataTypes.FETCH_POSTS:
+    case dataTypes.SET_POSTS:
       return { ...state, posts: action.payload };
     default:
       return state;

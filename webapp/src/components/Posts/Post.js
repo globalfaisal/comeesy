@@ -40,13 +40,13 @@ const Post = ({ post }) => {
               alt={post.user.username}
               src={post.user.imageUrl}
               component={Link}
-              to={`/users/${post.user.username}`}
+              to={`/u/${post.user.username}`}
             />
           }
           title={
             <Typography
               component={Link}
-              to={`/users/${post.user.username}`}
+              to={`/u/${post.user.username}`}
               variant="body1"
               color="primary"
             >{`${post.user.firstname} ${post.user.lastname}`}</Typography>

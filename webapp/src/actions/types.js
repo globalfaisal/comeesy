@@ -12,5 +12,6 @@ export const uiTypes = {
 };
 
 export const dataTypes = {
-  FETCH_POSTS: 'FETCH_POSTS',
+  SET_POSTS: 'SET_POSTS',
+  SET_USER_DATA: 'SET_USER_DATA',
 };

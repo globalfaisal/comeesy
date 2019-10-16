@@ -1,12 +1,12 @@
 import comeesyAPI from '../api/comeesy';
 import { dataTypes } from './types';
 
-export const fetchPosts = () => dispatch => {
+export const getPosts = () => dispatch => {
   comeesyAPI
     .get('/posts')
     .then(response => {
       dispatch({
-        type: dataTypes.FETCH_POSTS,
+        type: dataTypes.SET_POSTS,
         payload: response.data,
       });
     })

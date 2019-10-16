@@ -19,7 +19,7 @@ export const login = formData => dispatch => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
       localStorage.setItem('token', token);
-      dispatch(getUserData(token));
+      dispatch(getUserOwnData(token));
       dispatch(clearErrors());
       history.push('/');
     })
@@ -65,7 +65,7 @@ export const signup = formData => dispatch => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
       localStorage.setItem('token', token);
-      dispatch(getUserData(token));
+      dispatch(getUserOwnData(token));
       dispatch(clearErrors());
       history.push('/');
     })
@@ -75,7 +75,8 @@ export const signup = formData => dispatch => {
     });
 };
 
-export const getUserData = token => dispatch => {
+export const getUserOwnData = token => dispatch => {
+  dispatch({ type: userTypes.LOADING_USER });
   comeesyAPI
     .get('/user', { headers: { Authorization: token } })
     .then(res => {

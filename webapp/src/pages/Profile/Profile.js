@@ -1,26 +1,31 @@
 /* -- libs -- */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 /* -- components -- */
-import UserHeader from '../../components/UserHeader/UserHeader';
+import UserBar from '../../components/UserBar/UserBar';
 
-/* -- styles -- */
-import useStyles from './ProfileStyles';
+const Profile = ({ match }) => {
+  const currentUser = useSelector(state => state.user);
+  // TODO: compare the username param to the user data in store
+  // const otherUser = null;
+  // useEffect(() => {
+  //   const { username } = match.params;
+  //   if (currentUser.credentials.username !== username) {
+  //     console.log('NO');
+  //   }
+  // }, [currentUser.credentials, match.params]);
 
-const Profile = props => {
-  const classes = useStyles();
-  const { user } = useSelector(state => state);
-  if (!user) return null;
   return (
-    <div className={classes.profileWrapper}>
-      <UserHeader />
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum,
-      consectetur adipisci! Quasi sint sapiente eos quo deleniti accusantium,
-      laudantium voluptatem cupiditate officiis, blanditiis dicta nam delectus
-      voluptatum, deserunt pariatur quae?
-    </div>
+    <section className="profile">
+      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae,
+      ducimus!
+    </section>
   );
 };
 
+Profile.propTypes = {
+  match: PropTypes.object,
+};
 export default Profile;

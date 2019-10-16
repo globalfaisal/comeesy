@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 /* -- actions -- */
-import { fetchPosts } from '../../actions/dataActions';
+import { getPosts } from '../../actions/dataActions';
 
 /* -- components -- */
 import Posts from '../../components/Posts/Posts.js';
@@ -21,16 +21,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Home = () => {
+const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts } = useSelector(state => state.data);
 
   useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(getPosts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  // TODO: extract loading logic to a seprate component
+  if (!posts || !posts.length) return 'Loading...';
   return (
     <div className={classes.homeWrapper}>
       <Container>

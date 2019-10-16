@@ -6,7 +6,6 @@ import Post from './Post';
 
 const Posts = ({ posts }) => {
   const renderPosts = () => {
-    // TODO: extract loading logic to a seprate component
     if (!posts || !posts.length) return null;
     return (
       <div className="posts">

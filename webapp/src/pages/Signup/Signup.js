@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* -- styles -- */
-import useStyles from './SignupStyles';
+import useStyles from './styles';
 
 const Signup = () => {
   const classes = useStyles();

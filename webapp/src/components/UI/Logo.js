@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 
 /* -- images -- */
-const logoWhitePath = '../assets/images/logo-white.svg';
-const logoBlackPath = '../assets/images/logo-black.svg';
+import logoWhitePath from '../../assets/images/logo-white.svg';
+import logoBlackPath from '../../assets/images/logo-black.svg';
 
 /* -- styles -- */
 const useStyles = makeStyles({

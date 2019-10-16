@@ -2,10 +2,13 @@ import _ from 'lodash';
 import { userTypes } from '../actions/types';
 
 const INITIAL_STATE = {
-  isAuthenticated: false,
+  /* data */
   credentials: null,
   likes: [],
   notifications: [],
+  /* custom */
+  isAuthenticated: false,
+  isLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,7 +18,13 @@ export default (state = INITIAL_STATE, action) => {
     case userTypes.SET_UNAUTHENTICATED:
       return INITIAL_STATE;
     case userTypes.SET_USER:
-      return { ...state, isAuthenticated: true, ...action.payload };
+      return {
+        isAuthenticated: true,
+        isLoading: false,
+        ...action.payload,
+      };
+    case userTypes.LOADING_USER:
+      return { ...state, isLoading: true };
 
     default:
       return state;

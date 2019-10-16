@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* -- styles -- */
-import useStyles from './LoginStyles';
+import useStyles from './styles';
 
 const Login = () => {
   const classes = useStyles();

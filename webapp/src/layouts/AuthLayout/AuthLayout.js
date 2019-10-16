@@ -20,8 +20,8 @@ import Tab from '@material-ui/core/Tab';
 /* -- components -- */
 import Logo from '../../components/UI/Logo';
 
-/* -- components -- */
-import useStyles from './AuthLayoutStyles';
+/* -- styles -- */
+import useStyles from './styles';
 
 const AuthLayout = props => {
   const classes = useStyles();
