@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-import UserBar from '../../components/UserBar/UserBar';
-import UserProfile from '../../components/UserProfile/UserProfile';
+import ProfileBanner from '../../components/ProfileBanner/ProfileBanner';
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import TabPanel from '../../components/UI/TabPanel';
 
 /* -- mui -- */
@@ -14,6 +14,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -29,7 +31,7 @@ const Profile = ({ location, match: { params }, ...rest }) => {
 
   return (
     <div className={classes.profile}>
-      <UserBar user={user} />
+      <ProfileBanner user={user} />
       <Paper square className={classes.paper}>
         <Tabs
           value={tab}
@@ -40,14 +42,22 @@ const Profile = ({ location, match: { params }, ...rest }) => {
           variant="standard"
           centered
         >
-          <Tab label="Posts" disableRipple className={classes.tab} />
-          <Tab label="Likes" disableRipple className={classes.tab} />
+          <Tab
+            label="Posts"
+            icon={<DnsOutlinedIcon />}
+            className={classes.tab}
+          />
+          <Tab
+            label="Likes"
+            icon={<FavoriteBorderIcon />}
+            className={classes.tab}
+          />
         </Tabs>
       </Paper>
       <Container>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={4}>
-            <UserProfile user={user} />
+            <ProfileCard user={user} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TabPanel active={tab === 0} className={classes.tabPanel}>

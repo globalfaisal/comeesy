@@ -2,8 +2,7 @@
 import { makeStyles } from '@material-ui/core';
 
 export default makeStyles(theme => ({
-  /* Header content */
-  userBar: {
+  profileBanner: {
     height: 160,
     minWidth: '100%',
     backgroundColor: theme.palette.primary.light,
@@ -34,12 +33,11 @@ export default makeStyles(theme => ({
     color: theme.palette.colors.white,
     textTransform: 'capitalize',
   },
-  subtitle: {
-    color: theme.palette.colors.greylight,
-  },
+
   avatar: {
     height: 120,
     width: 120,
+    border: `4px solid ${theme.palette.colors.white}`,
     [theme.breakpoints.down('xs')]: {
       width: 90,
       height: 90,
