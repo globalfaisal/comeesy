@@ -52,7 +52,7 @@ const AuthLayout = props => {
     <div className="auth-layout">
       <main className={classes.main}>
         <Grid container className={classes.grid}>
-          <Card className={classes.card}>
+          <Card className={classes.card} elevation={10}>
             <Hidden xsDown>
               <Grid item sm={6} className={classes.gridLeft} />
             </Hidden>

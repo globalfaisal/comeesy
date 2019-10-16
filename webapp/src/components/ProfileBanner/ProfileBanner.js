@@ -1,6 +1,5 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 /* -- mui -- */
@@ -12,12 +11,12 @@ import Typography from '@material-ui/core/Typography';
 /* -- styles -- */
 import useStyles from './styles';
 
-const UserBar = ({ user }) => {
+const ProfileBanner = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
 
   return (
-    <section className={classes.userBar}>
+    <section className={classes.profileBanner}>
       <Card className={classes.card}>
         <CardHeader
           avatar={
@@ -28,22 +27,17 @@ const UserBar = ({ user }) => {
             />
           }
           title={
-            <Typography variant="h5" className={classes.title}>{`${
+            <Typography variant="h6" className={classes.title}>{`${
               user.firstname
             } ${user.lastname}`}</Typography>
           }
-          // subheader={
-          //   <Typography variant="subtitle1" className={classes.subtitle}>{`@${
-          //     user.username
-          //   }`}</Typography>
-          // }
         />
       </Card>
     </section>
   );
 };
 
-UserBar.propTypes = {
+ProfileBanner.propTypes = {
   user: PropTypes.object.isRequired,
 };
-export default UserBar;
+export default ProfileBanner;

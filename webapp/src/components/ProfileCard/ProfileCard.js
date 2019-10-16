@@ -24,20 +24,20 @@ import Divider from '@material-ui/core/Divider';
 /* -- styles -- */
 import useStyles from './styles';
 
-const UserProfile = ({ user }) => {
+const ProfileCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
 
   const renderContent = ({ bio, location, birthdate, createdAt }) => (
     <section className={classes.UserProfile}>
-      <Card className={classes.card}>
+      <Card className={classes.card} elevation={4}>
         <CardContent>
           <List className={classes.ul}>
             <Fragment>
               <ListItem className={classes.li}>
                 <ListItemText
                   primary={
-                    <Typography variant="body1" color="textPrimary">
+                    <Typography variant="body1" className={classes.title}>
                       @{user.username}
                     </Typography>
                   }
@@ -76,7 +76,7 @@ const UserProfile = ({ user }) => {
   return renderContent(user);
 };
 
-UserProfile.propTypes = {
+ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
 };
-export default UserProfile;
+export default ProfileCard;

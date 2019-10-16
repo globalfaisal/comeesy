@@ -6,6 +6,10 @@ export default makeStyles(theme => ({
   card: {
     minHeight: 200,
   },
+  title: {
+    color: theme.palette.colors.steelblue,
+    marginBottom: 4,
+  },
   ul: {
     padding: 0,
   },
