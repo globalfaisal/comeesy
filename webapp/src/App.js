@@ -6,7 +6,6 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 /* -- layouts -- */
 import AuthLayout from './layouts/AuthLayout/AuthLayout';
 import MainLayout from './layouts/MainLayout/MainLayout';
-import UserLayout from './layouts/UserLayout/UserLayout';
 
 /* -- mui -- */
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,11 +34,11 @@ const App = () => {
       <CssBaseline />
       <Switch>
         <Route exact path="/auth/:page" render={p => <AuthLayout {...p} />} />
-        <Route exact path="/u/:username" render={p => <UserLayout {...p} />} />
+        <Route exact path="/u/:username" render={p => <MainLayout {...p} />} />
         <Route
           exact
           path="/u/:username/:page"
-          render={p => <UserLayout {...p} />}
+          render={p => <MainLayout {...p} />}
         />
         <Route path="/" render={p => <MainLayout {...p} />} />
         <Redirect from="*" to="/" />

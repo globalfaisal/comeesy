@@ -14,7 +14,12 @@ export const formatDateToRelTime = dateString => {
   return dayjs(dateString).fromNow();
 };
 
-export const formatToMonthAndYear = dateString => {
+export const formatToMonthYear = dateString => {
   if (!dateString) return null;
   return `${dayjs(dateString).format('MMMM YYYY')}`;
+};
+
+export const formatToMonthDayYear = dateString => {
+  if (!dateString) return null;
+  return `${dayjs(dateString).format('MMMM DD, YYYY')}`;
 };

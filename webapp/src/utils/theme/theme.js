@@ -24,7 +24,7 @@ export default () =>
         dark: colors.dark,
         grey: colors.grey,
         greylight: colors.greylight,
-        lightsteelblue: colors.lightsteelblue,
+        steelblue: colors.steelblue,
       },
     },
     typography: {

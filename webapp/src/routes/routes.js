@@ -14,14 +14,7 @@ export default [
     path: '/u/:username',
     name: 'Profile',
     component: Profile,
-    layout: '/user',
-    protected: true,
-  },
-  {
-    path: '/u/:username/:page',
-    name: 'Profile',
-    component: Profile,
-    layout: '/user',
+    layout: '/main',
     protected: true,
   },
   {

@@ -23,6 +23,9 @@ const useStyle = makeStyles(theme => ({
       marginTop: theme.spacing(2),
     },
   },
+  title: {
+    textTransform: 'capitalize',
+  },
   createdAt: {
     display: 'block',
     marginTop: -theme.spacing(0.5),
@@ -49,6 +52,7 @@ const Post = ({ post }) => {
               to={`/u/${post.user.username}`}
               variant="body1"
               color="primary"
+              className={classes.title}
             >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
           }
           subheader={

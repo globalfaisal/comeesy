@@ -21,5 +21,5 @@ export const colors = {
   dark: '#444444',
   greylight: '#f0f2f5',
   grey: '#bdbdbd',
-  lightsteelblue: '#c3c4db',
+  steelblue: '#9294a9',
 };

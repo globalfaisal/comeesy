@@ -3,20 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-/* -- utils -- */
-// import history from '../../utils/history/history';
-import { formatToMonthAndYear } from '../../utils/helpers/dates';
-
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
-// import Tabs from '@material-ui/core/Tabs';
-// import Tab from '@material-ui/core/Tab';
 
 /* -- styles -- */
-import useStyles from './styles.js';
+import useStyles from './styles';
 
 const UserBar = ({ user }) => {
   const classes = useStyles();
@@ -38,11 +32,11 @@ const UserBar = ({ user }) => {
               user.firstname
             } ${user.lastname}`}</Typography>
           }
-          subheader={
-            <Typography variant="caption" color="textPrimary">
-              Joined {formatToMonthAndYear(user.createdAt)}
-            </Typography>
-          }
+          // subheader={
+          //   <Typography variant="subtitle1" className={classes.subtitle}>{`@${
+          //     user.username
+          //   }`}</Typography>
+          // }
         />
       </Card>
     </section>

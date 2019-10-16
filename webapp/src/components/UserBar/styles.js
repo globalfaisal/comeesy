@@ -32,6 +32,10 @@ export default makeStyles(theme => ({
   },
   title: {
     color: theme.palette.colors.white,
+    textTransform: 'capitalize',
+  },
+  subtitle: {
+    color: theme.palette.colors.greylight,
   },
   avatar: {
     height: 120,
