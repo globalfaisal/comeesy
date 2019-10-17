@@ -35,19 +35,25 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.user.credentials);
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { isLoading, isAuthenticated, credentials } = useSelector(
+    state => state.user
+  );
 
-  const { isAuthenticated } = useSelector(state => state.user);
   return (
     <AppBar className={classes.appBar}>
       <Toolbar variant="dense">
         <Logo variant="white" />
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
+          {' '}
           {isAuthenticated && (
-            <UserMenu user={user} onLogout={() => dispatch(logout())} />
+            <UserMenu
+              user={credentials}
+              onLogout={() => dispatch(logout())}
+              skeleton={isLoading}
+            />
           )}
           {!isAuthenticated && (
             <React.Fragment>

@@ -1,5 +1,5 @@
 import comeesyAPI from '../api/comeesy';
-import { userTypes, uiTypes } from './types';
+import { userTypes } from './types';
 import history from '../utils/history/history';
 
 import { setErrors, clearErrors, loadingUI } from './UIActions';
@@ -35,6 +35,7 @@ export const logout = () => dispatch => {
   comeesyAPI
     .get('/logout', { headers: { Authorization: token } })
     .then(res => {
+      console.log(res.data.message);
       // Delete token from local storage
       window.localStorage.removeItem('token');
       dispatch({ type: userTypes.SET_UNAUTHENTICATED });
@@ -47,7 +48,7 @@ export const logout = () => dispatch => {
 };
 
 export const signup = formData => dispatch => {
-  dispatch({ type: uiTypes.LOADING_UI });
+  dispatch(loadingUI());
 
   const userData = {
     email: formData.email || '',
@@ -81,6 +82,7 @@ export const getUserOwnData = token => dispatch => {
     .get('/user', { headers: { Authorization: token } })
     .then(res => {
       dispatch({ type: userTypes.SET_USER, payload: res.data });
+      dispatch({ type: userTypes.SET_AUTHENTICATED });
     })
     .catch(err => {
       console.error(err);

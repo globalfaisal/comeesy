@@ -14,8 +14,13 @@ export default makeStyles(theme => ({
   },
 
   tab: {
-    minWidth: 60,
-    maxWidth: 60,
+    minWidth: 80,
+    '& span': {
+      flexDirection: 'row',
+      '& svg': {
+        marginRight: 4,
+      },
+    },
     '&:last-child': {
       marginLeft: 50,
     },

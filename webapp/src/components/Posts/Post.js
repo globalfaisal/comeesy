@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -25,6 +25,11 @@ const useStyle = makeStyles(theme => ({
   },
   title: {
     textTransform: 'capitalize',
+    marginRight: 3,
+    '& + span': {
+      color: theme.palette.colors.steelblue,
+      fontWeight: 300,
+    },
   },
   createdAt: {
     display: 'block',
@@ -47,13 +52,16 @@ const Post = ({ post }) => {
             />
           }
           title={
-            <Typography
-              component={Link}
-              to={`/u/${post.user.username}`}
-              variant="body1"
-              color="primary"
-              className={classes.title}
-            >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
+            <Fragment>
+              <Typography
+                component={Link}
+                to={`/u/${post.user.username}`}
+                variant="subtitle2"
+                color="primary"
+                className={classes.title}
+              >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
+              <span>{`@${post.user.username}`}</span>
+            </Fragment>
           }
           subheader={
             <Typography

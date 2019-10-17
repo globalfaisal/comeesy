@@ -49,48 +49,46 @@ const AuthLayout = props => {
       return null;
     });
   return (
-    <div className="auth-layout">
-      <main className={classes.main}>
-        <Grid container className={classes.grid}>
-          <Card className={classes.card} elevation={10}>
-            <Hidden xsDown>
-              <Grid item sm={6} className={classes.gridLeft} />
-            </Hidden>
-            <Grid item xs={12} sm={6} className={classes.gridRight}>
-              <CardContent className={classes.cardContent}>
-                <Logo variant="black" title="⬅ Back to home" />
-                <Tabs
-                  value={selectedTab}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  component="nav"
-                  variant="standard"
-                >
-                  <Tab
-                    component={Link}
-                    to="/auth/login"
-                    label="Log In"
-                    disableRipple
-                    classes={{ root: classes.tab }}
-                  />
-                  <Tab
-                    component={Link}
-                    to="/auth/signup"
-                    label="Sign Up"
-                    disableRipple
-                    classes={{ root: classes.tab }}
-                  />
-                </Tabs>
-                <div role="tabpanel" className={classes.tabPanel}>
-                  {/* Render pages here. */}
-                  <Switch>{getRoutes(routes)}</Switch>
-                </div>
-              </CardContent>
-            </Grid>
-          </Card>
-        </Grid>
-      </main>
-    </div>
+    <main className={classes.authLayout}>
+      <Grid container className={classes.grid}>
+        <Card className={classes.card} elevation={10}>
+          <Hidden xsDown>
+            <Grid item sm={6} className={classes.gridLeft} />
+          </Hidden>
+          <Grid item xs={12} sm={6} className={classes.gridRight}>
+            <CardContent className={classes.cardContent}>
+              <Logo variant="black" title="⬅ Back to home" />
+              <Tabs
+                value={selectedTab}
+                indicatorColor="primary"
+                textColor="primary"
+                component="nav"
+                variant="standard"
+              >
+                <Tab
+                  component={Link}
+                  to="/auth/login"
+                  label="Log In"
+                  disableRipple
+                  classes={{ root: classes.tab }}
+                />
+                <Tab
+                  component={Link}
+                  to="/auth/signup"
+                  label="Sign Up"
+                  disableRipple
+                  classes={{ root: classes.tab }}
+                />
+              </Tabs>
+              <div role="tabpanel" className={classes.tabPanel}>
+                {/* Render pages here. */}
+                <Switch>{getRoutes(routes)}</Switch>
+              </div>
+            </CardContent>
+          </Grid>
+        </Card>
+      </Grid>
+    </main>
   );
 };
 

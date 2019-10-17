@@ -2,8 +2,7 @@
 import { makeStyles } from '@material-ui/styles';
 
 export default makeStyles(theme => ({
-  main: {
-    overflow: 'hidden',
+  authLayout: {
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
@@ -30,9 +29,10 @@ export default makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     minHeight: 580,
-    maxHeight: 580,
-    borderRadius: 0,
     background: theme.palette.colors.white,
+    [theme.breakpoints.down('xs')]: {
+      boxShadow: 'none',
+    },
   },
   cardContent: {
     height: '100%',
@@ -42,6 +42,9 @@ export default makeStyles(theme => ({
     padding: theme.spacing(4),
     [theme.breakpoints.down('sm')]: {
       margin: 'auto',
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(2),
     },
   },
   logoWrapper: {

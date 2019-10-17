@@ -4,7 +4,6 @@ import { userTypes } from '../actions/types';
 const INITIAL_STATE = {
   /* data */
   credentials: null,
-  likes: [],
   notifications: [],
   /* custom */
   isAuthenticated: false,
@@ -19,7 +18,7 @@ export default (state = INITIAL_STATE, action) => {
       return INITIAL_STATE;
     case userTypes.SET_USER:
       return {
-        isAuthenticated: true,
+        ...state,
         isLoading: false,
         ...action.payload,
       };

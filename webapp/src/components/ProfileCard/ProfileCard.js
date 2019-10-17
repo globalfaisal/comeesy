@@ -30,7 +30,7 @@ const ProfileCard = ({ user }) => {
 
   const renderContent = ({ bio, location, birthdate, createdAt }) => (
     <section className={classes.UserProfile}>
-      <Card className={classes.card} elevation={4}>
+      <Card className={classes.card} elevation={1}>
         <CardContent>
           <List className={classes.ul}>
             <Fragment>

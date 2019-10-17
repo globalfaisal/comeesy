@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -43,13 +43,19 @@ const Profile = ({ location, match: { params }, ...rest }) => {
           centered
         >
           <Tab
-            label="Posts"
-            icon={<DnsOutlinedIcon />}
+            label={
+              <Fragment>
+                <DnsOutlinedIcon fontSize="small" /> Posts
+              </Fragment>
+            }
             className={classes.tab}
           />
           <Tab
-            label="Likes"
-            icon={<FavoriteBorderIcon />}
+            label={
+              <Fragment>
+                <FavoriteBorderIcon fontSize="small" /> Likes
+              </Fragment>
+            }
             className={classes.tab}
           />
         </Tabs>
