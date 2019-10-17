@@ -24,20 +24,22 @@ const useStyles = makeStyles(theme => ({
 const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { posts } = useSelector(state => state.data);
+  const {
+    feed: { posts },
+    isLoading,
+  } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(getPosts());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // TODO: extract loading logic to a seprate component
-  if (!posts || !posts.length) return 'Loading...';
+
   return (
     <div className={classes.homeWrapper}>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <Posts posts={posts} />
+            <Posts posts={posts} loading={isLoading} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>

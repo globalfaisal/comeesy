@@ -1,8 +1,8 @@
 export const userTypes = {
   SET_AUTHENTICATED: 'SET_AUTHENTICATED',
   SET_UNAUTHENTICATED: 'SET_UNAUTHENTICATED',
-  LOADING_USER: 'LOADING_USER',
   SET_USER: 'SET_USER',
+  LOADING_USER: 'LOADING_USER',
 };
 
 export const uiTypes = {
@@ -14,5 +14,6 @@ export const uiTypes = {
 
 export const dataTypes = {
   SET_POSTS: 'SET_POSTS',
-  SET_USER_DATA: 'SET_USER_DATA',
+  SET_PROFILE: 'SET_PROFILE',
+  LOADING_DATA: 'LOADING_DATA',
 };

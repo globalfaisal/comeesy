@@ -47,15 +47,10 @@ const Navbar = () => {
         <Logo variant="white" />
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
-          {' '}
           {isAuthenticated && (
-            <UserMenu
-              user={credentials}
-              onLogout={() => dispatch(logout())}
-              skeleton={isLoading}
-            />
+            <UserMenu user={credentials} onLogout={() => dispatch(logout())} />
           )}
-          {!isAuthenticated && (
+          {!isAuthenticated && !isLoading && (
             <React.Fragment>
               <Button
                 component={Link}
