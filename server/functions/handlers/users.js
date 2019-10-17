@@ -154,7 +154,7 @@ exports.addUserDetails = (req, res) => {
 };
 
 // Get current logged-in user data
-exports.getCurrentUserData = (req, res) => {
+exports.getUserOwnData = (req, res) => {
   const userData = {};
   db.doc(`/users/${req.user.username}`)
     .get()
@@ -165,21 +165,21 @@ exports.getCurrentUserData = (req, res) => {
       userData.credentials = doc.data();
 
       // Get all the posts user created
-      const postsSnapshot = await db
-        .collection('posts')
-        .where('user.username', '==', req.user.username)
-        .orderBy('createdAt', 'desc')
-        .get();
-      userData.posts = postsSnapshot.docs.map(doc => doc.data());
+      // const postsSnapshot = await db
+      //   .collection('posts')
+      //   .where('user.username', '==', req.user.username)
+      //   .orderBy('createdAt', 'desc')
+      //   .get();
+      // userData.posts = postsSnapshot.docs.map(doc => doc.data());
 
       // Get all like user made
-      const likesSnapshot = await db
-        .collection('likes')
-        .where('user.username', '==', req.user.username)
-        .orderBy('createdAt', 'desc')
-        .get();
+      // const likesSnapshot = await db
+      //   .collection('likes')
+      //   .where('user.username', '==', req.user.username)
+      //   .orderBy('createdAt', 'desc')
+      //   .get();
 
-      userData.likes = likesSnapshot.docs.map(doc => doc.data());
+      // userData.likes = likesSnapshot.docs.map(doc => doc.data());
 
       // Get last 100 notifications user received
       const notificationsSnapshot = await db
@@ -220,6 +220,16 @@ exports.getUserData = (req, res) => {
         .get();
 
       userData.posts = postsSnapshot.docs.map(doc => doc.data());
+
+      // Get all like user made
+      const likesSnapshot = await db
+        .collection('likes')
+        .where('user.username', '==', req.user.username)
+        .orderBy('createdAt', 'desc')
+        .get();
+
+      userData.likes = likesSnapshot.docs.map(doc => doc.data());
+
       return res.status(200).json(userData);
     })
     .catch(err => {

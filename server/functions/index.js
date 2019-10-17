@@ -20,7 +20,7 @@ const {
   logout,
   signup,
   getUserData,
-  getCurrentUserData,
+  getUserOwnData,
   addUserDetails,
   uploadUserAvatar,
 } = require('./handlers/users');
@@ -39,19 +39,18 @@ const {
 const { onUserAvatarChange } = require('./triggers/users');
 
 /* Enable CORS */
+app.use(cors(/* corsOptions*/)); // by default allows requests from any origin.
 
 //TODO: for Production change whitelist of allowed origin and pass to cors()
-const whitelistOrigins = ['http://localhost:3000'];
-const corsOptions = {
-  origin: (origin, callback) => {
-    // eslint-disable-next-line callback-return
-    if (whitelistOrigins.includes(origin)) callback(null, true);
-    // eslint-disable-next-line callback-return
-    else callback(new Error('Not allowed by CORS'));
-  },
-};
-
-app.use(cors()); // by default allows requests from any origin.
+// const whitelistOrigins = ['http://localhost:3000'];
+// const corsOptions = {
+//   origin: (origin, callback) => {
+//     // eslint-disable-next-line callback-return
+//     if (whitelistOrigins.includes(origin)) callback(null, true);
+//     // eslint-disable-next-line callback-return
+//     else callback(new Error('Not allowed by CORS'));
+//   },
+// };
 
 /* Setup all api routes */
 
@@ -84,7 +83,7 @@ app.post('/login', login);
 app.get('/logout', logout);
 //TODO: add login options with google and facebook
 
-app.get('/user', fbAuth, getCurrentUserData);
+app.get('/user', fbAuth, getUserOwnData);
 app.get('/user/:username', getUserData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/avatar', fbAuth, uploadUserAvatar);
