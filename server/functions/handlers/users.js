@@ -224,7 +224,7 @@ exports.getUserData = (req, res) => {
       // Get all like user made
       const likesSnapshot = await db
         .collection('likes')
-        .where('user.username', '==', req.user.username)
+        .where('user.username', '==', req.params.username)
         .orderBy('createdAt', 'desc')
         .get();
 
