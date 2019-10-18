@@ -18,7 +18,7 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const SkeletonPost = ({ show = 1 }) => {
+const PostSkeleton = ({ show = 1 }) => {
   const classes = useStyle();
   const renderContent = () => {
     let counter = 0;
@@ -50,7 +50,7 @@ const SkeletonPost = ({ show = 1 }) => {
   return <Fragment>{renderContent()}</Fragment>;
 };
 
-SkeletonPost.propTypes = {
+PostSkeleton.propTypes = {
   show: PropTypes.number.isRequired,
 };
-export default SkeletonPost;
+export default PostSkeleton;

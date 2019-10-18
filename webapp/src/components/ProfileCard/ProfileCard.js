@@ -28,7 +28,7 @@ const ProfileCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
 
-  const renderContent = ({ bio, location, birthdate, createdAt }) => (
+  const renderContent = ({ username, bio, location, birthdate, createdAt }) => (
     <section className={classes.UserProfile}>
       <Card className={classes.card} elevation={1}>
         <CardContent>
@@ -38,10 +38,10 @@ const ProfileCard = ({ user }) => {
                 <ListItemText
                   primary={
                     <Typography variant="body1" className={classes.title}>
-                      @{user.username}
+                      @{username}
                     </Typography>
                   }
-                  secondary={user.bio}
+                  secondary={bio}
                 />
               </ListItem>
               <Divider className={classes.divider} />

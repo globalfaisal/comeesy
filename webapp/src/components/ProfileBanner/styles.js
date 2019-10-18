@@ -33,14 +33,15 @@ export default makeStyles(theme => ({
     color: theme.palette.colors.white,
     textTransform: 'capitalize',
   },
-
   avatar: {
     height: 120,
     width: 120,
     border: `4px solid ${theme.palette.colors.white}`,
+    backgroundColor: theme.palette.colors.greylight,
     [theme.breakpoints.down('xs')]: {
       width: 90,
       height: 90,
+      border: `2px solid ${theme.palette.colors.white}`,
     },
   },
 }));

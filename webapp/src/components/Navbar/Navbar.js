@@ -1,7 +1,7 @@
 /* -- libs -- */
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import Link from 'react-router-dom/Link';
+import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { logout } from '../../actions/userActions';

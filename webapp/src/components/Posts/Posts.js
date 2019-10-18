@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 
 /* -- components -- */
 import Post from './Post';
-import SkeletonPost from '../UI/SkeletonPost';
+import PostSkeleton from '../UI/PostSkeleton';
 
 const Posts = ({ posts = [], loading = false }) => {
-  if (loading) return <SkeletonPost show={5} />;
+  if (loading) return <PostSkeleton show={5} />;
   const renderPosts = () => {
     if (!loading && posts.length) {
       return posts.map((post, key) => <Post key={key} post={post} />);

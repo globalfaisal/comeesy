@@ -3,6 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 /* -- utils-- */
 import { colors } from './colors';
+import { ThemeProvider } from '@material-ui/styles';
 
 export default () =>
   createMuiTheme({
@@ -64,6 +65,11 @@ export default () =>
       MuiMenu: {
         paper: {
           borderRadius: 0,
+        },
+      },
+      MuiSkeleton: {
+        root: {
+          backgroundColor: colors.greylight,
         },
       },
     },
