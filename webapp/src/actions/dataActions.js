@@ -21,7 +21,7 @@ export const getUserData = username => dispatch => {
   comeesyAPI
     .get(`/user/${username}`)
     .then(res => {
-      dispatch({ type: dataTypes.SET_PROFILE, payload: res.data });
+      dispatch({ type: dataTypes.SET_USER_DATA, payload: res.data });
     })
     .catch(err => {
       console.error(err);

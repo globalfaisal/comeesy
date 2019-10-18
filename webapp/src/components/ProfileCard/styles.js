@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core';
 export default makeStyles(theme => ({
   /* Header content */
   card: {
-    minHeight: 300,
+    minHeight: 200,
   },
   title: {
     color: theme.palette.colors.steelblue,

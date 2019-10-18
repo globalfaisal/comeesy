@@ -28,7 +28,8 @@ const ProfileCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
 
-  const renderContent = ({ username, bio, location, birthdate, createdAt }) => (
+  const { username, bio, location, birthdate, createdAt } = user;
+  return (
     <section className={classes.UserProfile}>
       <Card className={classes.card} elevation={1}>
         <CardContent>
@@ -73,7 +74,6 @@ const ProfileCard = ({ user }) => {
       </Card>
     </section>
   );
-  return renderContent(user);
 };
 
 ProfileCard.propTypes = {

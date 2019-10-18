@@ -164,22 +164,14 @@ exports.getUserOwnData = (req, res) => {
       // Get user credentials
       userData.credentials = doc.data();
 
-      // Get all the posts user created
-      // const postsSnapshot = await db
-      //   .collection('posts')
-      //   .where('user.username', '==', req.user.username)
-      //   .orderBy('createdAt', 'desc')
-      //   .get();
-      // userData.posts = postsSnapshot.docs.map(doc => doc.data());
-
       // Get all like user made
-      // const likesSnapshot = await db
-      //   .collection('likes')
-      //   .where('user.username', '==', req.user.username)
-      //   .orderBy('createdAt', 'desc')
-      //   .get();
+      const likesSnapshot = await db
+        .collection('likes')
+        .where('user.username', '==', req.user.username)
+        .orderBy('createdAt', 'desc')
+        .get();
 
-      // userData.likes = likesSnapshot.docs.map(doc => doc.data());
+      userData.likes = likesSnapshot.docs.map(doc => doc.data());
 
       // Get last 100 notifications user received
       const notificationsSnapshot = await db
@@ -220,15 +212,6 @@ exports.getUserData = (req, res) => {
         .get();
 
       userData.posts = postsSnapshot.docs.map(doc => doc.data());
-
-      // Get all like user made
-      const likesSnapshot = await db
-        .collection('likes')
-        .where('user.username', '==', req.params.username)
-        .orderBy('createdAt', 'desc')
-        .get();
-
-      userData.likes = likesSnapshot.docs.map(doc => doc.data());
 
       return res.status(200).json(userData);
     })

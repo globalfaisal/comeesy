@@ -24,10 +24,7 @@ const useStyles = makeStyles(theme => ({
 const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {
-    feed: { posts },
-    isLoading,
-  } = useSelector(state => state.data);
+  const { posts, isLoading } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(getPosts());

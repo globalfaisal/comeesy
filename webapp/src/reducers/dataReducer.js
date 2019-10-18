@@ -1,13 +1,10 @@
 import { dataTypes } from '../actions/types.js';
 
 const INITIAL_STATE = {
-  feed: {
+  posts: [],
+  user: {
+    credentials: null,
     posts: [],
-  },
-  profile: {
-    user: null,
-    posts: [],
-    likes: [],
   },
   isLoading: false,
 };
@@ -17,18 +14,13 @@ export default (state = INITIAL_STATE, action) => {
     case dataTypes.SET_POSTS:
       return {
         ...state,
-        feed: { ...state.feed, posts: action.payload },
+        posts: action.payload,
         isLoading: false,
       };
-    case dataTypes.SET_PROFILE:
+    case dataTypes.SET_USER_DATA:
       return {
         ...state,
-        profile: {
-          ...state.profile,
-          user: action.payload.credentials,
-          posts: action.payload.posts,
-          likes: action.payload.likes,
-        },
+        user: { ...state.user, ...action.payload },
         isLoading: false,
       };
     case dataTypes.LOADING_DATA:
