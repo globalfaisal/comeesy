@@ -7,8 +7,8 @@ import PropTypes from 'prop-types';
 import { getUserData } from '../../actions/dataActions';
 
 /* -- components -- */
-import ProfileBanner from '../../components/ProfileBanner/ProfileBanner';
-import ProfileCard from '../../components/ProfileCard/ProfileCard';
+import ProfileCover from '../../components/Profile/ProfileCover/ProfileCover';
+import ProfileCard from '../../components/Profile/ProfileCard/ProfileCard';
 import Posts from '../../components/Posts/Posts';
 
 /* -- mui -- */
@@ -32,10 +32,9 @@ const Profile = ({ match: { params } }) => {
     dispatch(getUserData(params.username));
   }, [dispatch, params.username]);
 
-  if (credentials === null && isLoading) return 'Loading...';
   return (
     <div className={classes.profile}>
-      <ProfileBanner user={credentials} />
+      <ProfileCover user={credentials} loading={isLoading} />
       <Container>
         <Grid container spacing={3} className={classes.grid}>
           <Grid item xs={12} sm={5} md={3}>
@@ -47,7 +46,7 @@ const Profile = ({ match: { params } }) => {
                 Posts
               </Typography>
             </Hidden>
-            {posts.length > 0 ? <Posts posts={posts} /> : 'No posts yet'}
+            <Posts posts={posts} loading={isLoading} />
           </Grid>
         </Grid>
       </Container>

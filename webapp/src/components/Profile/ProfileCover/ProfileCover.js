@@ -7,16 +7,16 @@ import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 /* -- styles -- */
 import useStyles from './styles';
 
-const ProfileBanner = ({ user }) => {
+const ProfileCover = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
-
   return (
-    <section className={classes.profileBanner}>
+    <section className={classes.profileCover}>
       <Card className={classes.card}>
         <CardHeader
           avatar={
@@ -37,7 +37,7 @@ const ProfileBanner = ({ user }) => {
   );
 };
 
-ProfileBanner.propTypes = {
+ProfileCover.propTypes = {
   user: PropTypes.object.isRequired,
 };
-export default ProfileBanner;
+export default ProfileCover;

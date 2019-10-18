@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {
   formatToMonthYear,
   formatToMonthDayYear,
-} from '../../utils/helpers/dates';
+} from '../../../utils/helpers/dates';
 
 /* -- mui -- */
 import Card from '@material-ui/core/Card';
@@ -20,6 +20,7 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
 import Divider from '@material-ui/core/Divider';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -27,7 +28,6 @@ import useStyles from './styles';
 const ProfileCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
-
   const { username, bio, location, birthdate, createdAt } = user;
   return (
     <section className={classes.UserProfile}>

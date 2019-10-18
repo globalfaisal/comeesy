@@ -2,7 +2,7 @@
 import { makeStyles } from '@material-ui/core';
 
 export default makeStyles(theme => ({
-  profileBanner: {
+  profileCover: {
     minWidth: '100%',
     height: 160,
     backgroundColor: theme.palette.primary.light,
