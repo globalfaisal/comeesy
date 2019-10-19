@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 
 /* -- components -- */
 import Post from './Post';
-import PostSkeleton from '../UI/PostSkeleton';
+import SkeletonCard from '../UI/SkeletonCard';
 import EmptyData from '../UI/EmptyData';
 
 /* -- images -- */
 import imagePath from '../../assets/images/empty-data.svg';
 
 const Posts = ({ posts = [], loading = false }) => {
-  if (loading) return <PostSkeleton show={3} />;
+  if (loading) return <SkeletonCard count={3} />;
   const renderPosts = () => {
     if (!loading && posts.length) {
       return posts.map((post, key) => <Post key={key} post={post} />);

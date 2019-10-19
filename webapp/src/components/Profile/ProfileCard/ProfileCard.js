@@ -8,6 +8,8 @@ import {
   formatToMonthDayYear,
 } from '../../../utils/helpers/dates';
 
+/* -- components -- */
+import SkeletonCard from '../../UI/SkeletonCard';
 /* -- mui -- */
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -20,63 +22,70 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
 import Divider from '@material-ui/core/Divider';
-import Skeleton from '@material-ui/lab/Skeleton';
 
 /* -- styles -- */
 import useStyles from './styles';
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user, loading }) => {
   const classes = useStyles();
-  if (!user) return null;
-  const { username, bio, location, birthdate, createdAt } = user;
-  return (
-    <section className={classes.UserProfile}>
-      <Card className={classes.card} elevation={1}>
-        <CardContent>
-          <List className={classes.ul}>
-            <Fragment>
-              <ListItem className={classes.li}>
-                <ListItemText
-                  primary={
-                    <Typography variant="body1" className={classes.title}>
-                      @{username}
-                    </Typography>
-                  }
-                  secondary={bio}
-                />
-              </ListItem>
-              <Divider className={classes.divider} />
-            </Fragment>
-            {location && (
-              <ListItem className={classes.li} dense>
-                <HomeOutlinedIcon className={classes.liIcon} />
-                <ListItemText>Lives in {user.location}</ListItemText>
-              </ListItem>
-            )}
-            {birthdate && (
-              <ListItem className={classes.li} dense>
-                <CakeOutlinedIcon className={classes.liIcon} />
-                <ListItemText>
-                  Born {formatToMonthDayYear(user.birthdate)}
-                </ListItemText>
-              </ListItem>
-            )}
-            {createdAt && (
-              <ListItem className={classes.li} dense>
-                <WatchLaterOutlinedIcon className={classes.liIcon} />
-                <ListItemText>
-                  Joined {formatToMonthYear(createdAt)}
-                </ListItemText>
-              </ListItem>
-            )}
-          </List>
-        </CardContent>
-      </Card>
-    </section>
-  );
+
+  const renderContent = () => {
+    if (loading) {
+      return <SkeletonCard header={false} className={classes.card} />;
+    }
+    if (!loading && user) {
+      const { username, bio, location, birthdate, createdAt } = user;
+      return (
+        <Card className={classes.card} elevation={1}>
+          <CardContent>
+            <List className={classes.ul}>
+              <Fragment>
+                <ListItem className={classes.li}>
+                  <ListItemText
+                    primary={
+                      <Typography variant="body1" className={classes.title}>
+                        @{username}
+                      </Typography>
+                    }
+                    secondary={bio}
+                  />
+                </ListItem>
+                <Divider className={classes.divider} />
+              </Fragment>
+              {location && (
+                <ListItem className={classes.li} dense>
+                  <HomeOutlinedIcon className={classes.liIcon} />
+                  <ListItemText>Lives in {user.location}</ListItemText>
+                </ListItem>
+              )}
+              {birthdate && (
+                <ListItem className={classes.li} dense>
+                  <CakeOutlinedIcon className={classes.liIcon} />
+                  <ListItemText>
+                    Born {formatToMonthDayYear(user.birthdate)}
+                  </ListItemText>
+                </ListItem>
+              )}
+              {createdAt && (
+                <ListItem className={classes.li} dense>
+                  <WatchLaterOutlinedIcon className={classes.liIcon} />
+                  <ListItemText>
+                    Joined {formatToMonthYear(createdAt)}
+                  </ListItemText>
+                </ListItem>
+              )}
+            </List>
+          </CardContent>
+        </Card>
+      );
+    }
+  };
+
+  return <section className={classes.UserProfile}>{renderContent()}</section>;
 };
 
 ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
+  loading: PropTypes.bool,
 };
 export default ProfileCard;

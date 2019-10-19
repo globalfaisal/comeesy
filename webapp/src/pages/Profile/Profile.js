@@ -38,7 +38,7 @@ const Profile = ({ match: { params } }) => {
       <Container>
         <Grid container spacing={3} className={classes.grid}>
           <Grid item xs={12} sm={5} md={3}>
-            <ProfileCard user={credentials} />
+            <ProfileCard user={credentials} loading={isLoading} />
           </Grid>
           <Grid item xs={12} sm={7}>
             <Hidden smUp>

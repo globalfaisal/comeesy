@@ -12,24 +12,31 @@ import Skeleton from '@material-ui/lab/Skeleton';
 /* -- styles -- */
 import useStyles from './styles';
 
-const ProfileCover = ({ user }) => {
+const ProfileCover = ({ user, loading }) => {
   const classes = useStyles();
-  if (!user) return null;
   return (
     <section className={classes.profileCover}>
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            <Avatar
-              alt={user.username}
-              src={user.imageUrl}
-              className={classes.avatar}
-            />
+            !loading && user ? (
+              <Avatar
+                alt={user.username}
+                src={user.imageUrl}
+                className={classes.avatar}
+              />
+            ) : (
+              <Skeleton classes={{ root: classes.avatar }} variant="circle" />
+            )
           }
           title={
-            <Typography variant="h6" className={classes.title}>{`${
-              user.firstname
-            } ${user.lastname}`}</Typography>
+            !loading && user ? (
+              <Typography variant="h6" className={classes.title}>{`${
+                user.firstname
+              } ${user.lastname}`}</Typography>
+            ) : (
+              <Skeleton width={130} height={12} variant="text" />
+            )
           }
         />
       </Card>
@@ -39,5 +46,6 @@ const ProfileCover = ({ user }) => {
 
 ProfileCover.propTypes = {
   user: PropTypes.object.isRequired,
+  loading: PropTypes.bool,
 };
 export default ProfileCover;

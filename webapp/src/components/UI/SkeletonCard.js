@@ -1,6 +1,7 @@
 /* -- libs -- */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,39 +19,43 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const PostSkeleton = ({ show = 1 }) => {
+const SkeletonCard = ({ count = 1, header = true, className }) => {
   const classes = useStyle();
   const renderContent = () => {
-    let counter = 0;
+    let num = 0;
     const post = [];
 
-    while (counter < show) {
+    while (num < count) {
       post.push(
-        <Card className={classes.skeleton} key={counter}>
-          <CardHeader
-            avatar={<Skeleton variant="circle" width={40} height={40} />}
-            title={
-              <Fragment>
-                <Skeleton height={6} width={120} />
-              </Fragment>
-            }
-            subheader={<Skeleton height={4} width={40} />}
-          />
+        <Card className={clsx(classes.skeleton, className)} key={num}>
+          {header && (
+            <CardHeader
+              avatar={<Skeleton variant="circle" width={40} height={40} />}
+              title={
+                <Fragment>
+                  <Skeleton height={6} width={120} />
+                </Fragment>
+              }
+              subheader={<Skeleton height={4} width={40} />}
+            />
+          )}
           <CardContent>
-            <Skeleton height={6} />
-            <Skeleton height={6} width="80%" />
+            <Skeleton height={6} width="60" />
             <Skeleton height={6} width="60%" />
+            <Skeleton height={6} width="40%" />
           </CardContent>
         </Card>
       );
-      counter += 1;
+      num += 1;
     }
     return post;
   };
   return <Fragment>{renderContent()}</Fragment>;
 };
 
-PostSkeleton.propTypes = {
-  show: PropTypes.number.isRequired,
+SkeletonCard.propTypes = {
+  count: PropTypes.number,
+  header: PropTypes.bool,
+  className: PropTypes.string,
 };
-export default PostSkeleton;
+export default SkeletonCard;

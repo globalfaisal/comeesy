@@ -62,7 +62,7 @@ const UserMenu = ({ user, onLogout }) => {
         </MenuItem>
         <MenuItem
           component={Link}
-          to="/u/settings"
+          to="/settings/account"
           divider
           onClick={onCloseMenu}
         >
