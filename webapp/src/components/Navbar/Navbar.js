@@ -11,7 +11,7 @@ import Logo from '../UI/Logo';
 import UserMenu from './UserMenu';
 
 /* -- mui -- */
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';

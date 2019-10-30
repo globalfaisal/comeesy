@@ -15,7 +15,7 @@ export default [
     name: 'Profile',
     component: Profile,
     layout: '/main',
-    protected: true,
+    protected: false,
   },
   {
     path: '/login',
