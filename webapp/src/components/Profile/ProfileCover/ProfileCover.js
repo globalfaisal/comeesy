@@ -10,40 +10,32 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Skeleton from '@material-ui/lab/Skeleton';
 import EditIcon from '@material-ui/icons/Edit';
 
 /* -- styles -- */
 import useStyles from './styles';
 
-const ProfileCover = ({ user, loading = false, canEdit = false }) => {
+const ProfileCover = ({ user, canEdit = false }) => {
   const classes = useStyles();
+  if (!user) return null;
   return (
     <section className={classes.profileCover}>
       <Card className={classes.card}>
         <CardHeader
           avatar={
-            !loading && user ? (
-              <Avatar
-                alt={user.username}
-                src={user.imageUrl}
-                className={classes.avatar}
-              />
-            ) : (
-              <Skeleton classes={{ root: classes.avatar }} variant="circle" />
-            )
+            <Avatar
+              alt={user.username}
+              src={user.imageUrl}
+              className={classes.avatar}
+            />
           }
           title={
-            !loading && user ? (
-              <Typography variant="h6" className={classes.title}>{`${
-                user.firstname
-              } ${user.lastname}`}</Typography>
-            ) : (
-              <Skeleton width={130} height={12} variant="text" />
-            )
+            <Typography variant="h6" className={classes.title}>{`${
+              user.firstname
+            } ${user.lastname}`}</Typography>
           }
         />
-        {!loading && canEdit && (
+        {canEdit && (
           <CardActions>
             <Button
               component={Link}
@@ -64,7 +56,6 @@ const ProfileCover = ({ user, loading = false, canEdit = false }) => {
 
 ProfileCover.propTypes = {
   user: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
   canEdit: PropTypes.bool.isRequired,
 };
 export default ProfileCover;
