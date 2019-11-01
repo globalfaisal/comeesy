@@ -7,6 +7,8 @@ const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');
 const { likePost, unlikePost } = require('./handlers/likes');
 const { markNotificationsRead } = require('./handlers/notifications');
 
+const { login, logout, signup } = require('./handlers/auth');
+
 const {
   getCommentReplies,
   commentOnPost,
@@ -16,9 +18,6 @@ const {
 } = require('./handlers/comments');
 
 const {
-  login,
-  logout,
-  signup,
   getUserData,
   getUserOwnData,
   addUserDetails,
@@ -77,12 +76,13 @@ app.delete(
 app.post('/post/:postId/like', fbAuth, likePost);
 app.post('/post/:postId/unlike', fbAuth, unlikePost);
 
-// users routes
-app.post('/signup', signup);
-app.post('/login', login);
-app.get('/logout', logout);
+// auth routes
 //TODO: add login options with google and facebook
+app.post('/auth/signup', signup);
+app.post('/auth/login', login);
+app.get('/auth/logout', logout);
 
+// users routes
 app.get('/user', fbAuth, getUserOwnData);
 app.get('/user/:username', getUserData);
 app.post('/user', fbAuth, addUserDetails);

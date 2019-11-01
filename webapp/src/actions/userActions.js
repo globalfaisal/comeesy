@@ -14,7 +14,7 @@ export const login = formData => dispatch => {
 
   // Make loging request
   comeesyAPI
-    .post('/login', userData)
+    .post('/auth/login', userData)
     .then(res => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
@@ -33,7 +33,7 @@ export const logout = () => dispatch => {
   const { token } = window.localStorage;
   if (!token) return null;
   comeesyAPI
-    .get('/logout', { headers: { Authorization: token } })
+    .get('/auth/logout', { headers: { Authorization: token } })
     .then(res => {
       console.log(res.data.message);
       // Delete token from local storage
@@ -61,7 +61,7 @@ export const signup = formData => dispatch => {
 
   // Make signup request
   comeesyAPI
-    .post('/signup', userData)
+    .post('/auth/signup', userData)
     .then(res => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
