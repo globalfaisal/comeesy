@@ -5,6 +5,8 @@ export default makeStyles(theme => ({
   /* Header content */
   card: {
     minHeight: 200,
+    position: 'relative',
+    overflow: 'visible',
   },
   title: {
     color: theme.palette.colors.steelblue,
@@ -21,8 +23,13 @@ export default makeStyles(theme => ({
     fontSize: 18,
     color: theme.palette.colors.steelblue,
   },
-  divider: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+  subheader: {
+    padding: 8,
+  },
+  buttonEdit: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    cursor: 'pointer',
   },
 }));

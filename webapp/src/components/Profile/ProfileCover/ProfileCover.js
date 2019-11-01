@@ -14,6 +14,7 @@ import EditIcon from '@material-ui/icons/Edit';
 
 /* -- styles -- */
 import useStyles from './styles';
+import { Hidden } from '@material-ui/core';
 
 const ProfileCover = ({ user, canEdit = false }) => {
   const classes = useStyles();
@@ -37,16 +38,18 @@ const ProfileCover = ({ user, canEdit = false }) => {
         />
         {canEdit && (
           <CardActions>
-            <Button
-              component={Link}
-              to="/settings/profile"
-              variant="contained"
-              color="inherit"
-              size="small"
-              startIcon={<EditIcon />}
-            >
-              Edit Profile
-            </Button>
+            <Hidden xsDown>
+              <Button
+                component={Link}
+                to="/settings/profile"
+                size="small"
+                variant="contained"
+                color="primary"
+                startIcon={<EditIcon />}
+              >
+                Edit Profile
+              </Button>
+            </Hidden>
           </CardActions>
         )}
       </Card>

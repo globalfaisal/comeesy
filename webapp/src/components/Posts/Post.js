@@ -25,7 +25,7 @@ const useStyle = makeStyles(theme => ({
   },
   title: {
     textTransform: 'capitalize',
-    marginRight: 3,
+    marginRight: 8,
     '& + span': {
       color: theme.palette.colors.steelblue,
       fontWeight: 300,
@@ -56,7 +56,7 @@ const Post = ({ post }) => {
               <Typography
                 component={Link}
                 to={`/u/${post.user.username}`}
-                variant="subtitle2"
+                variant="subtitle1"
                 color="primary"
                 className={classes.title}
               >{`${post.user.firstname} ${post.user.lastname}`}</Typography>

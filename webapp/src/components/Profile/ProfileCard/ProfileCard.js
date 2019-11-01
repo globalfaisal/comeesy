@@ -1,5 +1,6 @@
 /* -- libs -- */
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
@@ -19,10 +20,12 @@ import Typography from '@material-ui/core/Typography';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
-import Divider from '@material-ui/core/Divider';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 
 /* -- styles -- */
 import useStyles from './styles';
+import { Hidden } from '@material-ui/core';
 
 const ProfileCard = ({ user, canEdit = false }) => {
   const classes = useStyles();
@@ -31,21 +34,42 @@ const ProfileCard = ({ user, canEdit = false }) => {
   return (
     <section className={classes.UserProfile}>
       <Card className={classes.card} elevation={1}>
+        {canEdit && (
+          <Hidden smUp>
+            <Fab
+              component={Link}
+              to="/settings/profile"
+              aria-label="edit-profile"
+              color="primary"
+              size="small"
+              className={classes.buttonEdit}
+            >
+              <EditIcon fontSize="inherit" />
+            </Fab>
+          </Hidden>
+        )}
+        <CardHeader
+          title={
+            <Typography variant="subtitle1" className={classes.title}>
+              @{username}
+            </Typography>
+          }
+          subheader={
+            bio && (
+              <Fragment>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  className={classes.subheader}
+                >
+                  {bio}
+                </Typography>
+              </Fragment>
+            )
+          }
+        />
         <CardContent>
           <List className={classes.ul}>
-            <Fragment>
-              <ListItem className={classes.li}>
-                <ListItemText
-                  primary={
-                    <Typography variant="body1" className={classes.title}>
-                      @{username}
-                    </Typography>
-                  }
-                  secondary={bio}
-                />
-              </ListItem>
-              <Divider className={classes.divider} />
-            </Fragment>
             {location && (
               <ListItem className={classes.li} dense>
                 <HomeOutlinedIcon className={classes.liIcon} />

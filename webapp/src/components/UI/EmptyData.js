@@ -18,33 +18,29 @@ const useStyle = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  content: {
-    textAlign: 'center',
-    flex: 1,
-  },
   media: {
-    flex: 1,
-    width: 120,
-    height: 120,
+    width: 100,
+    height: 100,
   },
 }));
 
 const EmptyData = ({ text, image, className }) => {
   const classes = useStyle();
   return (
-    <Card className={clsx(classes.card, className)} elevation={0}>
-      <CardMedia
-        component="img"
-        image={image}
-        title={text}
-        className={classes.media}
-      />
-      <CardContent className={classes.content}>
+    <Card className={clsx(classes.card, className)} elevation={1}>
+      <CardContent>
+        <CardMedia
+          component="img"
+          src={image}
+          title={text}
+          className={classes.media}
+        />
         <Typography
           variant="body1"
           color="textSecondary"
           component="p"
           className={classes.text}
+          align="center"
         >
           {text}
         </Typography>
