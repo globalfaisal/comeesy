@@ -26,7 +26,7 @@ import Divider from '@material-ui/core/Divider';
 /* -- styles -- */
 import useStyles from './styles';
 
-const ProfileCard = ({ user, loading }) => {
+const ProfileCard = ({ user, loading = false, canEdit = false }) => {
   const classes = useStyles();
 
   const renderContent = () => {
@@ -86,6 +86,7 @@ const ProfileCard = ({ user, loading }) => {
 
 ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
-  loading: PropTypes.bool,
+  loading: PropTypes.bool.isRequired,
+  canEdit: PropTypes.bool.isRequired,
 };
 export default ProfileCard;

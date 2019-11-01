@@ -16,12 +16,15 @@ export default makeStyles(theme => ({
     },
   },
   card: {
-    minHeight: 80,
     background: 'transparent',
     boxShadow: 'none',
     position: 'absolute',
     bottom: -35,
-    left: '8%',
+    maxWidth: '80%',
+    width: '80%',
+    left: '10%',
+    display: 'flex',
+    justifyContent: 'space-between',
     [theme.breakpoints.down('xs')]: {
       left: 0,
       minWidth: '100%',

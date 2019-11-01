@@ -3,7 +3,6 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 /* -- utils-- */
 import { colors } from './colors';
-import { ThemeProvider } from '@material-ui/styles';
 
 export default () =>
   createMuiTheme({
@@ -40,9 +39,8 @@ export default () =>
 
       MuiButton: {
         root: {
-          fontWeight: 400,
           textTransform: 'none',
-          borderRadius: 1,
+          borderRadius: 2,
         },
         text: {
           '&:hover': {

@@ -23,10 +23,14 @@ import { Hidden } from '@material-ui/core';
 const Profile = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {
-    user: { credentials, posts },
-    isLoading,
-  } = useSelector(state => state.data);
+  const { isAuthenticated, credentials } = useSelector(state => state.user);
+  const { user, isLoading } = useSelector(state => state.data);
+
+  const canEditProfile = () => {
+    if (!isAuthenticated) return false;
+    console.log(credentials.username, user.credentials.username);
+    return credentials.username === user.credentials.username;
+  };
 
   useEffect(() => {
     dispatch(getUserData(params.username));
@@ -34,11 +38,19 @@ const Profile = ({ match: { params } }) => {
 
   return (
     <div className={classes.profile}>
-      <ProfileCover user={credentials} loading={isLoading} />
+      <ProfileCover
+        user={user.credentials}
+        loading={isLoading}
+        canEdit={canEditProfile()}
+      />
       <Container>
         <Grid container spacing={3} className={classes.grid}>
           <Grid item xs={12} sm={5} md={3}>
-            <ProfileCard user={credentials} loading={isLoading} />
+            <ProfileCard
+              user={user.credentials}
+              loading={isLoading}
+              canEdit={canEditProfile()}
+            />
           </Grid>
           <Grid item xs={12} sm={7}>
             <Hidden smUp>
@@ -46,7 +58,7 @@ const Profile = ({ match: { params } }) => {
                 Posts
               </Typography>
             </Hidden>
-            <Posts posts={posts} loading={isLoading} />
+            <Posts posts={user.posts} loading={isLoading} />
           </Grid>
         </Grid>
       </Container>
