@@ -7,19 +7,19 @@ import PropTypes from 'prop-types';
 import { getUserData } from '../../actions/dataActions';
 
 /* -- components -- */
-import ProfileCover from '../../components/Profile/ProfileCover/ProfileCover';
-import ProfileCard from '../../components/Profile/ProfileCard/ProfileCard';
+import ProfileCover from '../../components/ProfileCover/ProfileCover';
+import ProfileCard from '../../components/ProfileCard/ProfileCard';
 import Posts from '../../components/Posts/Posts';
+import Loading from '../../components/UI/Loading';
 
 /* -- mui -- */
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Hidden from '@material-ui/core/Hidden';
 
 /* -- styles -- */
 import useStyles from './styles';
-import { Hidden } from '@material-ui/core';
-import Loading from '../../components/UI/Loading';
 
 const Profile = ({ match: { params } }) => {
   const classes = useStyles();
@@ -39,7 +39,7 @@ const Profile = ({ match: { params } }) => {
   const renderContent = () => {
     if (isLoading) return <Loading />;
     return (
-      <div className={classes.profile}>
+      <div className="profile-page">
         <ProfileCover user={user.credentials} canEdit={canEditProfile()} />
         <Container>
           <Grid container spacing={3} className={classes.grid}>

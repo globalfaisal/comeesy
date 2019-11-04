@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {
   formatToMonthYear,
   formatToMonthDayYear,
-} from '../../../utils/helpers/dates';
+} from '../../utils/helpers/dates';
 
 /* -- mui -- */
 import Card from '@material-ui/core/Card';

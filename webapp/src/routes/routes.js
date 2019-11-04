@@ -2,6 +2,7 @@ import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
+import Settings from '../pages/Settings/Settings';
 
 export default [
   {
@@ -16,6 +17,13 @@ export default [
     component: Profile,
     layout: '/main',
     protected: false,
+  },
+  {
+    path: '/settings/:page',
+    name: 'Settings',
+    component: Settings,
+    layout: '/main',
+    protected: false, // TODO: PROTECT THIS ROUTE
   },
   {
     path: '/login',
