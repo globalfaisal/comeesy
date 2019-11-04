@@ -16,8 +16,7 @@ exports.validateLoginData = data => {
 
 exports.validateSignupData = data => {
   const errors = {};
-  if (validator.isEmpty(data.firstname)) errors.firstname = 'Must not be empty';
-  if (validator.isEmpty(data.lastname)) errors.lastname = 'Must not be empty';
+  if (validator.isEmpty(data.name)) errors.name = 'Must not be empty';
 
   if (validator.isEmpty(data.username)) errors.username = 'Must not be empty';
 
@@ -39,6 +38,9 @@ exports.validateSignupData = data => {
 
 exports.reduceUserDetails = data => {
   const details = {};
+  if (data.name && !validator.isEmpty(data.name)) details.name = data.name;
+  if (data.gender && !validator.isEmpty(data.gender))
+    details.gender = data.gender;
   if (data.location && !validator.isEmpty(data.location))
     details.location = data.location;
   if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;

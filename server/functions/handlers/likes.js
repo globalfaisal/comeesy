@@ -25,9 +25,8 @@ exports.likePost = (req, res) => {
         postId: postData.postId,
         createdAt: new Date().toISOString(),
         user: {
+          name: req.user.name,
           username: req.user.username,
-          firstname: req.user.firstname,
-          lastname: req.user.lastname,
           imageUrl: req.user.imageUrl,
         },
       });

@@ -53,9 +53,8 @@ exports.commentOnPost = (req, res) => {
     replyCount: 0,
     createdAt: new Date().toISOString(),
     user: {
+      name: req.user.name,
       username: req.user.username,
-      firstname: req.user.firstname,
-      lastname: req.user.lastname,
       imageUrl: req.user.imageUrl,
     },
   };
@@ -146,8 +145,7 @@ exports.replyOnComment = (req, res) => {
     createdAt: new Date().toISOString(),
     user: {
       username: req.user.username,
-      firstname: req.user.firstname,
-      lastname: req.user.lastname,
+      name: req.user.name,
       imageUrl: req.user.imageUrl,
     },
   };

@@ -56,8 +56,7 @@ exports.logout = (req, res) => {
 // Signup new user
 exports.signup = (req, res) => {
   const newUser = {
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+    name: req.body.name,
     username: req.body.username,
     email: req.body.email,
     password: req.body.password,
@@ -92,10 +91,10 @@ exports.signup = (req, res) => {
     .then(idToken => {
       token = idToken;
       const userCredentials = {
-        firstname: newUser.firstname,
-        lastname: newUser.lastname,
+        name: newUser.name,
         username: newUser.username,
         email: newUser.email,
+        gender: 'unspecified',
         createdAt: new Date().toISOString(),
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
           config.storageBucket

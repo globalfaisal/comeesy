@@ -1,45 +1,5 @@
 const { db } = require('../utils/admin');
 
-exports.onCommentCreate = snapshot => {
-  createCommentNotification(snapshot);
-};
-
-exports.onCommentDelete = snapshot => {
-  deleteCommentReplies(snapshot);
-  deleteCommentNotification(snapshot);
-};
-
-exports.onCommentReplyCreate = snapshot => {
-  createCommentReplyNotifications(snapshot);
-};
-exports.onCommentReplyDelete = snapshot => {
-  deleteCommentReplyNotifications(snapshot);
-};
-
-// Other actions
-const deleteCommentReplies = async snapshot => {
-  try {
-    return await db
-      .collection('replies')
-      .where('postId', '==', snapshot.data().postId)
-      .where('commentId', '==', snapshot.data().commentId)
-      .get()
-      .then(doc => {
-        if (doc.empty) return console.log('No replies found to delete');
-        const batch = db.batch();
-
-        doc.docs.forEach(doc => {
-          batch.delete(doc.ref);
-        });
-
-        return batch.commit();
-      })
-      .then(() => console.log('Post comment replies deleted successfully'));
-  } catch (error) {
-    console.error('Error while deleting post comment replies ', error);
-  }
-};
-
 //Notifications
 
 const createCommentNotification = async snapshot => {
@@ -211,4 +171,44 @@ const deleteCommentReplyNotifications = async snapshot => {
   } catch (error) {
     console.error('Error while deleting comment notification ', error);
   }
+};
+
+// Other actions
+const deleteCommentReplies = async snapshot => {
+  try {
+    return await db
+      .collection('replies')
+      .where('postId', '==', snapshot.data().postId)
+      .where('commentId', '==', snapshot.data().commentId)
+      .get()
+      .then(doc => {
+        if (doc.empty) return console.log('No replies found to delete');
+        const batch = db.batch();
+
+        doc.docs.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+
+        return batch.commit();
+      })
+      .then(() => console.log('Post comment replies deleted successfully'));
+  } catch (error) {
+    console.error('Error while deleting post comment replies ', error);
+  }
+};
+
+exports.onCommentCreate = snapshot => {
+  createCommentNotification(snapshot);
+};
+
+exports.onCommentDelete = snapshot => {
+  deleteCommentReplies(snapshot);
+  deleteCommentNotification(snapshot);
+};
+
+exports.onCommentReplyCreate = snapshot => {
+  createCommentReplyNotifications(snapshot);
+};
+exports.onCommentReplyDelete = snapshot => {
+  deleteCommentReplyNotifications(snapshot);
 };

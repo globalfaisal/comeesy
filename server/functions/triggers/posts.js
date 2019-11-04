@@ -1,12 +1,5 @@
 const { db } = require('../utils/admin');
 
-exports.onPostDelete = snapshot => {
-  deletePostLikes(snapshot);
-  deletePostNotifications(snapshot);
-  deletePostComments(snapshot);
-  deletePostCommentReplies(snapshot);
-};
-
 const deletePostNotifications = async snapshot => {
   try {
     return await db
@@ -93,4 +86,11 @@ const deletePostLikes = async snapshot => {
   } catch (error) {
     console.error('Error while deleting post likes ', error);
   }
+};
+
+exports.onPostDelete = snapshot => {
+  deletePostLikes(snapshot);
+  deletePostNotifications(snapshot);
+  deletePostComments(snapshot);
+  deletePostCommentReplies(snapshot);
 };

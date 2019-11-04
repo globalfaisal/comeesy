@@ -1,9 +1,5 @@
 const { db } = require('../utils/admin');
 
-exports.onUserAvatarChange = snapshot => {
-  changeUserImageUrlReferences(snapshot);
-};
-
 // Change imageUrl(avatar) references in all documents for this specific user
 const changeUserImageUrlReferences = async snapshot => {
   if (snapshot.before.data().imageUrl !== snapshot.after.data().imageUrl) {
@@ -124,4 +120,8 @@ const changeUserImageUrlReferences = async snapshot => {
       );
     }
   }
+};
+
+exports.onUserAvatarChange = snapshot => {
+  changeUserImageUrlReferences(snapshot);
 };

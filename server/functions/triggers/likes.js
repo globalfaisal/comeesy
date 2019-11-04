@@ -1,13 +1,5 @@
 const { db } = require('../utils/admin');
 
-exports.onLikeCreate = snapshot => {
-  createLikeNotification(snapshot);
-};
-
-exports.onLikeDelete = snapshot => {
-  deleteLikeNotification(snapshot);
-};
-
 // Create notification when post is unliked
 const createLikeNotification = async snapshot => {
   try {
@@ -54,4 +46,12 @@ const deleteLikeNotification = async snapshot => {
   } catch (error) {
     console.error('Error while deleting like notification ', error);
   }
+};
+
+exports.onLikeCreate = snapshot => {
+  createLikeNotification(snapshot);
+};
+
+exports.onLikeDelete = snapshot => {
+  deleteLikeNotification(snapshot);
 };

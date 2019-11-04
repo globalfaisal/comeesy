@@ -58,9 +58,8 @@ exports.addPost = (req, res) => {
     likeCount: 0,
     commentCount: 0,
     user: {
+      name: req.user.name,
       username: req.user.username,
-      firstname: req.user.firstname,
-      lastname: req.user.lastname,
       imageUrl: req.user.imageUrl,
     },
   };
