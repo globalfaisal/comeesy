@@ -32,8 +32,8 @@ const ProfileCover = ({ user, canEdit = false }) => {
           }
           title={
             <Typography variant="h6" className={classes.title}>{`${
-              user.firstname
-            } ${user.lastname}`}</Typography>
+              user.name
+            }`}</Typography>
           }
         />
         {canEdit && (

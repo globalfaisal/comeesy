@@ -26,7 +26,7 @@ const App = () => {
     const valid = verifyIdToken(token);
     if (valid) dispatch(getUserOwnData(token));
     else if (!valid) dispatch(logout());
-  });
+  }, [dispatch, token]);
 
   const theme = getTheme();
   return (

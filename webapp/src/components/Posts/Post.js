@@ -59,7 +59,7 @@ const Post = ({ post }) => {
                 variant="subtitle1"
                 color="primary"
                 className={classes.title}
-              >{`${post.user.firstname} ${post.user.lastname}`}</Typography>
+              >{`${post.user.name}`}</Typography>
               <span>{`@${post.user.username}`}</span>
             </Fragment>
           }

@@ -51,12 +51,11 @@ export const signup = formData => dispatch => {
   dispatch(loadingUI());
 
   const userData = {
+    name: formData.name || '',
+    username: formData.username || '',
     email: formData.email || '',
     password: formData.password || '',
     confirmPassword: formData.confirmPassword || '',
-    username: formData.username || '',
-    firstname: formData.firstname || '',
-    lastname: formData.lastname || '',
   };
 
   // Make signup request

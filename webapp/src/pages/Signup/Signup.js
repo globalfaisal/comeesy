@@ -42,34 +42,20 @@ const Signup = () => {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                id="firstname"
-                name="firstname"
+                id="name"
+                name="name"
                 type="text"
-                defaultValue={inputs.firstname}
+                defaultValue={inputs.name}
                 onChange={handleChange}
-                helperText={error && error.firstname}
-                error={error && !!error.firstname}
-                label="First Name"
+                helperText={error && error.name}
+                error={error && !!error.name}
+                label="Name"
                 color="primary"
                 autoFocus
                 className={classes.textField}
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                id="lastname"
-                name="lastname"
-                type="text"
-                defaultValue={inputs.lastname}
-                onChange={handleChange}
-                helperText={error && error.lastname}
-                error={error && !!error.lastname}
-                label="Last Name"
-                color="primary"
-                className={classes.textField}
-              />
-            </Grid>
-            <Grid item xs={12}>
               <TextField
                 id="username"
                 name="username"
