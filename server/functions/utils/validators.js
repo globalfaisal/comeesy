@@ -46,7 +46,10 @@ exports.reduceUserDetails = data => {
   if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;
   if (data.birthdate && !validator.isEmpty(data.birthdate))
     details.birthdate = data.birthdate;
-  return { details };
+  return {
+    details,
+    isEmptyData: Object.keys(details).length === 0 ? true : false,
+  };
 };
 
 exports.validateBodyContent = body => {

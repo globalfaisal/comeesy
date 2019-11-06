@@ -37,11 +37,11 @@ const maxFileSize = 2097152;
 
 const EditProfileForm = props => {
   const classes = useStyle();
+
+  const { isAuthenticated, credentials } = useSelector(state => state.user);
+
   const [inputs, setInputs] = useState({});
   const [image, setImage] = useState({ thumbnail: '', file: null });
-
-  const { credentials } = useSelector(state => state.user);
-  if (!credentials) return null;
 
   const handleInputChange = e => {
     e.persist();
@@ -51,11 +51,9 @@ const EditProfileForm = props => {
     }));
   };
   const handleDateInputChange = date => {
-    const dateFormated = formatToYearMonthDay(date);
-    console.log(dateFormated);
     setInputs(prevInputs => ({
       ...prevInputs,
-      birthdate: dateFormated,
+      birthdate: formatToYearMonthDay(date),
     }));
   };
 
@@ -91,116 +89,121 @@ const EditProfileForm = props => {
     console.log('Image: ', image);
     console.log('Inputs: ', inputs);
   };
-  return (
-    <form onSubmit={handleSubmit} noValidate autoComplete="off">
-      <div className={classes.content}>
-        <FormGroup row>
-          <Avatar
-            alt={credentials.username}
-            src={image.thumbnail || credentials.imageUrl}
-            classes={{ root: classes.avatar }}
-          />
-          <div className={classes.imageInputContainer}>
-            <input
-              name="image"
-              id="image"
-              type="file"
-              onChange={handleImageInputChange}
-              accept={acceptedTypes}
-              hidden="hidden"
-            />
-            <div className={classes.imageInputContent}>
-              <Button
-                size="small"
-                variant="outlined"
-                component="label"
-                htmlFor="image"
-              >
-                Choose Image
-              </Button>
-              <FormHelperText> JPG or PNG, Max size: 2MB</FormHelperText>
-            </div>
-          </div>
-        </FormGroup>
-        <FormControl className={classes.formControl} fullWidth>
-          <TextField
-            name="name"
-            id="name"
-            type="text"
-            defaultValue={inputs.name || credentials.name}
-            onChange={handleInputChange}
-            label="Name"
-            placeholder="What's your name?"
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
-        <FormControl
-          variant="outlined"
-          className={classes.formControl}
-          fullWidth
-        >
-          <InputLabel htmlFor="gender">Gender</InputLabel>
-          <Select
-            name="gender"
-            id="gender"
-            value={inputs.gender || 'unspecified'}
-            onChange={handleInputChange}
-            labelWidth={50}
-          >
-            <MenuItem value="unspecified">Unspecified</MenuItem>
-            <MenuItem value="male">Male</MenuItem>
-            <MenuItem value="female">Female</MenuItem>
-          </Select>
-        </FormControl>
 
-        <FormControl className={classes.formControl} fullWidth>
-          <DatePicker
-            name="birthdate"
-            id="birthdate"
-            label="Birth Date"
-            value={inputs.birthdate || subtractFromToday(35)}
-            onChange={handleDateInputChange}
-            disableFuture
-            maxDate={subtractFromToday(14)}
-            inputVariant="outlined"
-          />
-        </FormControl>
-        <FormControl className={classes.formControl} fullWidth>
-          <TextField
-            name="location"
-            id="location"
-            type="text"
-            defaultValue={inputs.location || credentials.location}
-            onChange={handleInputChange}
-            label="Location"
-            placeholder="Add your location"
+  const renderContent = () => {
+    if (!isAuthenticated) return null;
+    return (
+      <form onSubmit={handleSubmit} noValidate autoComplete="off">
+        <div className={classes.content}>
+          <FormGroup row>
+            <Avatar
+              alt={credentials.username}
+              src={image.thumbnail || credentials.imageUrl}
+              classes={{ root: classes.avatar }}
+            />
+            <div className={classes.imageInputContainer}>
+              <input
+                name="image"
+                id="image"
+                type="file"
+                onChange={handleImageInputChange}
+                accept={acceptedTypes}
+                hidden="hidden"
+              />
+              <div className={classes.imageInputContent}>
+                <Button
+                  size="small"
+                  variant="outlined"
+                  component="label"
+                  htmlFor="image"
+                >
+                  Choose Image
+                </Button>
+                <FormHelperText> JPG or PNG, Max size: 2MB</FormHelperText>
+              </div>
+            </div>
+          </FormGroup>
+          <FormControl className={classes.formControl} fullWidth>
+            <TextField
+              name="name"
+              id="name"
+              type="text"
+              defaultValue={inputs.name || credentials.name}
+              onChange={handleInputChange}
+              label="Name"
+              placeholder="What's your name?"
+              fullWidth
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl
             variant="outlined"
-          />
-        </FormControl>
-        <FormControl className={classes.formControl} fullWidth>
-          <TextField
-            name="bio"
-            id="bio"
-            type="text"
-            defaultValue={inputs.bio || credentials.bio}
-            onChange={handleInputChange}
-            label="Bio"
-            placeholder="Say something about yourself"
-            multiline
-            rows={4}
-            rowsMax={4}
-            variant="outlined"
-          />
-        </FormControl>
-      </div>
-      <div className={classes.action}>
-        <Button variant="contained" color="primary" type="submit">
-          Save
-        </Button>
-      </div>
-    </form>
-  );
+            className={classes.formControl}
+            fullWidth
+          >
+            <InputLabel htmlFor="gender">Gender</InputLabel>
+            <Select
+              name="gender"
+              id="gender"
+              value={inputs.gender || 'unspecified'}
+              onChange={handleInputChange}
+              labelWidth={50}
+            >
+              <MenuItem value="unspecified">Unspecified</MenuItem>
+              <MenuItem value="male">Male</MenuItem>
+              <MenuItem value="female">Female</MenuItem>
+            </Select>
+          </FormControl>
+
+          <FormControl className={classes.formControl} fullWidth>
+            <DatePicker
+              name="birthdate"
+              id="birthdate"
+              label="Birth Date"
+              value={inputs.birthdate || subtractFromToday(0)}
+              onChange={handleDateInputChange}
+              disableFuture
+              maxDate={subtractFromToday(14)}
+              inputVariant="outlined"
+            />
+          </FormControl>
+          <FormControl className={classes.formControl} fullWidth>
+            <TextField
+              name="location"
+              id="location"
+              type="text"
+              defaultValue={inputs.location || credentials.location}
+              onChange={handleInputChange}
+              label="Location"
+              placeholder="Add your location"
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl className={classes.formControl} fullWidth>
+            <TextField
+              name="bio"
+              id="bio"
+              type="text"
+              defaultValue={inputs.bio || credentials.bio}
+              onChange={handleInputChange}
+              label="Bio"
+              placeholder="Say something about yourself"
+              multiline
+              rows={4}
+              rowsMax={4}
+              variant="outlined"
+            />
+          </FormControl>
+        </div>
+        <div className={classes.action}>
+          <Button variant="contained" color="primary" type="submit">
+            Save
+          </Button>
+        </div>
+      </form>
+    );
+  };
+  return renderContent();
 };
 
 EditProfileForm.propTypes = {};

@@ -28,14 +28,16 @@ const DatePicker = ({
       name={name}
       disableFuture={disableFuture}
       disablePast={disablePast}
-      format="yyyy/MM/dd"
       value={value}
       onChange={onChange}
       maxDate={maxDate}
+      format="yyyy/MM/dd"
+      variant="dialog"
+      margin="normal"
+      clearable
       KeyboardButtonProps={{
         'aria-label': 'change date',
       }}
-      margin="normal"
       {...rest}
     />
   </MuiPickersUtilsProvider>
@@ -56,6 +58,6 @@ DatePicker.propTypes = {
     PropTypes.string,
     PropTypes.object,
     PropTypes.instanceOf(Date),
-  ]).isRequired,
+  ]),
 };
 export default DatePicker;

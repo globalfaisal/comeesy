@@ -11,7 +11,11 @@ const config = require('../config');
 // Add user details
 exports.addUserDetails = (req, res) => {
   // validation data
-  const { details } = reduceUserDetails(req.body);
+  const { details, isEmptyData } = reduceUserDetails(req.body);
+  if (isEmptyData)
+    return res
+      .status(400)
+      .json({ error: 'At least one field must be updated' });
 
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
