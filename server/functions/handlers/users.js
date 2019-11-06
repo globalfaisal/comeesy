@@ -3,16 +3,20 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const { firebase, admin, db } = require('../utils/admin');
-const { reduceUserDetails } = require('../utils/validators');
+const { admin, db } = require('../utils/admin');
+const { reduceAndValidateUserDetails } = require('../utils/validators');
 
 const config = require('../config');
 
 // Add user details
 exports.addUserDetails = (req, res) => {
-  const { isEmptyData, details } = reduceUserDetails(req.body);
-  if (isEmptyData)
-    return res.status(400).json({ error: 'Invalid data submitted' });
+  // validation data
+  const { details, isEmptyData, errors } = reduceAndValidateUserDetails(
+    req.body
+  );
+  if (isEmptyData || Object.keys(errors).length > 0)
+    return res.status(400).json({ errors });
+
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(details)
