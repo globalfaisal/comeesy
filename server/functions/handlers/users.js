@@ -4,6 +4,7 @@ const os = require('os');
 const fs = require('fs');
 
 const { admin, db } = require('../utils/admin');
+
 const { reduceUserDetails } = require('../utils/validators');
 
 const config = require('../config');
@@ -11,6 +12,7 @@ const config = require('../config');
 // Add user details
 exports.addUserDetails = (req, res) => {
   // validation data
+
   const { details, isEmptyData } = reduceUserDetails(req.body);
   if (isEmptyData)
     return res
