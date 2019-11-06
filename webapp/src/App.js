@@ -12,21 +12,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 /* -- actions -- */
-import { logout, getUserOwnData } from './actions/userActions';
+import { getUserOwnData } from './actions/userActions';
 
 /* -- utils -- */
 import getTheme from './utils/theme/theme';
-import verifyIdToken from './utils/helpers/verifyIdToken';
 
 const App = () => {
   const dispatch = useDispatch();
-  const { token } = window.localStorage;
 
   useEffect(() => {
-    const valid = verifyIdToken(token);
-    if (valid) dispatch(getUserOwnData(token));
-    else if (!valid) dispatch(logout());
-  }, [dispatch, token]);
+    dispatch(getUserOwnData());
+  });
 
   const theme = getTheme();
   return (

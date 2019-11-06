@@ -6,16 +6,12 @@ import jwtDecode from 'jwt-decode';
  * @returns true if valid else false
  */
 export default token => {
-  if (!token) return;
+  if (!token) return true;
   try {
     const decodedToken = jwtDecode(token);
-    return isValid(decodedToken.exp);
+    const currentTime = Date.now().valueOf() / 1000;
+    return decodedToken.exp < currentTime; // expired
   } catch (error) {
     console.error(error);
   }
-};
-
-const isValid = exp => {
-  const expTime = exp * 1000;
-  return !(expTime < Date.now());
 };
