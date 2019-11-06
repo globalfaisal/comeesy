@@ -10,6 +10,7 @@ export default makeStyles(theme => ({
   tabs: {
     [theme.breakpoints.up('sm')]: {
       minHeight: '300px',
+      height: '100%',
       borderRight: `1.8px solid ${theme.palette.colors.greylight}`,
     },
   },

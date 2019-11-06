@@ -23,3 +23,13 @@ export const formatToMonthDayYear = dateString => {
   if (!dateString) return null;
   return `${dayjs(dateString).format('MMMM DD, YYYY')}`;
 };
+
+export const formatToYearMonthDay = dateString => {
+  if (!dateString) return null;
+  return `${dayjs(dateString).format('YYYY-MM-DD ')}`;
+};
+
+export const subtractFromToday = num => {
+  if (!num) return null;
+  return dayjs().subtract(num, 'year');
+};

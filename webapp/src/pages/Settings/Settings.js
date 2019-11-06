@@ -1,6 +1,8 @@
 /* -- libs -- */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 
 /* -- components -- */
@@ -24,11 +26,12 @@ import useStyles from './styles';
 const Settings = props => {
   const classes = useStyles();
   const [selectedTab, setSelectedTab] = useState(0);
+  const { pathname } = history.location;
 
   useEffect(() => {
-    if (history.location.pathname === '/settings/profile') setSelectedTab(0);
-    if (history.location.pathname === '/settings/account') setSelectedTab(1);
-  }, []);
+    if (pathname === '/settings/profile') setSelectedTab(0);
+    if (pathname === '/settings/account') setSelectedTab(1);
+  }, [pathname]);
 
   const onTabSelect = (e, value) => {
     setSelectedTab(value);
@@ -45,9 +48,9 @@ const Settings = props => {
         <Grid container spacing={3} className={classes.grid}>
           <Grid item xs={12} sm={3} md={2}>
             <Tabs
-              onChange={onTabSelect}
               value={selectedTab}
               indicatorColor="primary"
+              component="nav"
               variant="standard"
               aria-label="settings tabs"
               orientation={`${
@@ -56,11 +59,15 @@ const Settings = props => {
               className={classes.tabs}
             >
               <Tab
+                component={Link}
+                to="/settings/profile"
                 label="Profile"
                 classes={{ root: classes.tab }}
                 {...a11yProps(0)}
               />
               <Tab
+                component={Link}
+                to="/settings/account"
                 label="Account"
                 classes={{ root: classes.tab }}
                 {...a11yProps(1)}
