@@ -38,21 +38,33 @@ const {
 const { onUserAvatarChange } = require('./triggers/users');
 
 /* Enable CORS */
-app.use(cors(/* corsOptions*/)); // by default allows requests from any origin.
-
 //TODO: for Production change whitelist of allowed origin and pass to cors()
-// const whitelistOrigins = ['http://localhost:3000'];
-// const corsOptions = {
-//   origin: (origin, callback) => {
-//     // eslint-disable-next-line callback-return
-//     if (whitelistOrigins.includes(origin)) callback(null, true);
-//     // eslint-disable-next-line callback-return
-//     else callback(new Error('Not allowed by CORS'));
-//   },
-// };
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://europe-west1-comeesy.cloudfunctions.net',
+];
+const corsOptions = {
+  origin: function(origin, callback) {
+    // allow requests with no origin
+    // (like mobile apps or curl requests)
+    console.log(origin);
+    if (!origin) return callback(null, true);
+
+    // allow whitelisted requests
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not 
+        allow access from the specified Origin.`;
+      return callback(new Error(msg), false);
+    }
+
+    return callback(null, true);
+  },
+};
+//TODO: USER corsOptions to restrict Origins allowed
+app.use(cors(corsOptions));
 
 /* Setup all api routes */
-
 // Post routes
 app.get('/posts', getPosts);
 app.get('/post/:postId', getPost);

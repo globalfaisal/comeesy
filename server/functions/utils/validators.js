@@ -36,30 +36,28 @@ exports.validateSignupData = data => {
   };
 };
 
-exports.reduceAndValidateUserDetails = data => {
-  const details = {};
+exports.validateUserDetails = data => {
   const errors = {};
 
   // required fields
-  if (data.name && !validator.isEmpty(data.name)) details.name = data.name;
-  else if (!data.name || validator.isEmpty(data.name))
+  if (!data.name || validator.isEmpty(data.name))
     errors.name = 'Must not be empty';
 
-  if (data.birthdate && !validator.isEmpty(data.birthdate))
-    details.birthdate = data.birthdate;
-  else if (!data.birthdate || validator.isEmpty(data.birthdate))
-    errors.birthdate = 'Must not be empty';
+  // if (data.birthdate && !validator.isEmpty(data.birthdate))
+  //   details.birthdate = data.birthdate;
+  // else if (!data.birthdate || validator.isEmpty(data.birthdate))
+  //   errors.birthdate = 'Must not be empty';
 
-  if (data.gender && !validator.isEmpty(data.gender))
-    details.gender = data.gender;
-  if (data.location && !validator.isEmpty(data.location))
-    details.location = data.location;
-  if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;
+  // if (data.gender && !validator.isEmpty(data.gender))
+  //   details.gender = data.gender;
+  // if (data.location && !validator.isEmpty(data.location))
+  //   details.location = data.location;
+  // if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;
 
   return {
-    details,
     errors,
-    isEmptyData: Object.keys(details).length === 0 ? true : false,
+    isValid: Object.keys(errors).length === 0 ? true : false,
+    isEmptyData: Object.keys(data).length === 0 ? true : false,
   };
 };
 

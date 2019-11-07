@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const { admin, db } = require('../utils/admin');
 
-const { reduceUserDetails } = require('../utils/validators');
+const { validateUserDetails } = require('../utils/validators');
 
 const config = require('../config');
 
@@ -13,15 +13,17 @@ const config = require('../config');
 exports.addUserDetails = (req, res) => {
   // validation data
 
-  const { details, isEmptyData } = reduceUserDetails(req.body);
-  if (isEmptyData)
+  const { errors, isValid, isEmptyData } = validateUserDetails(req.body);
+  if (isEmptyData) {
     return res
       .status(400)
       .json({ error: 'At least one field must be updated' });
+  }
+  if (!isValid) return res.status(400).json(errors);
 
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
-    .update(details)
+    .update(req.body)
     .then(() => res.json({ message: 'Details added successfully' }))
     .catch(err => {
       console.error('Error while adding user own details ', err);

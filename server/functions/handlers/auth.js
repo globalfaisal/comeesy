@@ -95,6 +95,9 @@ exports.signup = (req, res) => {
         username: newUser.username,
         email: newUser.email,
         gender: 'unspecified',
+        birthdate: null,
+        location: '',
+        bio: '',
         createdAt: new Date().toISOString(),
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
           config.storageBucket
