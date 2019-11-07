@@ -39,7 +39,7 @@ export const logout = () => dispatch => {
       window.localStorage.removeItem('token');
       dispatch({ type: userTypes.SET_UNAUTHENTICATED });
       dispatch(clearErrors());
-      history.push('/');
+      history.push('/auth/login');
     })
     .catch(err => {
       console.error(err);
@@ -76,7 +76,6 @@ export const signup = formData => dispatch => {
 
 export const getUserOwnData = () => dispatch => {
   const { token } = window.localStorage;
-  console.log(isTokenExpired(token));
   if (isTokenExpired(token)) return dispatch(logout());
 
   dispatch({ type: userTypes.LOADING_USER });
@@ -85,6 +84,25 @@ export const getUserOwnData = () => dispatch => {
     .then(res => {
       dispatch({ type: userTypes.SET_USER, payload: res.data });
       dispatch({ type: userTypes.SET_AUTHENTICATED });
+    })
+    .catch(err => {
+      console.error(err);
+    });
+};
+
+export const AddUserDetails = data => dispatch => {
+  const { token } = window.localStorage;
+  if (isTokenExpired(token)) return dispatch(logout());
+
+  console.log(data);
+
+  dispatch(loadingUI());
+  comeesyAPI
+    .post('/user', data, {
+      headers: { Authorization: token },
+    })
+    .then(res => {
+      console.log(res);
     })
     .catch(err => {
       console.error(err);

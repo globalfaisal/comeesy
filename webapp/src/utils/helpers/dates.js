@@ -16,17 +16,17 @@ export const formatDateToRelTime = dateString => {
 
 export const formatToMonthYear = dateString => {
   if (!dateString) return null;
-  return `${dayjs(dateString).format('MMMM YYYY')}`;
+  return dayjs(dateString).format('MMMM YYYY');
 };
 
 export const formatToMonthDayYear = dateString => {
   if (!dateString) return null;
-  return `${dayjs(dateString).format('MMMM DD, YYYY')}`;
+  return dayjs(dateString).format('MMMM DD, YYYY');
 };
 
 export const formatToYearMonthDay = dateString => {
   if (!dateString) return null;
-  return `${dayjs(dateString).format('YYYY-MM-DD ')}`;
+  return dayjs(dateString).format('YYYY-MM-DD ');
 };
 
 export const subtractFromToday = num => {

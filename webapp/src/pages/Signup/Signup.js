@@ -40,7 +40,7 @@ const Signup = () => {
           className={classes.form}
         >
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 id="name"
                 name="name"
@@ -52,10 +52,11 @@ const Signup = () => {
                 label="Name"
                 color="primary"
                 autoFocus
+                fullWidth
                 className={classes.textField}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 id="username"
                 name="username"

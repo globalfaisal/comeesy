@@ -1,17 +1,15 @@
 /* -- libs -- */
-import React, { useState, Fragment } from 'react';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+/* -- actions -- */
+import { AddUserDetails } from '../../actions/userActions';
 
 /* -- components -- */
-import DatePicker from '../UI/DatePicker';
+import DatePickerInput from '../UI/DatePickerInput';
 
 /* -- utils -- */
-import {
-  formatToYearMonthDay,
-  subtractFromToday,
-} from '../../utils/helpers/dates';
+import { subtractFromToday } from '../../utils/helpers/dates';
 
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
@@ -37,6 +35,7 @@ const maxFileSize = 2097152;
 
 const EditProfileForm = props => {
   const classes = useStyle();
+  const dispatch = useDispatch();
 
   const { isAuthenticated, credentials } = useSelector(state => state.user);
 
@@ -53,7 +52,7 @@ const EditProfileForm = props => {
   const handleDateInputChange = date => {
     setInputs(prevInputs => ({
       ...prevInputs,
-      birthdate: formatToYearMonthDay(date),
+      birthdate: date,
     }));
   };
 
@@ -86,8 +85,10 @@ const EditProfileForm = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('Image: ', image);
-    console.log('Inputs: ', inputs);
+    const data = { ...inputs };
+    if (!data.name) data.name = credentials.name;
+    // dispatch data
+    dispatch(AddUserDetails(data));
   };
 
   const renderContent = () => {
@@ -128,10 +129,11 @@ const EditProfileForm = props => {
               name="name"
               id="name"
               type="text"
+              required
               defaultValue={inputs.name || credentials.name}
+              placeholder={credentials.name}
               onChange={handleInputChange}
               label="Name"
-              placeholder="What's your name?"
               fullWidth
               variant="outlined"
             />
@@ -145,7 +147,7 @@ const EditProfileForm = props => {
             <Select
               name="gender"
               id="gender"
-              value={inputs.gender || 'unspecified'}
+              value={inputs.gender || credentials.gender}
               onChange={handleInputChange}
               labelWidth={50}
             >
@@ -156,15 +158,24 @@ const EditProfileForm = props => {
           </FormControl>
 
           <FormControl className={classes.formControl} fullWidth>
-            <DatePicker
+            <DatePickerInput
               name="birthdate"
               id="birthdate"
               label="Birth Date"
-              value={inputs.birthdate || subtractFromToday(0)}
+              value={
+                inputs.birthdate === null
+                  ? null
+                  : inputs.birthdate || credentials.birthdate
+              }
               onChange={handleDateInputChange}
+              openTo="year"
+              format="YYYY/MM/DD"
+              views={['year', 'month', 'date']}
+              inputVariant="outlined"
               disableFuture
               maxDate={subtractFromToday(14)}
-              inputVariant="outlined"
+              maxDateMessage="Oops! you are too young for this 🤦‍"
+              clearable
             />
           </FormControl>
           <FormControl className={classes.formControl} fullWidth>
@@ -196,7 +207,12 @@ const EditProfileForm = props => {
           </FormControl>
         </div>
         <div className={classes.action}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            disabled={Object.values(inputs).length === 0}
+          >
             Save
           </Button>
         </div>
