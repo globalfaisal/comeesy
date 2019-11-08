@@ -24,7 +24,10 @@ exports.addUserDetails = (req, res) => {
   // persist the update details in the users db
   db.doc(`/users/${req.user.username}`)
     .update(req.body)
-    .then(() => res.json({ message: 'Details added successfully' }))
+    .then(() => {
+      // success
+      return this.getUserOwnData(req, res);
+    })
     .catch(err => {
       console.error('Error while adding user own details ', err);
       return res.status(500).json({ error: err.code });
@@ -49,7 +52,9 @@ exports.getUserOwnData = (req, res) => {
         .orderBy('createdAt', 'desc')
         .get();
 
-      userData.likes = likesSnapshot.docs.map(doc => doc.data());
+      userData.likes = likesSnapshot.docs.map(doc => ({
+        postId: doc.data().postId,
+      }));
 
       // Get last 100 notifications user received
       const notificationsSnapshot = await db
