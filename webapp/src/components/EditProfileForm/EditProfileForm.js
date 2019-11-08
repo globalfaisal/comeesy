@@ -1,12 +1,15 @@
 /* -- libs -- */
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import _ from 'lodash';
 
 /* -- actions -- */
-import { AddUserDetails } from '../../actions/userActions';
+import { addUserDetails, uploadUserAvatar } from '../../actions/userActions';
+import { clearError } from '../../actions/UIActions';
 
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
+import Loading from '../UI/Loading';
 
 /* -- utils -- */
 import { subtractFromToday } from '../../utils/helpers/dates';
@@ -14,33 +17,41 @@ import { subtractFromToday } from '../../utils/helpers/dates';
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Typography from '@material-ui/core/Typography';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import ListItemText from '@material-ui/core/ListItemText';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 /* -- styles -- */
 import useStyle from './styles';
 
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/png'];
-const maxFileSize = 2097152;
 
 const EditProfileForm = props => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
-  const { isAuthenticated, credentials } = useSelector(state => state.user);
+  const { credentials } = useSelector(state => state.user);
+  const { isLoading, errors } = useSelector(state => state.UI);
+
+  const uploadErrorMsg = errors && errors.upload ? errors.upload.avatar : '';
 
   const [inputs, setInputs] = useState({});
-  const [image, setImage] = useState({ thumbnail: '', file: null });
+  const [imageInput, setImageInput] = useState({ thumbnail: '', file: null });
+
+  useEffect(
+    () => () => {
+      dispatch(clearError('settings'));
+      dispatch(clearError('upload'));
+    },
+    [dispatch]
+  );
 
   const handleInputChange = e => {
     e.persist();
@@ -60,46 +71,52 @@ const EditProfileForm = props => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
-    // handle big file size
-    if (file.size > maxFileSize) {
-      console.error('ERROR: Large file size');
-      setImage({ thumbnail: '', file: null });
-      return;
-    }
-    // handle wrong file types
-    if (!acceptedTypes.includes(file.type)) {
-      console.error('ERROR: File type not supported');
-      setImage({ thumbnail: '', file: null });
-      return;
-    }
 
+    // handle wrong file types
+    // if (!acceptedTypes.includes(file.type)) {
+    //   console.error('ERROR: File type not supported');
+    //   setImageInput({ thumbnail: '', file: null });
+    //   return;
+    // }
+
+    // add file to  state
+    setImageInput(prevState => ({
+      ...prevState,
+      file,
+    }));
+    // create thumbnail and add to state
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImage({
+      setImageInput(prevState => ({
+        ...prevState,
         thumbnail: reader.result,
-        file,
-      });
+      }));
     };
     reader.readAsDataURL(file);
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    const data = { ...inputs };
-    if (!data.name) data.name = credentials.name;
-    // dispatch data
-    dispatch(AddUserDetails(data));
+    if (_.keys(inputs).length > 0) {
+      const data = { ...inputs };
+      if (data.name === undefined) data.name = credentials.name;
+      // dispatch data
+      dispatch(addUserDetails(data));
+    }
+    if (imageInput.file !== null) {
+      dispatch(uploadUserAvatar(imageInput.file));
+    }
   };
 
   const renderContent = () => {
-    if (!isAuthenticated) return null;
+    if (!credentials) return null;
     return (
       <form onSubmit={handleSubmit} noValidate autoComplete="off">
         <div className={classes.content}>
           <FormGroup row>
             <Avatar
               alt={credentials.username}
-              src={image.thumbnail || credentials.imageUrl}
+              src={imageInput.thumbnail || credentials.imageUrl}
               classes={{ root: classes.avatar }}
             />
             <div className={classes.imageInputContainer}>
@@ -117,6 +134,7 @@ const EditProfileForm = props => {
                   variant="outlined"
                   component="label"
                   htmlFor="image"
+                  disabled={isLoading}
                 >
                   Choose Image
                 </Button>
@@ -131,11 +149,14 @@ const EditProfileForm = props => {
               type="text"
               required
               defaultValue={inputs.name || credentials.name}
-              placeholder={credentials.name}
+              placeholder="What is your name?"
               onChange={handleInputChange}
+              helperText={errors.settings && errors.settings.name}
+              error={errors.settings && !!errors.settings.name}
               label="Name"
               fullWidth
               variant="outlined"
+              disabled={isLoading}
             />
           </FormControl>
           <FormControl
@@ -150,6 +171,7 @@ const EditProfileForm = props => {
               value={inputs.gender || credentials.gender}
               onChange={handleInputChange}
               labelWidth={50}
+              disabled={isLoading}
             >
               <MenuItem value="unspecified">Unspecified</MenuItem>
               <MenuItem value="male">Male</MenuItem>
@@ -176,6 +198,7 @@ const EditProfileForm = props => {
               maxDate={subtractFromToday(14)}
               maxDateMessage="Oops! you are too young for this 🤦‍"
               clearable
+              disabled={isLoading}
             />
           </FormControl>
           <FormControl className={classes.formControl} fullWidth>
@@ -188,6 +211,7 @@ const EditProfileForm = props => {
               label="Location"
               placeholder="Add your location"
               variant="outlined"
+              disabled={isLoading}
             />
           </FormControl>
           <FormControl className={classes.formControl} fullWidth>
@@ -203,17 +227,22 @@ const EditProfileForm = props => {
               rows={4}
               rowsMax={4}
               variant="outlined"
+              disabled={isLoading}
             />
           </FormControl>
         </div>
         <div className={classes.action}>
           <Button
+            type="submit"
             variant="contained"
             color="primary"
-            type="submit"
-            disabled={Object.values(inputs).length === 0}
+            disabled={isLoading || (!_.keys(inputs).length && !imageInput.file)}
+            className={classes.button}
           >
-            Save
+            Save Changes
+            {isLoading && (
+              <CircularProgress size={22} className={classes.savingProgress} />
+            )}
           </Button>
         </div>
       </form>

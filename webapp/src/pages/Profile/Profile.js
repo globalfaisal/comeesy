@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 /* -- actions -- */
 import { getUserData } from '../../actions/dataActions';
+import { getUserOwnData } from '../../actions/userActions';
 
 /* -- components -- */
 import ProfileCover from '../../components/ProfileCover/ProfileCover';
@@ -27,7 +28,7 @@ const Profile = ({ match: { params } }) => {
   const { isAuthenticated, credentials } = useSelector(state => state.user);
   const { user, isLoading } = useSelector(state => state.data);
 
-  const canEditProfile = () => {
+  const isProfileOwner = () => {
     if (!credentials) return false;
     return credentials.username === params.username;
   };
@@ -40,11 +41,11 @@ const Profile = ({ match: { params } }) => {
     if (isLoading) return <Loading />;
     return (
       <div className="profile-page">
-        <ProfileCover user={user.credentials} canEdit={canEditProfile()} />
+        <ProfileCover user={user.credentials} isOwner={isProfileOwner()} />
         <Container>
           <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={12} sm={5} md={3}>
-              <ProfileCard user={user.credentials} canEdit={canEditProfile()} />
+              <ProfileCard user={user.credentials} canEdit={isProfileOwner()} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <Hidden smUp>

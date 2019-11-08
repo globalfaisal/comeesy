@@ -23,7 +23,6 @@ const Signup = () => {
   const classes = useStyles();
   const { inputs, handleChange, handleSubmit } = useAuthForm(signup);
   const { isLoading, errors } = useSelector(state => state.UI);
-  const error = errors && errors.form;
 
   return (
     <div className="signup-page">
@@ -47,8 +46,9 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.name}
                 onChange={handleChange}
-                helperText={error && error.name}
-                error={error && !!error.name}
+                helperText={errors.auth && errors.auth.name}
+                error={errors.auth && !!errors.auth.name}
+                disabled={isLoading}
                 label="Name"
                 color="primary"
                 autoFocus
@@ -63,8 +63,9 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.username}
                 onChange={handleChange}
-                helperText={error && error.username}
-                error={error && !!error.username}
+                helperText={errors.auth && errors.auth.username}
+                error={errors.auth && !!errors.auth.username}
+                disabled={isLoading}
                 label="Username"
                 color="primary"
                 fullWidth
@@ -78,8 +79,9 @@ const Signup = () => {
                 type="email"
                 defaultValue={inputs.email}
                 onChange={handleChange}
-                helperText={error && error.email}
-                error={error && !!error.email}
+                helperText={errors.auth && errors.auth.email}
+                error={errors.auth && !!errors.auth.email}
+                disabled={isLoading}
                 label="Email"
                 color="primary"
                 fullWidth
@@ -93,8 +95,9 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.password}
                 onChange={handleChange}
-                helperText={error && error.password}
-                error={error && !!error.password}
+                helperText={errors.auth && errors.auth.password}
+                error={errors.auth && !!errors.auth.password}
+                disabled={isLoading}
                 label="Password"
                 color="primary"
                 className={classes.textField}
@@ -107,8 +110,9 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.confirmPassword}
                 onChange={handleChange}
-                helperText={error && error.confirmPassword}
-                error={error && !!error.confirmPassword}
+                helperText={errors.auth && errors.auth.confirmPassword}
+                error={errors.auth && !!errors.auth.confirmPassword}
+                disabled={isLoading}
                 label="Confirm Password"
                 color="primary"
                 className={classes.textField}

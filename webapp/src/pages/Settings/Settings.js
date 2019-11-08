@@ -1,6 +1,5 @@
 /* -- libs -- */
 import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
@@ -25,6 +24,7 @@ import useStyles from './styles';
 
 const Settings = props => {
   const classes = useStyles();
+
   const [selectedTab, setSelectedTab] = useState(0);
   const { pathname } = history.location;
 
@@ -76,9 +76,6 @@ const Settings = props => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TabPanel active={selectedTab === 0} index={0}>
-              <Typography variant="h5" color="textPrimary" gutterBottom>
-                Profile
-              </Typography>
               <EditProfileForm />
             </TabPanel>
             <TabPanel active={selectedTab === 1} index={1}>

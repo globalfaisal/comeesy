@@ -3,24 +3,23 @@ import { uiTypes } from '../actions/types';
 
 const INITIAL_STATE = {
   isLoading: false,
-  errors: null,
+  errors: {},
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case uiTypes.SET_ERRORS:
+    case uiTypes.SET_ERROR:
       return {
         ...state,
         isLoading: false,
         errors: {
           ...state.errors,
-          [_.keys(action.payload)[0]]: _.values(action.payload)[0],
+          [action.payload.type]: action.payload.data,
         },
       };
     case uiTypes.CLEAR_ERROR:
       return {
         ...state,
-        isLoading: false,
         errors: { ..._.omit(state.errors, action.payload) },
       };
 
@@ -28,6 +27,9 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, isLoading: false, errors: null };
     case uiTypes.LOADING_UI:
       return { ...state, isLoading: true };
+    case uiTypes.LOADING_UI_FINISHED:
+      return { ...state, isLoading: false };
+
     default:
       return state;
   }

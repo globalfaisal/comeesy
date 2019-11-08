@@ -27,14 +27,14 @@ import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
 import { Hidden } from '@material-ui/core';
 
-const ProfileCard = ({ user, canEdit = false }) => {
+const ProfileCard = ({ user, isOwner = false }) => {
   const classes = useStyles();
   if (!user) return null;
   const { username, bio, location, birthdate, createdAt } = user;
   return (
     <section className={classes.UserProfile}>
       <Card className={classes.card} elevation={1}>
-        {canEdit && (
+        {isOwner && (
           <Hidden smUp>
             <Fab
               component={Link}
@@ -101,6 +101,6 @@ const ProfileCard = ({ user, canEdit = false }) => {
 
 ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
-  canEdit: PropTypes.bool.isRequired,
+  isOwner: PropTypes.bool.isRequired,
 };
 export default ProfileCard;

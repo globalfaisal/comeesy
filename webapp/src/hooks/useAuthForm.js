@@ -9,11 +9,11 @@ const useAuthForm = callback => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
 
-  // Clear form errors on componentWillUnmount
+  // Clear auth errors on componentWillUnmount
   useEffect(
     () =>
       function() {
-        dispatch(clearError('form'));
+        dispatch(clearError('auth'));
       },
     [dispatch]
   );

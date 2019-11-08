@@ -6,10 +6,11 @@ export const userTypes = {
 };
 
 export const uiTypes = {
-  SET_ERRORS: 'SET_ERRORS',
+  SET_ERROR: 'SET_ERROR',
   CLEAR_ERROR: 'CLEAR_ERROR',
   CLEAR_ERRORS: 'CLEAR_ERRORS',
   LOADING_UI: 'LOADING_UI',
+  LOADING_UI_FINISHED: 'LOADING_UI_FINISHED',
 };
 
 export const dataTypes = {

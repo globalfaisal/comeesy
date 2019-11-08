@@ -3,16 +3,21 @@ import { userTypes } from './types';
 import history from '../utils/history/history';
 import isTokenExpired from '../utils/helpers/token_validator';
 
-import { setErrors, clearErrors, loadingUI } from './UIActions';
+import {
+  setError,
+  clearError,
+  loadingUI,
+  loadingUIFinished,
+} from './UIActions';
 
 export const login = formData => dispatch => {
-  dispatch(loadingUI());
-
   const userData = {
     email: formData.email || '',
     password: formData.password || '',
   };
 
+  dispatch(loadingUI());
+  dispatch(clearError('auth'));
   // Make loging request
   comeesyAPI
     .post('/auth/login', userData)
@@ -20,17 +25,20 @@ export const login = formData => dispatch => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
       localStorage.setItem('token', token);
-      dispatch(getUserOwnData(token));
-      dispatch(clearErrors());
+      dispatch(getUserOwnData());
+      dispatch(clearError('auth'));
+      dispatch(loadingUIFinished());
       history.push('/');
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors({ form: err.response.data }));
+      dispatch(setError({ type: 'auth', data: err.response.data }));
     });
 };
 
 export const logout = () => dispatch => {
+  dispatch(loadingUI());
+
   // Logout user
   comeesyAPI
     .get('/auth/logout')
@@ -38,8 +46,8 @@ export const logout = () => dispatch => {
       // Clear token and unauthenticate user
       window.localStorage.removeItem('token');
       dispatch({ type: userTypes.SET_UNAUTHENTICATED });
-      dispatch(clearErrors());
-      history.push('/auth/login');
+      dispatch(loadingUIFinished());
+      history.push('/');
     })
     .catch(err => {
       console.error(err);
@@ -47,8 +55,6 @@ export const logout = () => dispatch => {
 };
 
 export const signup = formData => dispatch => {
-  dispatch(loadingUI());
-
   const userData = {
     name: formData.name || '',
     username: formData.username || '',
@@ -57,6 +63,8 @@ export const signup = formData => dispatch => {
     confirmPassword: formData.confirmPassword || '',
   };
 
+  dispatch(loadingUI());
+  dispatch(clearError('auth'));
   // Make signup request
   comeesyAPI
     .post('/auth/signup', userData)
@@ -64,13 +72,15 @@ export const signup = formData => dispatch => {
       const token = `Bearer ${res.data.token}`;
       // Save id token to local storage
       localStorage.setItem('token', token);
-      dispatch(getUserOwnData(token));
-      dispatch(clearErrors());
+      dispatch(getUserOwnData());
+      dispatch(clearError('auth'));
+      dispatch(loadingUIFinished());
+
       history.push('/');
     })
     .catch(err => {
       console.error(err);
-      dispatch(setErrors({ form: err.response.data }));
+      dispatch(setError({ type: 'auth', data: err.response.data }));
     });
 };
 
@@ -90,21 +100,51 @@ export const getUserOwnData = () => dispatch => {
     });
 };
 
-export const AddUserDetails = data => dispatch => {
+export const addUserDetails = data => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
-  console.log(data);
-
   dispatch(loadingUI());
+  dispatch(clearError('settings'));
+
   comeesyAPI
     .post('/user', data, {
       headers: { Authorization: token },
     })
     .then(res => {
-      console.log(res);
+      console.log(res.data);
+      dispatch(getUserOwnData());
+      dispatch(clearError('settings'));
+      dispatch(loadingUIFinished());
     })
     .catch(err => {
       console.error(err);
+      dispatch(setError({ type: 'settings', data: err.response.data }));
+    });
+};
+
+export const uploadUserAvatar = file => dispatch => {
+  const { token } = window.localStorage;
+  if (isTokenExpired(token)) return dispatch(logout());
+
+  dispatch(loadingUI());
+  dispatch(clearError('upload'));
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  comeesyAPI
+    .post('/user/avatar', formData, {
+      headers: { Authorization: token },
+    })
+    .then(res => {
+      console.log(res.data);
+      dispatch(getUserOwnData());
+      dispatch(clearError('upload'));
+      dispatch(loadingUIFinished());
+    })
+    .catch(err => {
+      console.error(err.response.data);
+      dispatch(setError({ type: 'upload', data: err.response.data }));
     });
 };

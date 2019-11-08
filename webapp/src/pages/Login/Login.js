@@ -22,7 +22,6 @@ const Login = () => {
   const classes = useStyles();
   const { inputs, handleChange, handleSubmit } = useAuthForm(login);
   const { isLoading, errors } = useSelector(state => state.UI);
-  const error = errors && errors.form;
 
   return (
     <div className="login-page">
@@ -47,8 +46,9 @@ const Login = () => {
             type="email"
             defaultValue={inputs.email}
             onChange={handleChange}
-            helperText={error && error.email}
-            error={error && !!error.email}
+            helperText={errors.auth && errors.auth.email}
+            error={errors.auth && !!errors.auth.email}
+            disabled={isLoading}
             label="Email"
             autoFocus
             color="primary"
@@ -62,8 +62,9 @@ const Login = () => {
             type="password"
             defaultValue={inputs.password}
             onChange={handleChange}
-            helperText={error && error.password}
-            error={error && !!error.password}
+            helperText={errors.auth && errors.auth.password}
+            error={errors.auth && !!errors.auth.password}
+            disabled={isLoading}
             label="Password"
             color="primary"
             fullWidth

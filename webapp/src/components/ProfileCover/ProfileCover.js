@@ -16,7 +16,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './styles';
 import { Hidden } from '@material-ui/core';
 
-const ProfileCover = ({ user, canEdit = false }) => {
+const ProfileCover = ({ user, isOwner = false }) => {
   const classes = useStyles();
   if (!user) return null;
   return (
@@ -36,7 +36,7 @@ const ProfileCover = ({ user, canEdit = false }) => {
             }`}</Typography>
           }
         />
-        {canEdit && (
+        {isOwner && (
           <CardActions>
             <Hidden xsDown>
               <Button
@@ -59,6 +59,6 @@ const ProfileCover = ({ user, canEdit = false }) => {
 
 ProfileCover.propTypes = {
   user: PropTypes.object.isRequired,
-  canEdit: PropTypes.bool.isRequired,
+  isOwner: PropTypes.bool.isRequired,
 };
 export default ProfileCover;

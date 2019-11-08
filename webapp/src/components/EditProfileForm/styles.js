@@ -39,4 +39,11 @@ export default makeStyles(theme => ({
   formControl: {
     marginTop: theme.spacing(4),
   },
+  button: {
+    position: 'relative',
+  },
+  savingProgress: {
+    position: 'absolute',
+    color: theme.palette.colors.dark,
+  },
 }));
