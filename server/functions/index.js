@@ -35,7 +35,7 @@ const {
   onCommentReplyDelete,
 } = require('./triggers/comments');
 
-const { onUserAvatarChange } = require('./triggers/users');
+const { onUserAvatarChange, onNameChange } = require('./triggers/users');
 
 /* Enable CORS */
 //TODO: for Production change whitelist of allowed origin and pass to cors()
@@ -155,3 +155,9 @@ exports.userAvatarChangeTrigger = functions
   .region('europe-west1')
   .firestore.document('/users/{userId}')
   .onUpdate(onUserAvatarChange);
+
+// Triggers when user's name is changed
+exports.nameChangedTrigger = functions
+  .region('europe-west1')
+  .firestore.document('/users/{userId}')
+  .onUpdate(onNameChange);
