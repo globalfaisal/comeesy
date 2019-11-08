@@ -5,7 +5,10 @@ const fs = require('fs');
 
 const { admin, db } = require('../utils/admin');
 
-const { validateUserDetails } = require('../utils/validators');
+const {
+  validateUserDetails,
+  validateImageFile,
+} = require('../utils/validators');
 
 const config = require('../config');
 
@@ -26,7 +29,7 @@ exports.addUserDetails = (req, res) => {
     .update(req.body)
     .then(() => {
       // success
-      return this.getUserOwnData(req, res);
+      return res.status(201).json({ message: 'Details updated successfully' });
     })
     .catch(err => {
       console.error('Error while adding user own details ', err);
@@ -111,14 +114,13 @@ exports.uploadUserAvatar = (req, res) => {
 
   const busboy = new BusBoy({ headers: req.headers });
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-    if (!file || !mimetype)
-      return res.status(400).json({ error: 'Invalid file submitted' });
-    if (mimetype !== 'image/png' && mimetype !== 'image/jpeg') {
-      return res.status(400).json({
-        error:
-          'Invalid file-type uploaded, accepted file-types are .jpg or .png',
-      });
-    }
+    const { isValid, error } = validateImageFile(
+      file,
+      req.headers['content-length'],
+      mimetype
+    );
+    if (!isValid) return res.status(400).json({ avatar: error });
+
     // 1. Generate unique image filename
     const imageExt = filename.split('.')[filename.split('.').length - 1];
     imageFileName = `${Math.round(Math.random() * 10000000000000)}.${imageExt}`;
@@ -153,7 +155,7 @@ exports.uploadUserAvatar = (req, res) => {
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });
       })
       .then(() =>
-        res.status(201).json({ message: 'image uploaded successfully' })
+        res.status(201).json({ message: 'Profile image updated successfully' })
       )
       .catch(err => {
         console.error('Error while uploading profile image ', err);

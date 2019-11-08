@@ -61,12 +61,29 @@ exports.validateUserDetails = data => {
   };
 };
 
-exports.validateBodyContent = body => {
+exports.validateBodyContent = content => {
   let error = '';
-  if (typeof body === 'string' && validator.isEmpty(body))
+  if (typeof content === 'string' && validator.isEmpty(content))
     error = 'Must not be empty';
-  else if (Array.isArray(body) && body.length === 0)
+  else if (Array.isArray(content) && content.length === 0)
     error = 'Must not be empty';
+  return {
+    error,
+    isValid: error === '' ? true : false,
+  };
+};
+
+exports.validateImageFile = (file, size, mimetype) => {
+  const maxFileSizeAllowed = 2097152; // 2Mb
+  const acceptedFileTypes = ['image/jpeg', 'image/png'];
+  let error = '';
+
+  if (!file) error = 'Upload failed. Invalid file submitted';
+  else if (file && !acceptedFileTypes.includes(mimetype))
+    error = 'Upload failed. Please submit either a .png or .jpeg image';
+  if (file && size - 100 >= maxFileSizeAllowed)
+    error = 'Upload failed. Please submit a file less than 2MB';
+
   return {
     error,
     isValid: error === '' ? true : false,
