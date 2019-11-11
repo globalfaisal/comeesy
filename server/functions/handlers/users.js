@@ -13,7 +13,7 @@ const {
 const config = require('../config');
 
 // Add user details
-exports.addUserDetails = (req, res) => {
+exports.addUserDetails = async (req, res) => {
   // validation data
 
   const { errors, isValid, isEmptyData } = validateUserDetails(req.body);
@@ -24,17 +24,33 @@ exports.addUserDetails = (req, res) => {
   }
   if (!isValid) return res.status(400).json(errors);
 
-  // persist the update details in the users db
-  db.doc(`/users/${req.user.username}`)
-    .update(req.body)
-    .then(() => {
-      // success
-      return res.status(201).json({ message: 'Details updated successfully' });
-    })
-    .catch(err => {
-      console.error('Error while adding user own details ', err);
-      return res.status(500).json({ error: err.code });
-    });
+  try {
+    // 1. Update user displayName if Name is changed
+    const userRecord = await admin.auth().getUser(req.user.uuid);
+    if (req.body.name && req.body.name !== userRecord.toJSON().displayName) {
+      await admin
+        .auth()
+        .updateUser(req.user.uuid, {
+          displayName: req.body.name,
+        })
+        .then(userNewRecord =>
+          console.log(
+            'Successfully updated user displayName',
+            userNewRecord.toJSON().displayName
+          )
+        );
+    }
+    // 2. Update details in the users db
+    return db
+      .doc(`/users/${req.user.username}`)
+      .update(req.body)
+      .then(() =>
+        res.status(201).json({ message: 'Details updated successfully' })
+      );
+  } catch (err) {
+    console.error('Error while adding user own details ', err);
+    return res.status(500).json({ error: err.code });
+  }
 };
 
 // Get current logged-in user data

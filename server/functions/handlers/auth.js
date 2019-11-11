@@ -84,8 +84,16 @@ exports.signup = (req, res) => {
           .createUserWithEmailAndPassword(newUser.email, newUser.password);
       }
     })
-    .then(data => {
+    .then(async data => {
       userId = data.user.uid;
+
+      // add user displayName
+      await data.user.updateProfile({
+        displayName: newUser.name,
+      });
+      // send email verification
+      await data.user.sendEmailVerification();
+
       return data.user.getIdToken();
     })
     .then(idToken => {
@@ -128,5 +136,16 @@ exports.signup = (req, res) => {
       return res
         .status(500)
         .json({ general: 'Something went wrong, please try again' });
+    });
+};
+
+// Logout user
+exports.sendEmailVerification = (req, res) => {
+  req.user
+    .sendEmailVerification()
+    .then(() => res.json({ message: 'Email verification sent successfully' }))
+    .catch(err => {
+      console.error('Error while sending email verification ', err);
+      return res.status(500).json({ error: err.code });
     });
 };

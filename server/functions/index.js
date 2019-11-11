@@ -7,7 +7,12 @@ const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');
 const { likePost, unlikePost } = require('./handlers/likes');
 const { markNotificationsRead } = require('./handlers/notifications');
 
-const { login, logout, signup } = require('./handlers/auth');
+const {
+  login,
+  logout,
+  signup,
+  sendEmailVerification,
+} = require('./handlers/auth');
 
 const {
   getCommentReplies,
@@ -93,6 +98,7 @@ app.post('/post/:postId/unlike', fbAuth, unlikePost);
 app.post('/auth/signup', signup);
 app.post('/auth/login', login);
 app.get('/auth/logout', logout);
+app.get('/auth/verifyEmail', fbAuth, sendEmailVerification);
 
 // users routes
 app.get('/user', fbAuth, getUserOwnData);

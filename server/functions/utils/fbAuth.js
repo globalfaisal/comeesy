@@ -15,18 +15,20 @@ module.exports = (req, res, next) => {
     return res.status(403).json({ error: 'Unauthorized Request' });
   }
   // 2. check if the token is valid
+  let uuid;
   admin
     .auth()
     .verifyIdToken(idToken)
     .then(decodedToken => {
+      uuid = decodedToken.uid;
       return db
         .collection('users')
-        .where('userId', '==', decodedToken.uid)
+        .where('userId', '==', uuid)
         .limit(1)
         .get();
     })
     .then(snapshot => {
-      req.user = snapshot.docs[0].data();
+      req.user = { ...snapshot.docs[0].data(), uuid };
       return next();
     })
     .catch(err => {
