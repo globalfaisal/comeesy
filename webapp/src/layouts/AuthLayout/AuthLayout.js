@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Switch, Link } from 'react-router-dom';
 
 /* -- routes -- */
@@ -57,7 +57,9 @@ const AuthLayout = props => {
           </Hidden>
           <Grid item xs={12} sm={6} className={classes.gridRight}>
             <CardContent className={classes.cardContent}>
-              <Logo variant="black" title="⬅ Back to home" />
+              <Link to="/" className={classes.logoWrapper}>
+                <Logo variant="black" title="Back to home" />
+              </Link>
               <Tabs
                 value={selectedTab}
                 indicatorColor="primary"

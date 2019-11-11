@@ -1,6 +1,5 @@
 /* -- libs -- */
 import React from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- mui -- */
@@ -21,14 +20,12 @@ const useStyles = makeStyles({
 const Logo = ({ variant = 'white', title }) => {
   const classes = useStyles();
   return (
-    <Link to="/">
-      <img
-        src={variant === 'white' ? logoWhitePath : logoBlackPath}
-        alt="logo"
-        className={classes.logo}
-        title={title}
-      />
-    </Link>
+    <img
+      src={variant === 'white' ? logoWhitePath : logoBlackPath}
+      alt="logo"
+      className={classes.logo}
+      title={title}
+    />
   );
 };
 Logo.propTypes = {

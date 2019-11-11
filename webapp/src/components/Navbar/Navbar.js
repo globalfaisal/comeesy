@@ -44,7 +44,9 @@ const Navbar = () => {
   return (
     <AppBar className={classes.appBar}>
       <Toolbar variant="dense">
-        <Logo variant="white" />
+        <Link to="/">
+          <Logo variant="white" />
+        </Link>
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
           {isAuthenticated && (

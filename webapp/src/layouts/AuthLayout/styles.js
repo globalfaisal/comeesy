@@ -50,9 +50,6 @@ export default makeStyles(theme => ({
   logoWrapper: {
     width: 24,
     height: 24,
-    '& img': {
-      height: '100%',
-    },
     marginBottom: theme.spacing(2),
   },
   tab: {
