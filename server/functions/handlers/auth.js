@@ -91,6 +91,7 @@ exports.signup = (req, res) => {
       }
     })
     .then(async data => {
+<<<<<<< HEAD
       // Send email verification
       await data.user.sendEmailVerification();
 
@@ -103,6 +104,21 @@ exports.signup = (req, res) => {
       token = await data.user.getIdToken();
 
       // Persist the newly created user credentials to the db
+=======
+      userId = data.user.uid;
+
+      // add user displayName
+      await data.user.updateProfile({
+        displayName: newUser.name,
+      });
+      // send email verification
+      await data.user.sendEmailVerification();
+
+      return data.user.getIdToken();
+    })
+    .then(idToken => {
+      token = idToken;
+>>>>>>> 01df027b221af9430710483d3a51997c3f696a50
       const userCredentials = {
         name: newUser.name,
         username: newUser.username,
@@ -145,6 +161,7 @@ exports.signup = (req, res) => {
 };
 
 // Logout user
+<<<<<<< HEAD
 exports.resendEmailVerification = async (req, res) => {
   try {
     const user = await admin.auth().getUser(req.user.userId);
@@ -158,4 +175,14 @@ exports.resendEmailVerification = async (req, res) => {
     console.error('Error while sending email verification ', err);
     return res.status(500).json({ error: err.code });
   }
+=======
+exports.sendEmailVerification = (req, res) => {
+  req.user
+    .sendEmailVerification()
+    .then(() => res.json({ message: 'Email verification sent successfully' }))
+    .catch(err => {
+      console.error('Error while sending email verification ', err);
+      return res.status(500).json({ error: err.code });
+    });
+>>>>>>> 01df027b221af9430710483d3a51997c3f696a50
 };

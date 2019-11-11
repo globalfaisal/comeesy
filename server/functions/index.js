@@ -11,7 +11,11 @@ const {
   login,
   logout,
   signup,
+<<<<<<< HEAD
   resendEmailVerification,
+=======
+  sendEmailVerification,
+>>>>>>> 01df027b221af9430710483d3a51997c3f696a50
 } = require('./handlers/auth');
 
 const {
@@ -98,7 +102,11 @@ app.post('/post/:postId/unlike', fbAuth, unlikePost);
 app.post('/auth/signup', signup);
 app.post('/auth/login', login);
 app.get('/auth/logout', logout);
+<<<<<<< HEAD
 app.get('/auth/verifyEmail', fbAuth, resendEmailVerification);
+=======
+app.get('/auth/verifyEmail', fbAuth, sendEmailVerification);
+>>>>>>> 01df027b221af9430710483d3a51997c3f696a50
 
 // users routes
 app.get('/user', fbAuth, getUserOwnData);

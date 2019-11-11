@@ -26,11 +26,19 @@ exports.addUserDetails = async (req, res) => {
 
   try {
     // 1. Update user displayName if Name is changed
+<<<<<<< HEAD
     const userRecord = await admin.auth().getUser(req.user.userId);
     if (req.body.name && req.body.name !== userRecord.toJSON().displayName) {
       await admin
         .auth()
         .updateUser(req.user.userId, {
+=======
+    const userRecord = await admin.auth().getUser(req.user.uuid);
+    if (req.body.name && req.body.name !== userRecord.toJSON().displayName) {
+      await admin
+        .auth()
+        .updateUser(req.user.uuid, {
+>>>>>>> 01df027b221af9430710483d3a51997c3f696a50
           displayName: req.body.name,
         })
         .then(userNewRecord =>
