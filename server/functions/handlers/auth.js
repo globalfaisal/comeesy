@@ -1,4 +1,4 @@
-const { db, firebase } = require('../utils/admin');
+const { db, admin, firebase } = require('../utils/admin');
 const config = require('../config');
 
 const {
@@ -20,7 +20,13 @@ exports.login = (req, res) => {
   firebase
     .auth()
     .signInWithEmailAndPassword(userData.email, userData.password)
-    .then(data => data.user.getIdToken())
+    .then(data => {
+      console.log(
+        '-----------------------EMAIL VERIFIED: ',
+        data.user.emailVerified
+      );
+      return data.user.getIdToken();
+    })
     .then(token => res.status(200).json({ token }))
     .catch(err => {
       console.error('Error while user login ', err);
@@ -84,12 +90,19 @@ exports.signup = (req, res) => {
           .createUserWithEmailAndPassword(newUser.email, newUser.password);
       }
     })
-    .then(data => {
-      userId = data.user.uid;
-      return data.user.getIdToken();
-    })
-    .then(idToken => {
-      token = idToken;
+    .then(async data => {
+      // Send email verification
+      await data.user.sendEmailVerification();
+
+      // Add user displayName
+      await data.user.updateProfile({
+        displayName: newUser.name,
+      });
+
+      // Get user token
+      token = await data.user.getIdToken();
+
+      // Persist the newly created user credentials to the db
       const userCredentials = {
         name: newUser.name,
         username: newUser.username,
@@ -102,9 +115,9 @@ exports.signup = (req, res) => {
         imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
           config.storageBucket
         }/o/${defaultAvatarFileName}?alt=media`,
-        userId,
+        verified: data.user.emailVerified,
+        userId: data.user.uid,
       };
-      // Persist the newly created user credentials to the db
       return db.doc(`/users/${newUser.username}`).set(userCredentials);
     })
     .then(doc => {
@@ -129,4 +142,20 @@ exports.signup = (req, res) => {
         .status(500)
         .json({ general: 'Something went wrong, please try again' });
     });
+};
+
+// Logout user
+exports.resendEmailVerification = async (req, res) => {
+  try {
+    const user = await admin.auth().getUser(req.user.userId);
+
+    return user
+      .sendEmailVerification()
+      .then(() =>
+        res.json({ message: 'Email verification sent successfully' })
+      );
+  } catch (err) {
+    console.error('Error while sending email verification ', err);
+    return res.status(500).json({ error: err.code });
+  }
 };

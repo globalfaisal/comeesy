@@ -15,6 +15,7 @@ module.exports = (req, res, next) => {
     return res.status(403).json({ error: 'Unauthorized Request' });
   }
   // 2. check if the token is valid
+  let uuid;
   admin
     .auth()
     .verifyIdToken(idToken)
