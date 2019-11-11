@@ -18,13 +18,7 @@ export default () =>
         secondary: colors.textSecondary,
       },
       colors: {
-        black: colors.black,
-        white: colors.white,
-        whitesmoke: colors.whitesmoke,
-        dark: colors.dark,
-        grey: colors.grey,
-        greylight: colors.greylight,
-        steelblue: colors.steelblue,
+        ...colors.others,
       },
     },
     typography: {
