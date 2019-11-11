@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-import EditAccountForm from '../../components/EditAccountForm/EditAccountForm';
-import EditProfileForm from '../../components/EditProfileForm/EditProfileForm';
+import AccountSettingsForm from '../../components/AccountSettingsForm/AccountSettingsForm';
+import ProfileSettingsForm from '../../components/ProfileSettingsForm/ProfileSettingsForm';
 import TabPanel from '../../components/UI/TabPanel';
 
 /* -- utils -- */
@@ -76,13 +76,10 @@ const Settings = props => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <TabPanel active={selectedTab === 0} index={0}>
-              <EditProfileForm />
+              <ProfileSettingsForm />
             </TabPanel>
             <TabPanel active={selectedTab === 1} index={1}>
-              <Typography variant="h5" color="textPrimary" gutterBottom>
-                Account
-              </Typography>
-              <EditAccountForm />
+              <AccountSettingsForm />
             </TabPanel>
           </Grid>
         </Grid>

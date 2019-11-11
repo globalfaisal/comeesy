@@ -33,7 +33,7 @@ import useStyle from './styles';
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/png'];
 
-const EditProfileForm = props => {
+const ProfileSettingsForm = props => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
@@ -71,13 +71,6 @@ const EditProfileForm = props => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
-
-    // handle wrong file types
-    // if (!acceptedTypes.includes(file.type)) {
-    //   console.error('ERROR: File type not supported');
-    //   setImageInput({ thumbnail: '', file: null });
-    //   return;
-    // }
 
     // add file to  state
     setImageInput(prevState => ({
@@ -251,5 +244,5 @@ const EditProfileForm = props => {
   return renderContent();
 };
 
-EditProfileForm.propTypes = {};
-export default EditProfileForm;
+ProfileSettingsForm.propTypes = {};
+export default ProfileSettingsForm;
