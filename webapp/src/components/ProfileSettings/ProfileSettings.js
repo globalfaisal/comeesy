@@ -255,7 +255,7 @@ const ProfileSettings = props => {
             variant="contained"
             color="primary"
             disabled={
-              isLoading || (!checkValuesAreEmpty(inputs) && !imageInput.file)
+              isLoading || (checkValuesAreEmpty(inputs) && !imageInput.file)
             }
             className={classes.button}
           >

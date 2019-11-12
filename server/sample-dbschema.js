@@ -7,24 +7,23 @@ const db = {
       commentCount: 1,
       createdAt: '2019-09-23T18:25:06.105Z',
       user: {
-        lastname: 'Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
-        firstname: 'Jane',
+        name: 'Jane Doe',
         username: 'jane_doe',
       },
     },
   ],
   users: [
     {
-      firstname: 'Jane',
-      lastname: 'Doe',
+      name: 'Jane Doe',
       username: 'jane_doe',
       email: 'jane.doe@email.com',
       birthdate: '1992-01-30',
       location: 'Stockholm, Sweden',
       userId: 'z13NSegbLhQ4WyofzqCb46soqgj2',
       bio: 'Nam rick grimes malum cerebro.',
+      gender: 'female',
       imageUrl:
         'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
       createdAt: '2019-09-17T08:42:41.187Z',
@@ -39,8 +38,7 @@ const db = {
       replyCount: 1,
       user: {
         username: 'jane_doe',
-        firstname: 'Jane',
-        lastname: 'Doe',
+        name: 'Jane Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
@@ -55,8 +53,7 @@ const db = {
       createdAt: '2019-09-14T15:11:58.903Z',
       user: {
         username: 'alen_adam',
-        firstname: 'Alen',
-        lastname: 'Adam',
+        name: 'Alen Adam',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
@@ -69,8 +66,7 @@ const db = {
       createdAt: '2019-09-18T07:49:10.204Z',
       user: {
         username: 'alen_adam',
-        firstname: 'Alen',
-        lastname: 'Adam',
+        name: 'Alen Adam',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
@@ -96,11 +92,9 @@ const db = {
 };
 
 /* User own data */
-// TODO: store this data in the Redux store
-const getCurrentUserData = {
+const userOwnData = {
   credentials: {
-    firstname: 'Jane',
-    lastname: 'Doe',
+    name: 'Jane Doe',
     username: 'jane_doe',
     email: 'jane.doe@email.com',
     birthdate: '1992-01-30',
@@ -111,39 +105,13 @@ const getCurrentUserData = {
       'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
     createdAt: '2019-09-17T08:42:41.187Z',
   },
-  // All posts user created
-  posts: [
-    {
-      postId: 'XJki6wK5XcGpnzABKMHS',
-      body: 'Why did the M&M go to school? It wanted to be a Smartie.',
-      likeCount: 1,
-      commentCount: 1,
-      createdAt: '2019-09-23T18:25:06.105Z',
-      user: {
-        username: 'jane_doe',
-        firstname: 'Jane',
-        lastname: 'Doe',
-        imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
-      },
-    },
-  ],
-  // All likes user made
+  // All posts user liked
   likes: [
     {
-      likeId: 'b7bsy0aR6WtDBV6BHaaK',
       postId: 'XJki6wK5XcGpnzABKMHS',
-      createdAt: '2019-09-24T07:49:10.204Z',
-      user: {
-        lastname: 'Doe',
-        imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-        firstname: 'Jane',
-        username: 'jane_doe',
-      },
     },
   ],
-  // All Notifications user received
+  // Last 100 Notifications user received
   notifications: [
     {
       type: 'like',
@@ -151,10 +119,10 @@ const getCurrentUserData = {
       createdAt: '2019-09-24T07:49:15.120Z',
       recipients: 'jane_doe',
       sender: {
-        lastname: 'Doe',
+      
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
-        firstname: 'Jane',
+        name: 'Jane Doe',
         username: 'jane_doe',
       },
       postId: 'XJki6wK5XcGpnzABKMHS',
@@ -168,8 +136,7 @@ const getCurrentUserData = {
       createdAt: '2019-09-23T18:26:20.178Z',
       sender: {
         username: 'alen_adam',
-        firstname: 'Alen',
-        lastname: 'Adam',
+        name: 'Alen Adam',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
@@ -184,8 +151,7 @@ const getCurrentUserData = {
       createdAt: '2019-09-23T18:28:47.068Z',
       sender: {
         username: 'john_doe',
-        firstname: 'John',
-        lastname: 'Doe',
+        name: 'John Doe',
         imageUrl:
           'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image-name.jpg}?alt=media',
       },
