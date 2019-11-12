@@ -33,7 +33,7 @@ import useStyle from './styles';
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/png'];
 
-const ProfileSettingsForm = props => {
+const ProfileSettings = props => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
@@ -42,16 +42,43 @@ const ProfileSettingsForm = props => {
 
   const uploadErrorMsg = errors && errors.upload ? errors.upload.avatar : '';
 
-  const [inputs, setInputs] = useState({});
-  const [imageInput, setImageInput] = useState({ thumbnail: '', file: null });
+  const [imageInput, setImageInput] = useState({
+    thumbnail: '',
+    file: null,
+  });
 
-  useEffect(
-    () => () => {
+  const [inputs, setInputs] = useState({
+    name: '',
+    gender: '',
+    birthdate: null,
+    location: '',
+    bio: '',
+  });
+
+  useEffect(() => {
+    mapStateToCredentials(credentials);
+    return () => {
       dispatch(clearError('settings'));
       dispatch(clearError('upload'));
-    },
-    [dispatch]
-  );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [credentials]);
+
+  const mapStateToCredentials = c => {
+    if (!c) return null;
+    setInputs({
+      name: c.name ? c.name : '',
+      gender: c.gender ? c.gender : '',
+      birthdate: c.birthdate ? c.birthdate : null,
+      location: c.location ? c.location : '',
+      bio: c.bio ? c.bio : '',
+    });
+
+    setImageInput({
+      thumbnail: c.imageUrl ? c.imageUrl : '',
+      file: null,
+    });
+  };
 
   const handleInputChange = e => {
     e.persist();
@@ -60,6 +87,7 @@ const ProfileSettingsForm = props => {
       [e.target.name]: e.target.value,
     }));
   };
+
   const handleDateInputChange = date => {
     setInputs(prevInputs => ({
       ...prevInputs,
@@ -101,15 +129,13 @@ const ProfileSettingsForm = props => {
     }
   };
 
-  const renderContent = () => {
-    if (!credentials) return null;
-    return (
+  return (
+    <div className="profile-settings">
       <form onSubmit={handleSubmit} noValidate autoComplete="off">
         <div className={classes.content}>
           <FormGroup row>
             <Avatar
-              alt={credentials.username}
-              src={imageInput.thumbnail || credentials.imageUrl}
+              src={imageInput.thumbnail}
               classes={{ root: classes.avatar }}
             />
             <div className={classes.imageInputContainer}>
@@ -141,7 +167,7 @@ const ProfileSettingsForm = props => {
               id="name"
               type="text"
               required
-              defaultValue={inputs.name || credentials.name}
+              value={inputs.name}
               placeholder="What is your name?"
               onChange={handleInputChange}
               helperText={errors.settings && errors.settings.name}
@@ -161,11 +187,12 @@ const ProfileSettingsForm = props => {
             <Select
               name="gender"
               id="gender"
-              value={inputs.gender || credentials.gender}
+              value={inputs.gender}
               onChange={handleInputChange}
               labelWidth={50}
               disabled={isLoading}
             >
+              <MenuItem value="">None</MenuItem>
               <MenuItem value="unspecified">Unspecified</MenuItem>
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
@@ -177,11 +204,7 @@ const ProfileSettingsForm = props => {
               name="birthdate"
               id="birthdate"
               label="Birth Date"
-              value={
-                inputs.birthdate === null
-                  ? null
-                  : inputs.birthdate || credentials.birthdate
-              }
+              value={inputs.birthdate}
               onChange={handleDateInputChange}
               openTo="year"
               format="YYYY/MM/DD"
@@ -199,7 +222,7 @@ const ProfileSettingsForm = props => {
               name="location"
               id="location"
               type="text"
-              defaultValue={inputs.location || credentials.location}
+              value={inputs.location}
               onChange={handleInputChange}
               label="Location"
               placeholder="Add your location"
@@ -212,7 +235,7 @@ const ProfileSettingsForm = props => {
               name="bio"
               id="bio"
               type="text"
-              defaultValue={inputs.bio || credentials.bio}
+              value={inputs.bio}
               onChange={handleInputChange}
               label="Bio"
               placeholder="Say something about yourself"
@@ -239,10 +262,9 @@ const ProfileSettingsForm = props => {
           </Button>
         </div>
       </form>
-    );
-  };
-  return renderContent();
+    </div>
+  );
 };
 
-ProfileSettingsForm.propTypes = {};
-export default ProfileSettingsForm;
+ProfileSettings.propTypes = {};
+export default ProfileSettings;

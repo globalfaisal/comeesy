@@ -20,7 +20,7 @@ import Button from '@material-ui/core/Button';
 /* -- styles -- */
 import useStyle from './styles';
 
-const AccountSettingsForm = props => {
+const AccountSettings = props => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
@@ -62,8 +62,8 @@ const AccountSettingsForm = props => {
       <form onSubmit={handleSubmit} noValidate autoComplete="off">
         <div className={classes.content}>
           <TextField
-            id="password"
-            name="password"
+            id="oldPassword"
+            name="oldPassword"
             type="password"
             defaultValue={inputs.oldPassword}
             onChange={handleInputChange}
@@ -78,8 +78,8 @@ const AccountSettingsForm = props => {
             required
           />
           <TextField
-            id="password"
-            name="password"
+            id="newPassword"
+            name="newPassword"
             type="password"
             defaultValue={inputs.newPassword}
             onChange={handleInputChange}
@@ -120,5 +120,5 @@ const AccountSettingsForm = props => {
   return renderContent();
 };
 
-AccountSettingsForm.propTypes = {};
-export default AccountSettingsForm;
+AccountSettings.propTypes = {};
+export default AccountSettings;
