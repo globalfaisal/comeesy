@@ -23,7 +23,7 @@ const {
 } = require('./handlers/comments');
 
 const {
-  getUserData,
+  getProfileData,
   getUserOwnData,
   addUserDetails,
   uploadUserAvatar,
@@ -102,7 +102,7 @@ app.get('/auth/verifyEmail', fbAuth, resendEmailVerification);
 
 // users routes
 app.get('/user', fbAuth, getUserOwnData);
-app.get('/user/:username', getUserData);
+app.get('/user/:username', getProfileData);
 app.post('/user', fbAuth, addUserDetails);
 app.post('/user/avatar', fbAuth, uploadUserAvatar);
 

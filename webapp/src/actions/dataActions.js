@@ -16,12 +16,12 @@ export const getPosts = () => dispatch => {
     });
 };
 
-export const getUserData = username => dispatch => {
+export const getProfileData = username => dispatch => {
   dispatch({ type: dataTypes.LOADING_DATA });
   comeesyAPI
     .get(`/user/${username}`)
     .then(res => {
-      dispatch({ type: dataTypes.SET_USER_DATA, payload: res.data });
+      dispatch({ type: dataTypes.SET_PROFILE_DATA, payload: res.data });
     })
     .catch(err => {
       console.error(err);

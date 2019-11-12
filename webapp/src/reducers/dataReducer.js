@@ -2,7 +2,7 @@ import { dataTypes } from '../actions/types.js';
 
 const INITIAL_STATE = {
   posts: [],
-  user: {
+  profile: {
     credentials: null,
     posts: [],
   },
@@ -17,10 +17,10 @@ export default (state = INITIAL_STATE, action) => {
         posts: action.payload,
         isLoading: false,
       };
-    case dataTypes.SET_USER_DATA:
+    case dataTypes.SET_PROFILE_DATA:
       return {
         ...state,
-        user: { ...state.user, ...action.payload },
+        profile: { ...state.profile, ...action.payload },
         isLoading: false,
       };
     case dataTypes.LOADING_DATA:

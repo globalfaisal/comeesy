@@ -95,16 +95,16 @@ exports.getUserOwnData = (req, res) => {
     });
 };
 
-// Get any user data
-exports.getUserData = (req, res) => {
-  const userData = {};
+// Get Profile Data of the requested user
+exports.getProfileData = (req, res) => {
+  const data = {};
   db.doc(`/users/${req.params.username}`)
     .get()
     .then(async doc => {
       if (!doc.exists) return res.status(404).json({ error: 'User not found' });
 
       // Get user credentials
-      userData.credentials = doc.data();
+      data.credentials = doc.data();
 
       // Get all the posts user created
       const postsSnapshot = await db
@@ -113,9 +113,9 @@ exports.getUserData = (req, res) => {
         .orderBy('createdAt', 'desc')
         .get();
 
-      userData.posts = postsSnapshot.docs.map(doc => doc.data());
+      data.posts = postsSnapshot.docs.map(doc => doc.data());
 
-      return res.status(200).json(userData);
+      return res.status(200).json(data);
     })
     .catch(err => {
       console.error('Error while getting user data ', err);

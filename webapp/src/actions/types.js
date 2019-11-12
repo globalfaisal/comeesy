@@ -15,6 +15,6 @@ export const uiTypes = {
 
 export const dataTypes = {
   SET_POSTS: 'SET_POSTS',
-  SET_USER_DATA: 'SET_USER_DATA',
+  SET_PROFILE_DATA: 'SET_PROFILE_DATA',
   LOADING_DATA: 'LOADING_DATA',
 };
