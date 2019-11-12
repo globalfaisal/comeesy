@@ -1,9 +1,9 @@
 /* -- libs -- */
 import React from 'react';
-import PropTypes from 'prop-types';
 
 /* -- components -- */
 import Portal from '../Portal/Portal';
+
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Loading = props => {
+const CircularLoading = props => {
   const classes = useStyles();
   return (
     <Portal>
@@ -76,5 +76,4 @@ const Loading = props => {
     </Portal>
   );
 };
-Loading.propTypes = {};
-export default Loading;
+export default CircularLoading;

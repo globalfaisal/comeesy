@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
-import {
-  formatToMonthYear,
-  formatToMonthDayYear,
-} from '../../utils/helpers/dates';
+import { formatToMonthYear, formatToMonthDayYear } from '../../utils/helperFns';
 
 /* -- mui -- */
 import Card from '@material-ui/core/Card';

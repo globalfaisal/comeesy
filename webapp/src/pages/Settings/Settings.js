@@ -10,13 +10,12 @@ import AccountSettings from '../../components/AccountSettings/AccountSettings';
 import TabPanel from '../../components/UI/TabPanel';
 
 /* -- utils -- */
-import history from '../../utils/history/history';
+import history from '../../utils/history';
 
 /* -- mui -- */
 import withWidth from '@material-ui/core/withWidth';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 /* -- styles -- */

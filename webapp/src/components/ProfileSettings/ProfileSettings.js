@@ -9,10 +9,12 @@ import { clearError } from '../../actions/UIActions';
 
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
-import Loading from '../UI/Loading';
 
 /* -- utils -- */
-import { subtractFromToday } from '../../utils/helpers/dates';
+import {
+  subtractDateFromToday,
+  checkValuesAreEmpty,
+} from '../../utils/helperFns';
 
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
@@ -38,7 +40,7 @@ const ProfileSettings = props => {
   const dispatch = useDispatch();
 
   const { credentials } = useSelector(state => state.user);
-  const { isLoading, errors } = useSelector(state => state.UI);
+  const { errors, isLoading } = useSelector(state => state.UI);
 
   const uploadErrorMsg = errors && errors.upload ? errors.upload.avatar : '';
 
@@ -211,7 +213,7 @@ const ProfileSettings = props => {
               views={['year', 'month', 'date']}
               inputVariant="outlined"
               disableFuture
-              maxDate={subtractFromToday(14)}
+              maxDate={subtractDateFromToday(14)}
               maxDateMessage="Oops! you are too young for this 🤦‍"
               clearable
               disabled={isLoading}
@@ -252,7 +254,9 @@ const ProfileSettings = props => {
             type="submit"
             variant="contained"
             color="primary"
-            disabled={isLoading || (!_.keys(inputs).length && !imageInput.file)}
+            disabled={
+              isLoading || (!checkValuesAreEmpty(inputs) && !imageInput.file)
+            }
             className={classes.button}
           >
             Save Changes

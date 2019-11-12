@@ -6,12 +6,6 @@ import _ from 'lodash';
 /* -- actions -- */
 import { clearError } from '../../actions/UIActions';
 
-/* -- components -- */
-import DatePickerInput from '../UI/DatePickerInput';
-import Loading from '../UI/Loading';
-
-/* -- utils -- */
-
 /* -- mui -- */
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';

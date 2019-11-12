@@ -7,7 +7,7 @@ import routes from '../../routes/routes';
 import AuthRoute from '../../routes/AuthRoute';
 
 /* -- utils -- */
-import history from '../../utils/history/history';
+import history from '../../utils/history';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';

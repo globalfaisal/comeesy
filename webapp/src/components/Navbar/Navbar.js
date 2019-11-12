@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 import { logout } from '../../actions/userActions';
 
 /* -- components -- */
-import Logo from '../UI/Logo';
+import LinearLoading from '../UI/LinearLoading';
 import UserMenu from './UserMenu';
+import Logo from '../UI/Logo';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,12 +38,18 @@ const useStyles = makeStyles(theme => ({
 const Navbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { isLoading, isAuthenticated, credentials } = useSelector(
-    state => state.user
-  );
+  const {
+    isLoading: isUserLoading,
+    isAuthenticated,
+    credentials,
+  } = useSelector(state => state.user);
+
+  const isDataLoading = useSelector(state => state.data.isLoading);
 
   return (
     <AppBar className={classes.appBar}>
+      <LinearLoading loading={isDataLoading || isUserLoading} />
+
       <Toolbar variant="dense">
         <Link to="/">
           <Logo variant="white" />
@@ -52,7 +59,7 @@ const Navbar = () => {
           {isAuthenticated && (
             <UserMenu user={credentials} onLogout={() => dispatch(logout())} />
           )}
-          {!isAuthenticated && !isLoading && (
+          {!isAuthenticated && !isUserLoading && (
             <React.Fragment>
               <Button
                 component={Link}

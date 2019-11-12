@@ -25,11 +25,9 @@ const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, isLoading } = useSelector(state => state.data);
-
   useEffect(() => {
     dispatch(getPosts());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={classes.homeWrapper}>

@@ -6,7 +6,7 @@ import { Router } from 'react-router-dom';
 
 /* -- redux stuff -- */
 import store from './store';
-import history from './utils/history/history';
+import history from './utils/history';
 
 import * as serviceWorker from './serviceWorker';
 

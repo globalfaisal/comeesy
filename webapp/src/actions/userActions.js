@@ -1,7 +1,7 @@
 import comeesyAPI from '../api/comeesy';
 import { userTypes } from './types';
-import history from '../utils/history/history';
-import isTokenExpired from '../utils/helpers/token_validator';
+import history from '../utils/history';
+import { isTokenExpired } from '../utils/helperFns';
 
 import {
   setError,
@@ -127,7 +127,7 @@ export const uploadUserAvatar = file => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
-  dispatch(loadingUI());
+  dispatch({ type: userTypes.LOADING_USER });
   dispatch(clearError('upload'));
 
   const formData = new FormData();
@@ -141,7 +141,6 @@ export const uploadUserAvatar = file => dispatch => {
       console.log(res.data);
       dispatch(getUserOwnData());
       dispatch(clearError('upload'));
-      dispatch(loadingUIFinished());
     })
     .catch(err => {
       console.error(err.response.data);
