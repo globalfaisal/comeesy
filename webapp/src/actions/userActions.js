@@ -100,7 +100,7 @@ export const getUserOwnData = () => dispatch => {
     });
 };
 
-export const addUserDetails = data => dispatch => {
+export const updateUserDetails = data => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
@@ -108,7 +108,7 @@ export const addUserDetails = data => dispatch => {
   dispatch(clearError('settings'));
 
   comeesyAPI
-    .post('/user', data, {
+    .post('/user/details', data, {
       headers: { Authorization: token },
     })
     .then(res => {

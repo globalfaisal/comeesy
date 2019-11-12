@@ -3,19 +3,40 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const { admin, db } = require('../utils/admin');
+const { admin, db, firebase } = require('../utils/admin');
 
 const {
   validateUserDetails,
+  validateCredentialsData,
   validateImageFile,
 } = require('../utils/validators');
 
 const config = require('../config');
 
-// Add user details
-exports.addUserDetails = async (req, res) => {
-  // validation data
+// Update user account
+exports.updateUserCredentials = async (req, res) => {
+  const { errors, isValid } = validateCredentialsData(req.body);
+  if (!isValid) return res.status(400).json(errors);
 
+  const cred = firebase.auth.EmailAuthProvider.credential(
+    req.user.email,
+    req.body.oldPassword
+  );
+  try {
+    await req.user.reauthenticateWithCredential(cred);
+    await req.user
+      .updatePassword(req.body.newPassword)
+      .then(() =>
+        res.status(201).json({ message: 'Credentials updated successfully' })
+      );
+  } catch (err) {
+    console.error('Error while updating user credentials ', err);
+    return res.status(500).json({ error: err.code });
+  }
+};
+
+// Update user details
+exports.updateUserDetails = async (req, res) => {
   const { errors, isValid, isEmptyData } = validateUserDetails(req.body);
   if (isEmptyData) {
     return res
@@ -96,7 +117,7 @@ exports.getUserOwnData = (req, res) => {
 };
 
 // Get Profile Data of the requested user
-exports.getProfileData = (req, res) => {
+exports.getUserData = (req, res) => {
   const data = {};
   db.doc(`/users/${req.params.username}`)
     .get()

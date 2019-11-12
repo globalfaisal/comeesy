@@ -38,26 +38,33 @@ exports.validateSignupData = data => {
 
 exports.validateUserDetails = data => {
   const errors = {};
-
   // required fields
   if (!data.name || validator.isEmpty(data.name))
     errors.name = 'Must not be empty';
-
-  // if (data.birthdate && !validator.isEmpty(data.birthdate))
-  //   details.birthdate = data.birthdate;
-  // else if (!data.birthdate || validator.isEmpty(data.birthdate))
-  //   errors.birthdate = 'Must not be empty';
-
-  // if (data.gender && !validator.isEmpty(data.gender))
-  //   details.gender = data.gender;
-  // if (data.location && !validator.isEmpty(data.location))
-  //   details.location = data.location;
-  // if (data.bio && !validator.isEmpty(data.bio)) details.bio = data.bio;
 
   return {
     errors,
     isValid: Object.keys(errors).length === 0 ? true : false,
     isEmptyData: Object.keys(data).length === 0 ? true : false,
+  };
+};
+
+exports.validateCredentialsData = data => {
+  const errors = {};
+  // required fields
+  if (validator.isEmpty(data.oldPassword))
+    errors.oldPassword = 'Must not be empty';
+  if (validator.isEmpty(data.newPassword))
+    errors.newPassword = 'Must not be empty';
+  if (validator.isEmpty(data.confirmNewPassword))
+    errors.confirmNewPassword = 'Must not be empty';
+
+  if (!validator.equals(data.newPassword, data.confirmNewPassword))
+    errors.confirmPassword = 'Password must match';
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0 ? true : false,
   };
 };
 

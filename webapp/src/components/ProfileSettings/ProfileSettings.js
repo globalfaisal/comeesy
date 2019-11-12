@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { addUserDetails, uploadUserAvatar } from '../../actions/userActions';
+import { updateUserDetails, uploadUserAvatar } from '../../actions/userActions';
 import { clearError } from '../../actions/UIActions';
 
 /* -- components -- */
@@ -124,7 +124,7 @@ const ProfileSettings = props => {
       const data = { ...inputs };
       if (data.name === undefined) data.name = credentials.name;
       // dispatch data
-      dispatch(addUserDetails(data));
+      dispatch(updateUserDetails(data));
     }
     if (imageInput.file !== null) {
       dispatch(uploadUserAvatar(imageInput.file));

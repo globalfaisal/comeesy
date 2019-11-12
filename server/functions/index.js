@@ -23,9 +23,10 @@ const {
 } = require('./handlers/comments');
 
 const {
-  getProfileData,
+  getUserData,
   getUserOwnData,
-  addUserDetails,
+  updateUserDetails,
+  updateUserCredentials,
   uploadUserAvatar,
 } = require('./handlers/users');
 
@@ -102,8 +103,9 @@ app.get('/auth/verifyEmail', fbAuth, resendEmailVerification);
 
 // users routes
 app.get('/user', fbAuth, getUserOwnData);
-app.get('/user/:username', getProfileData);
-app.post('/user', fbAuth, addUserDetails);
+app.get('/user/:username', getUserData);
+app.post('/user/details', fbAuth, updateUserDetails);
+app.post('/user/credentials', fbAuth, updateUserCredentials);
 app.post('/user/avatar', fbAuth, uploadUserAvatar);
 
 // Notifications routes
