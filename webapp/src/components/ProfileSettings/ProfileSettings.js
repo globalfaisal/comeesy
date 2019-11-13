@@ -11,10 +11,7 @@ import { clearError } from '../../actions/UIActions';
 import DatePickerInput from '../UI/DatePickerInput';
 
 /* -- utils -- */
-import {
-  subtractDateFromToday,
-  checkValuesAreEmpty,
-} from '../../utils/helperFns';
+import { hasEmptyValues, subtractDateFromToday } from '../../utils/helperFns';
 
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
@@ -120,7 +117,7 @@ const ProfileSettings = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (_.keys(inputs).length > 0) {
+    if (!hasEmptyValues(inputs)) {
       const data = { ...inputs };
       if (data.name === undefined) data.name = credentials.name;
       // dispatch data
@@ -133,6 +130,8 @@ const ProfileSettings = props => {
 
   return (
     <div className="profile-settings">
+      <Typography variant="h6">Profile Settings</Typography>
+
       <form onSubmit={handleSubmit} noValidate autoComplete="off">
         <div className={classes.content}>
           <FormGroup row>
@@ -254,9 +253,7 @@ const ProfileSettings = props => {
             type="submit"
             variant="contained"
             color="primary"
-            disabled={
-              isLoading || (checkValuesAreEmpty(inputs) && !imageInput.file)
-            }
+            disabled={isLoading || (hasEmptyValues(inputs) && !imageInput.file)}
             className={classes.button}
           >
             Save Changes

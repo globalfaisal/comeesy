@@ -184,9 +184,7 @@ exports.uploadUserAvatar = (req, res) => {
       })
       .then(() => {
         // 2. Get the file url from the storage
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
-          config.storageBucket
-        }/o/${imageFileName}?alt=media`;
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
 
         // 2. Add the imageUrl to the db
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });

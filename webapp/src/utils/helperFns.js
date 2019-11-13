@@ -90,4 +90,4 @@ export const subtractDateFromToday = num => {
  * @param obj - data object
  * @returns true if all else false
  */
-export const checkValuesAreEmpty = obj => _.values(obj).every(_.isEmpty);
+export const hasEmptyValues = obj => _.values(obj).every(_.isEmpty);

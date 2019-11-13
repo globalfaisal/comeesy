@@ -56,7 +56,6 @@ const corsOptions = {
   origin: function(origin, callback) {
     // allow requests with no origin
     // (like mobile apps or curl requests)
-    console.log(origin);
     if (!origin) return callback(null, true);
 
     // allow whitelisted requests

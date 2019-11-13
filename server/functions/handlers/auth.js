@@ -112,9 +112,7 @@ exports.signup = (req, res) => {
         location: '',
         bio: '',
         createdAt: new Date().toISOString(),
-        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
-          config.storageBucket
-        }/o/${defaultAvatarFileName}?alt=media`,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${defaultAvatarFileName}?alt=media`,
         verified: data.user.emailVerified,
         userId: data.user.uid,
       };
