@@ -64,5 +64,12 @@ export default () =>
           backgroundColor: colors.greylight,
         },
       },
+      MuiExpansionPanel: {
+        root: {
+          borderRadius: 0,
+          boxShadow: 'none',
+          border: '1px solid rgba(0,0,0, 0.085)',
+        },
+      },
     },
   });
