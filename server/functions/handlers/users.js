@@ -17,22 +17,23 @@ const config = require('../config');
 exports.updateUserCredentials = async (req, res) => {
   const { errors, isValid } = validateCredentialsData(req.body);
   if (!isValid) return res.status(400).json(errors);
-
-  const cred = firebase.auth.EmailAuthProvider.credential(
-    req.user.email,
-    req.body.oldPassword
-  );
-  try {
-    await req.user.reauthenticateWithCredential(cred);
-    await req.user
-      .updatePassword(req.body.newPassword)
-      .then(() =>
-        res.status(201).json({ message: 'Credentials updated successfully' })
-      );
-  } catch (err) {
-    console.error('Error while updating user credentials ', err);
-    return res.status(500).json({ error: err.code });
-  }
+  //TODO: Implement update password functionality
+  res.status(201).json({ message: 'To be implemented' });
+  // const cred = firebase.auth.EmailAuthProvider.credential(
+  //   req.user.email,
+  //   req.body.oldPassword
+  // );
+  // try {
+  //   await req.user.reauthenticateWithCredential(cred);
+  //   await req.user
+  //     .updatePassword(req.body.newPassword)
+  //     .then(() =>
+  //       res.status(201).json({ message: 'Credentials updated successfully' })
+  //     );
+  // } catch (err) {
+  //   console.error('Error while updating user credentials ', err);
+  //   return res.status(500).json({ error: err.code });
+  // }
 };
 
 // Update user details

@@ -1,5 +1,8 @@
 const validator = require('validator');
 
+const regex = {
+  name: /^[a-zA-Z,öÖåÅäÄøØ ]{2,50}$/,
+};
 exports.validateLoginData = data => {
   const errors = {};
 
@@ -39,8 +42,11 @@ exports.validateSignupData = data => {
 exports.validateUserDetails = data => {
   const errors = {};
   // required fields
-  if (!data.name || validator.isEmpty(data.name))
-    errors.name = 'Must not be empty';
+  if (
+    (data.name && validator.isEmpty(data.name)) ||
+    !regex.name.test(data.name)
+  )
+    errors.name = 'Must be authentic name';
 
   return {
     errors,
@@ -52,8 +58,6 @@ exports.validateUserDetails = data => {
 exports.validateCredentialsData = data => {
   const errors = {};
   // required fields
-  if (validator.isEmpty(data.oldPassword))
-    errors.oldPassword = 'Must not be empty';
   if (validator.isEmpty(data.newPassword))
     errors.newPassword = 'Must not be empty';
   if (validator.isEmpty(data.confirmNewPassword))

@@ -47,7 +47,6 @@ const ProfileSettings = props => {
   });
 
   const [inputs, setInputs] = useState({
-    name: '',
     gender: '',
     birthdate: null,
     location: '',
@@ -66,7 +65,6 @@ const ProfileSettings = props => {
   const mapStateToCredentials = c => {
     if (!c) return null;
     setInputs({
-      name: c.name ? c.name : '',
       gender: c.gender ? c.gender : '',
       birthdate: c.birthdate ? c.birthdate : null,
       location: c.location ? c.location : '',
@@ -118,10 +116,8 @@ const ProfileSettings = props => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!hasEmptyValues(inputs)) {
-      const data = { ...inputs };
-      if (data.name === undefined) data.name = credentials.name;
       // dispatch data
-      dispatch(updateUserDetails(data));
+      dispatch(updateUserDetails(inputs));
     }
     if (imageInput.file !== null) {
       dispatch(uploadUserAvatar(imageInput.file));
@@ -162,23 +158,6 @@ const ProfileSettings = props => {
               </div>
             </div>
           </FormGroup>
-          <FormControl className={classes.formControl} fullWidth>
-            <TextField
-              name="name"
-              id="name"
-              type="text"
-              required
-              value={inputs.name}
-              placeholder="What is your name?"
-              onChange={handleInputChange}
-              helperText={errors.settings && errors.settings.name}
-              error={errors.settings && !!errors.settings.name}
-              label="Name"
-              fullWidth
-              variant="outlined"
-              disabled={isLoading}
-            />
-          </FormControl>
           <FormControl
             variant="outlined"
             className={classes.formControl}
