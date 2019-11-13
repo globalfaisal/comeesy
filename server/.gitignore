@@ -17,7 +17,7 @@ firebase-debug.log*
 # .firebaserc
 
 # Google cloud platform service credentials
-comeesy-gcp-serviceKey.json
+serviceAccountKey.json
 
 # Runtime data
 pids

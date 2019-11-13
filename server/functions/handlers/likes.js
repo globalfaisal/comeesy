@@ -1,4 +1,4 @@
-const { db } = require('../utils/admin');
+const { db } = require('../admin');
 
 exports.likePost = (req, res) => {
   let postData;

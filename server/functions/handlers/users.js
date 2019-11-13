@@ -3,7 +3,7 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const { admin, db, firebase } = require('../utils/admin');
+const { admin, db, firebase } = require('../admin');
 
 const {
   validateUserDetails,

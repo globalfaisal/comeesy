@@ -1,6 +1,8 @@
 const functions = require('firebase-functions');
 const app = require('express')();
 const cors = require('cors');
+const dotenv = require('dotenv').config();
+
 const fbAuth = require('./utils/fbAuth');
 
 const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');

@@ -1,4 +1,4 @@
-const { db } = require('../utils/admin');
+const { db } = require('../admin');
 const { validateBodyContent } = require('../utils/validators');
 
 // Get all comment replies

@@ -1,4 +1,4 @@
-const { db } = require('../utils/admin');
+const { db } = require('../admin');
 
 // Change imageUrl(avatar) references in all documents for this specific user
 exports.onUserAvatarChange = async snapshot => {

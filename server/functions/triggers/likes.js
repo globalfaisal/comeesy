@@ -1,4 +1,4 @@
-const { db } = require('../utils/admin');
+const { db } = require('../admin');
 
 // Create notification when post is unliked
 const createLikeNotification = async snapshot => {

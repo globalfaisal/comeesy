@@ -1,4 +1,4 @@
-const { admin, db } = require('./admin');
+const { admin, db } = require('../admin');
 
 // Middleware func for protecting the route
 // from un authorized access.
