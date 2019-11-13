@@ -15,9 +15,19 @@ export default makeStyles(theme => ({
     },
   },
   tab: {
+    '& > .MuiTab-wrapper': {
+      alignItems: 'flex-start',
+    },
+    '&[aria-selected=true]': {
+      background: theme.palette.colors.greylight,
+    },
+
     [theme.breakpoints.down('xs')]: {
       borderRight: '1px solid transparent',
       borderBottom: `1.8px solid ${theme.palette.colors.greylight}`,
+      '& > .MuiTab-wrapper': {
+        alignItems: 'center',
+      },
     },
   },
 }));
