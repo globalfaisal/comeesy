@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 
 /* -- components -- */
 import ProfileSettings from '../../components/ProfileSettings/ProfileSettings';
-import AccountSettings from '../../components/AccountSettings/AccountSettings';
+import AccountSettings from '../../components/AccountSettings';
 import TabPanel from '../../components/UI/TabPanel';
 
 /* -- utils -- */

@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const EditName = ({ name }) => {
+const UserNameSetting = ({ name }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { errors, isLoading } = useSelector(state => state.UI);
@@ -80,8 +80,8 @@ const EditName = ({ name }) => {
     </ExpandPanel>
   );
 };
-EditName.propTypes = {
+UserNameSetting.propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-export default EditName;
+export default UserNameSetting;

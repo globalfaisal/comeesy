@@ -2,12 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+/* -- components -- */
+import UserNameSetting from './UserNameSetting';
+import UserEmailSetting from './UserEmailSetting';
+
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
 
 /* -- styles -- */
-import useStyle from './AccountSettingsStyles';
-import EditName from './EditName';
+import useStyle from './styles';
 
 const AccountSettings = props => {
   const classes = useStyle();
@@ -18,11 +21,11 @@ const AccountSettings = props => {
     <div className="account-settings">
       <Typography variant="h6">Account Settings</Typography>
       <div className={classes.content}>
-        <EditName name={credentials.name} />
+        <UserNameSetting name={credentials.name} />
+        <UserEmailSetting email={credentials.email} />
       </div>
     </div>
   );
 };
 
-AccountSettings.propTypes = {};
 export default AccountSettings;
