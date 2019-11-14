@@ -13,11 +13,11 @@ export const colors = {
   },
   textPrimary: 'rgba(52, 61, 72, 0.85);',
   textSecondary: 'rgba(0,0,0, 0.54)',
+  defaultBackground: '#f6f9fc',
 
   others: {
     white: '#ffffff',
     whitesmoke: '#f9f9f9',
-    whiteghost: '#f6f9fc',
     black: '#24292e',
     dark: '#444444',
     greylight: '#f0f2f5',

@@ -2,16 +2,16 @@
 import { makeStyles } from '@material-ui/core';
 
 export default makeStyles(theme => ({
-  root: {
+  settingsPage: {
     minHeight: 'calc(100vh - 50px)',
     background: theme.palette.colors.white,
-    padding: `${theme.spacing(10)}px 0px`,
+    padding: '60px 22px',
   },
+
   tabs: {
     [theme.breakpoints.up('sm')]: {
-      minHeight: '300px',
-      height: '100%',
-      borderRight: `1.8px solid ${theme.palette.colors.greylight}`,
+      height: 400,
+      borderRight: `2px solid ${theme.palette.colors.greylight}`,
     },
   },
   tab: {

@@ -41,10 +41,10 @@ const Settings = props => {
     'aria-controls': `tabpanel-${index}`,
   });
 
-  const renderContent = () => (
-    <div className={classes.root}>
-      <Container>
-        <Grid container spacing={3} className={classes.grid}>
+  return (
+    <Container maxWidth="md">
+      <div className={classes.settingsPage}>
+        <Grid container spacing={3}>
           <Grid item xs={12} sm={3} md={2}>
             <Tabs
               value={selectedTab}
@@ -82,10 +82,9 @@ const Settings = props => {
             </TabPanel>
           </Grid>
         </Grid>
-      </Container>
-    </div>
+      </div>
+    </Container>
   );
-  return renderContent();
 };
 
 Settings.propTypes = {

@@ -11,7 +11,7 @@ export default () =>
       primary: colors.primary,
       secondary: colors.secondary,
       background: {
-        default: colors.whiteghost,
+        default: colors.defaultBackground,
       },
       text: {
         primary: colors.textPrimary,
@@ -61,12 +61,12 @@ export default () =>
       },
       MuiSkeleton: {
         root: {
-          backgroundColor: colors.greylight,
+          backgroundColor: colors.others.greylight,
         },
       },
       MuiExpansionPanel: {
         root: {
-          borderRadius: 0,
+          borderRadius: 1,
           boxShadow: 'none',
           border: '1px solid rgba(0,0,0, 0.085)',
         },
