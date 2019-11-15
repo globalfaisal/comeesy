@@ -1,8 +1,8 @@
 const validator = require('validator');
 
-const regex = {
-  name: /^[a-zA-Z,öÖåÅäÄøØ ]{2,50}$/,
-};
+const nameRegEx = new RegExp('^[a-zA-Z,öÖåÅäÄøØ ]{2,50}$');
+const passwordRegEx = new RegExp('^(?=.*[a-zA-Z])(?=.*[0-9]).{6,}$');
+
 exports.validateLoginData = data => {
   const errors = {};
 
@@ -31,31 +31,6 @@ exports.validateSignupData = data => {
   if (validator.isEmpty(data.confirmPassword))
     errors.confirmPassword = 'Must not be empty';
   if (!validator.equals(data.password, data.confirmPassword))
-    errors.confirmPassword = 'Password must match';
-
-  return {
-    errors,
-    isValid: Object.keys(errors).length === 0 ? true : false,
-  };
-};
-
-exports.validateAccountData = data => {
-  const errors = {};
-  // required fields
-  if (
-    data.name !== undefined &&
-    validator.isEmpty(data.name) &&
-    !regex.name.test(data.name)
-  ) {
-    errors.name = 'Invalid name';
-  }
-
-  if (data.name !== undefined && validator.isEmpty(data.newPassword))
-    errors.newPassword = 'Must not be empty';
-  if (data.name !== undefined && validator.isEmpty(data.confirmNewPassword))
-    errors.confirmNewPassword = 'Must not be empty';
-
-  if (!validator.equals(data.newPassword, data.confirmNewPassword))
     errors.confirmPassword = 'Password must match';
 
   return {
@@ -99,10 +74,36 @@ exports.validateImageFile = (file, size, mimetype) => {
 // validate name
 exports.validName = name => {
   console.log(name);
-  return !validator.isEmpty(name) && regex.name.test(name);
+  return !validator.isEmpty(name) && nameRegEx.test(name);
 };
 
 // validate email address
 exports.validEmail = email => {
   return !validator.isEmpty(email) && validator.isEmail(email);
+};
+
+exports.validatePasswordContent = data => {
+  const errors = {};
+
+  if (data.newPassword !== undefined && validator.isEmpty(data.newPassword))
+    errors.newPassword = 'Must not be empty';
+  else if (
+    data.newPassword !== undefined &&
+    !passwordRegEx.test(data.newPassword)
+  )
+    errors.newPassword = 'Password strength must meet the requirements';
+
+  if (
+    data.confirmNewPassword !== undefined &&
+    validator.isEmpty(data.confirmNewPassword)
+  )
+    errors.confirmNewPassword = 'Must not be empty';
+
+  if (!validator.equals(data.newPassword, data.confirmNewPassword))
+    errors.confirmPassword = 'Must match the new password';
+
+  return {
+    errors,
+    isValid: Object.keys(errors).length === 0 ? true : false,
+  };
 };

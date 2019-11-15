@@ -21,10 +21,6 @@ exports.login = (req, res) => {
     .auth()
     .signInWithEmailAndPassword(userData.email, userData.password)
     .then(data => {
-      console.log(
-        '-----------------------EMAIL VERIFIED: ',
-        data.user.emailVerified
-      );
       return data.user.getIdToken();
     })
     .then(token => res.status(200).json({ token }))

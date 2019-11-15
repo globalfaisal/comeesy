@@ -3,13 +3,14 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const { admin, db } = require('../admin');
+const { admin, db, firebase } = require('../admin');
 
 const {
-  validateBodyContent,
   validName,
   validEmail,
   validateImageFile,
+  validateBodyContent,
+  validatePasswordContent,
 } = require('../utils/validators');
 
 const config = require('../config');
@@ -176,7 +177,33 @@ exports.updateUserCredentials = (req, res) => {
 
   if (req.body.name === 'name') return updateName(req, res);
   else if (req.body.name === 'email') return updateEmail(req, res);
+  else if (req.body.name === 'password') return updatePassword(req, res);
 };
+
+// Update password
+async function updatePassword(req, res) {
+  const { errors, isValid } = validatePasswordContent(req.body.value);
+  if (!isValid) return res.status(400).json(errors);
+
+  try {
+    //TODO: RE-AUTHENTICATION USER WITH CURRENT PASSWORD AND EMAIL
+
+    // 1. Update email in fb auth changed
+    await admin
+      .auth()
+      .updateUser(req.user.userId, {
+        password: req.body.value.newPassword,
+      })
+      .then(() =>
+        res.status(200).json({
+          message: 'Password updated successfully.',
+        })
+      );
+  } catch (err) {
+    console.error('Error while updating password ', err);
+    return res.status(500).json({ error: err.code });
+  }
+}
 
 // Update email
 async function updateEmail(req, res) {
@@ -199,12 +226,12 @@ async function updateEmail(req, res) {
       })
       .then(() => {
         //TODO: SEND EMAIL VERIFICATION LINK
-        return res.status(201).json({
+        return res.status(200).json({
           message: 'Email updated successfully.',
         });
       });
   } catch (err) {
-    console.error('Error while adding name ', err);
+    console.error('Error while updating email ', err);
     return res.status(500).json({ error: err.code });
   }
 }
@@ -231,10 +258,10 @@ async function updateName(req, res) {
           .update({ name: userRecord.toJSON().displayName });
       })
       .then(() =>
-        res.status(201).json({ message: 'Name updated successfully' })
+        res.status(200).json({ message: 'Name updated successfully' })
       );
   } catch (err) {
-    console.error('Error while adding name ', err);
+    console.error('Error while updating name ', err);
     return res.status(500).json({ error: err.code });
   }
 }
