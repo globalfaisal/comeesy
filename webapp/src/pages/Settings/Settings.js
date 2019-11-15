@@ -44,8 +44,8 @@ const Settings = props => {
   return (
     <Container maxWidth="md">
       <div className={classes.settingsPage}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={3} md={2}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={3}>
             <Tabs
               value={selectedTab}
               indicatorColor="primary"
@@ -73,7 +73,7 @@ const Settings = props => {
               />
             </Tabs>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={8}>
             <TabPanel active={selectedTab === 0} index={0}>
               <ProfileSettings />
             </TabPanel>

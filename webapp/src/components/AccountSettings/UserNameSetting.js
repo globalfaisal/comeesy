@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- actions -- */
-import { updateUserDetails } from '../../actions/userActions';
+import { updateUserCredentials } from '../../actions/userActions';
 
 /* -- components -- */
 import ExpandPanel from '../UI/ExpandPanel';
@@ -19,6 +19,16 @@ import EditSharpIcon from '@material-ui/icons/EditSharp';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
+  heading: {
+    fontSize: theme.typography.pxToRem(14),
+    marginRight: 6,
+    flexBasis: '20%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(14),
+    color: theme.palette.colors.steelblue,
+  },
   textField: {
     marginTop: theme.spacing(2),
   },
@@ -28,28 +38,34 @@ const UserNameSetting = ({ name }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { errors, isLoading } = useSelector(state => state.UI);
-  const [value, setValue] = useState(name);
+  const [input, setInput] = useState({ name: 'name', value: name });
 
   const handleChange = e => {
     e.persist();
-    setValue(e.target.value);
+    setInput(prevState => ({ ...prevState, value: e.target.value }));
   };
   const handleSubmit = () => {
-    dispatch(updateUserDetails({ name: value }));
+    dispatch(updateUserCredentials(input));
   };
 
   return (
     <ExpandPanel
       id="name"
-      heading="Name"
-      secondaryHeading={name}
-      actionContent={
+      summary={
+        <Fragment>
+          <Typography className={classes.heading}>Name</Typography>
+          <Typography className={classes.secondaryHeading}>{name}</Typography>
+        </Fragment>
+      }
+      action={
         <Button
           onClick={handleSubmit}
           color="primary"
-          disabled={isLoading || !value || value.trim().length === 0}
+          disabled={
+            isLoading || !input.value || input.value.trim().length === 0
+          }
         >
-          {isLoading && value ? 'Please Wait...' : ' Update Changes'}
+          {isLoading && input.value ? 'Please Wait...' : ' Save Changes'}
         </Button>
       }
     >
@@ -61,7 +77,7 @@ const UserNameSetting = ({ name }) => {
           id="name"
           type="text"
           required
-          value={value}
+          value={input.value}
           placeholder="What is your name?"
           onChange={handleChange}
           helperText={errors.settings && errors.settings.name}

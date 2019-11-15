@@ -3,6 +3,9 @@ import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
+/* -- actions -- */
+import { updateUserCredentials } from '../../actions/userActions.js';
+
 /* -- components -- */
 import ExpandPanel from '../UI/ExpandPanel';
 
@@ -15,6 +18,16 @@ import Button from '@material-ui/core/Button';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
+  heading: {
+    fontSize: theme.typography.pxToRem(14),
+    marginRight: 6,
+    flexBasis: '20%',
+    flexShrink: 0,
+  },
+  secondaryHeading: {
+    fontSize: theme.typography.pxToRem(14),
+    color: theme.palette.colors.steelblue,
+  },
   textField: {
     marginTop: theme.spacing(2),
   },
@@ -24,28 +37,34 @@ const UserEmailSetting = ({ email }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const { errors, isLoading } = useSelector(state => state.UI);
-  const [value, setValue] = useState(email);
+  const [input, setInput] = useState({ name: 'email', value: email });
 
   const handleChange = e => {
     e.persist();
-    setValue(e.target.value);
+    setInput(prevState => ({ ...prevState, value: e.target.value }));
   };
   const handleSubmit = () => {
-    console.log(value);
+    dispatch(updateUserCredentials(input));
   };
 
   return (
     <ExpandPanel
       id="email"
-      heading="Email"
-      secondaryHeading={email}
-      actionContent={
+      summary={
+        <Fragment>
+          <Typography className={classes.heading}>Email</Typography>
+          <Typography className={classes.secondaryHeading}>{email}</Typography>
+        </Fragment>
+      }
+      action={
         <Button
           onClick={handleSubmit}
           color="primary"
-          disabled={isLoading || !value || value.trim().length === 0}
+          disabled={
+            isLoading || !input.value || input.value.trim().length === 0
+          }
         >
-          {isLoading && value ? 'Please Wait...' : ' Update Changes'}
+          {isLoading && input.value ? 'Please Wait...' : ' Save Changes'}
         </Button>
       }
     >
@@ -57,7 +76,7 @@ const UserEmailSetting = ({ email }) => {
           id="email"
           type="text"
           required
-          value={value}
+          value={input.value}
           placeholder="Enter new email?"
           onChange={handleChange}
           helperText={errors.settings && errors.settings.email}

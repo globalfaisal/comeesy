@@ -100,7 +100,7 @@ export const getUserOwnData = () => dispatch => {
     });
 };
 
-export const updateUserDetails = data => dispatch => {
+export const updateUserProfile = data => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
@@ -108,7 +108,30 @@ export const updateUserDetails = data => dispatch => {
   dispatch(clearError('settings'));
 
   comeesyAPI
-    .post('/user/details', data, {
+    .post('/user/profile', data, {
+      headers: { Authorization: token },
+    })
+    .then(res => {
+      console.log(res.data);
+      dispatch(getUserOwnData());
+      dispatch(clearError('settings'));
+      dispatch(loadingUIFinished());
+    })
+    .catch(err => {
+      console.error(err);
+      dispatch(setError({ type: 'settings', data: err.response.data }));
+    });
+};
+
+export const updateUserCredentials = data => dispatch => {
+  const { token } = window.localStorage;
+  if (isTokenExpired(token)) return dispatch(logout());
+
+  dispatch(loadingUI());
+  dispatch(clearError('settings'));
+
+  comeesyAPI
+    .post('/user/credentials', data, {
       headers: { Authorization: token },
     })
     .then(res => {

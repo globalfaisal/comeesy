@@ -21,6 +21,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.colors.greylight,
     },
   },
+  summary: {
+    overflowX: 'hidden',
+  },
   details: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -28,32 +31,16 @@ const useStyles = makeStyles(theme => ({
   actions: {
     padding: '8px 24px',
   },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    flexBasis: '33.33%',
-    flexShrink: 0,
-  },
-  secondaryHeading: {
-    fontSize: theme.typography.pxToRem(15),
-    color: theme.palette.colors.steelblue,
-  },
 }));
 
 const ExpandPanel = props => {
   const classes = useStyles();
-  const [expandedPanel, setExpandedPanel] = useState(false);
 
-  const handleChange = panel => (event, isExpanded) => {
-    setExpandedPanel(isExpanded ? panel : false);
-  };
-
-  const { id, heading, secondaryHeading, children, actionContent } = props;
+  const { id, summary, children, action } = props;
 
   return (
     <ExpansionPanel
       square
-      expanded={expandedPanel === `${id}-panel`}
-      onChange={handleChange(`${id}-panel`)}
       TransitionProps={{ unmountOnExit: true }}
       className={classes.root}
     >
@@ -61,20 +48,16 @@ const ExpandPanel = props => {
         aria-controls={`${id}-panel-content`}
         id={`${id}-panel-header`}
         expandIcon={<ExpandMoreIcon fontSize="small" />}
+        className={classes.summary}
       >
-        <Typography className={classes.heading}>{heading}</Typography>
-        {secondaryHeading && (
-          <Typography className={classes.secondaryHeading}>
-            {secondaryHeading}
-          </Typography>
-        )}
+        {summary}
       </ExpansionPanelSummary>
       <ExpansionPanelDetails className={classes.details}>
         {children}
       </ExpansionPanelDetails>
-      {actionContent && (
+      {action && (
         <ExpansionPanelActions className={classes.actions}>
-          {actionContent}
+          {action}
         </ExpansionPanelActions>
       )}
     </ExpansionPanel>
@@ -82,10 +65,9 @@ const ExpandPanel = props => {
 };
 ExpandPanel.propTypes = {
   id: PropTypes.string.isRequired,
-  heading: PropTypes.string.isRequired,
-  secondaryHeading: PropTypes.string,
-  children: PropTypes.any.isRequired,
-  actionContent: PropTypes.node,
+  summary: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
+  action: PropTypes.node,
 };
 
 export default ExpandPanel;

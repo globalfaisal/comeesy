@@ -5,7 +5,10 @@ export default makeStyles(theme => ({
   settingsPage: {
     minHeight: 'calc(100vh - 50px)',
     background: theme.palette.colors.white,
-    padding: '60px 22px',
+    padding: theme.spacing(8),
+    [theme.breakpoints.down('xs')]: {
+      padding: '32px 22px',
+    },
   },
 
   tabs: {
