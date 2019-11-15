@@ -141,19 +141,3 @@ exports.signup = (req, res) => {
         .json({ general: 'Something went wrong, please try again' });
     });
 };
-
-// Logout user
-exports.resendEmailVerification = async (req, res) => {
-  try {
-    const user = await admin.auth().getUser(req.user.userId);
-
-    return user
-      .sendEmailVerification()
-      .then(() =>
-        res.json({ message: 'Email verification sent successfully' })
-      );
-  } catch (err) {
-    console.error('Error while sending email verification ', err);
-    return res.status(500).json({ error: err.code });
-  }
-};

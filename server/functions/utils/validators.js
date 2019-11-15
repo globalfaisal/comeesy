@@ -39,28 +39,20 @@ exports.validateSignupData = data => {
   };
 };
 
-exports.validateUserDetails = data => {
+exports.validateAccountData = data => {
   const errors = {};
   // required fields
   if (
-    (data.name && validator.isEmpty(data.name)) ||
+    data.name !== undefined &&
+    validator.isEmpty(data.name) &&
     !regex.name.test(data.name)
-  )
-    errors.name = 'Must be authentic name';
+  ) {
+    errors.name = 'Invalid name';
+  }
 
-  return {
-    errors,
-    isValid: Object.keys(errors).length === 0 ? true : false,
-    isEmptyData: Object.keys(data).length === 0 ? true : false,
-  };
-};
-
-exports.validateCredentialsData = data => {
-  const errors = {};
-  // required fields
-  if (validator.isEmpty(data.newPassword))
+  if (data.name !== undefined && validator.isEmpty(data.newPassword))
     errors.newPassword = 'Must not be empty';
-  if (validator.isEmpty(data.confirmNewPassword))
+  if (data.name !== undefined && validator.isEmpty(data.confirmNewPassword))
     errors.confirmNewPassword = 'Must not be empty';
 
   if (!validator.equals(data.newPassword, data.confirmNewPassword))
@@ -78,6 +70,9 @@ exports.validateBodyContent = content => {
     error = 'Must not be empty';
   else if (Array.isArray(content) && content.length === 0)
     error = 'Must not be empty';
+  else if (typeof content === 'object' && Object.keys(content).length === 0)
+    error = 'Invalid data';
+
   return {
     error,
     isValid: error === '' ? true : false,
@@ -99,4 +94,15 @@ exports.validateImageFile = (file, size, mimetype) => {
     error,
     isValid: error === '' ? true : false,
   };
+};
+
+// validate name
+exports.validName = name => {
+  console.log(name);
+  return !validator.isEmpty(name) && regex.name.test(name);
+};
+
+// validate email address
+exports.validEmail = email => {
+  return !validator.isEmpty(email) && validator.isEmail(email);
 };

@@ -3,66 +3,29 @@ const path = require('path');
 const os = require('os');
 const fs = require('fs');
 
-const { admin, db, firebase } = require('../admin');
+const { admin, db } = require('../admin');
 
 const {
-  validateUserDetails,
-  validateCredentialsData,
+  validateBodyContent,
+  validName,
+  validEmail,
   validateImageFile,
 } = require('../utils/validators');
 
 const config = require('../config');
 
-// Update user account
-exports.updateUserCredentials = async (req, res) => {
-  const { errors, isValid } = validateCredentialsData(req.body);
-  if (!isValid) return res.status(400).json(errors);
-  //TODO: Implement update password functionality
-  res.status(201).json({ message: 'To be implemented' });
-  // const cred = firebase.auth.EmailAuthProvider.credential(
-  //   req.user.email,
-  //   req.body.oldPassword
-  // );
-  // try {
-  //   await req.user.reauthenticateWithCredential(cred);
-  //   await req.user
-  //     .updatePassword(req.body.newPassword)
-  //     .then(() =>
-  //       res.status(201).json({ message: 'Credentials updated successfully' })
-  //     );
-  // } catch (err) {
-  //   console.error('Error while updating user credentials ', err);
-  //   return res.status(500).json({ error: err.code });
-  // }
-};
+// Update user profile details
+exports.updateProfileDetails = async (req, res) => {
+  const { isValid } = validateBodyContent(req.body);
 
-// Update user details
-exports.updateUserDetails = async (req, res) => {
-  const { errors, isValid, isEmptyData } = validateUserDetails(req.body);
-  if (isEmptyData) {
+  if (!isValid) {
     return res
       .status(400)
       .json({ error: 'At least one field must be updated' });
   }
-  if (!isValid) return res.status(400).json(errors);
 
   try {
-    // 1. Update user displayName if Name is changed
-    const userRecord = await admin.auth().getUser(req.user.userId);
-    if (req.body.name && req.body.name !== userRecord.toJSON().displayName) {
-      await admin
-        .auth()
-        .updateUser(req.user.userId, {
-          displayName: req.body.name,
-        })
-        .then(userNewRecord =>
-          console.log(
-            'Successfully updated user displayName',
-            userNewRecord.toJSON().displayName
-          )
-        );
-    }
-    // 2. Update details in the users db
+    // Update details in the users db
     return db
       .doc(`/users/${req.user.username}`)
       .update(req.body)
@@ -203,3 +166,75 @@ exports.uploadUserAvatar = (req, res) => {
   // get the response from the server
   busboy.end(req.rawBody);
 };
+
+exports.updateUserCredentials = (req, res) => {
+  if (!req.body.name) {
+    return res
+      .status(400)
+      .json({ error: 'Fieldname to update must be specified!' });
+  }
+
+  if (req.body.name === 'name') return updateName(req, res);
+  else if (req.body.name === 'email') return updateEmail(req, res);
+};
+
+// Update email
+async function updateEmail(req, res) {
+  if (!validEmail(req.body.value)) {
+    return res.status(400).json({ email: 'Must be valid email address' });
+  }
+
+  try {
+    // 1. Update email in fb auth changed
+    await admin
+      .auth()
+      .updateUser(req.user.userId, {
+        email: req.body.value,
+      })
+      .then(userRecord => {
+        // 2. Update email field in the db
+        return db
+          .doc(`/users/${req.user.username}`)
+          .update({ email: userRecord.toJSON().email });
+      })
+      .then(() => {
+        //TODO: SEND EMAIL VERIFICATION LINK
+        return res.status(201).json({
+          message: 'Email updated successfully.',
+        });
+      });
+  } catch (err) {
+    console.error('Error while adding name ', err);
+    return res.status(500).json({ error: err.code });
+  }
+}
+
+// Update name
+async function updateName(req, res) {
+  if (!validName(req.body.value)) {
+    return res
+      .status(400)
+      .json({ name: 'Provided name must follow our standards' });
+  }
+
+  try {
+    // 1. Update user displayName if Name is changed
+    await admin
+      .auth()
+      .updateUser(req.user.userId, {
+        displayName: req.body.value,
+      })
+      .then(userRecord => {
+        // 2. Update name of the user in the db
+        return db
+          .doc(`/users/${req.user.username}`)
+          .update({ name: userRecord.toJSON().displayName });
+      })
+      .then(() =>
+        res.status(201).json({ message: 'Name updated successfully' })
+      );
+  } catch (err) {
+    console.error('Error while adding name ', err);
+    return res.status(500).json({ error: err.code });
+  }
+}

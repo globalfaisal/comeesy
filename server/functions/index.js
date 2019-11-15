@@ -9,12 +9,7 @@ const { getPosts, getPost, addPost, deletePost } = require('./handlers/posts');
 const { likePost, unlikePost } = require('./handlers/likes');
 const { markNotificationsRead } = require('./handlers/notifications');
 
-const {
-  login,
-  logout,
-  signup,
-  resendEmailVerification,
-} = require('./handlers/auth');
+const { login, logout, signup } = require('./handlers/auth');
 
 const {
   getCommentReplies,
@@ -27,7 +22,7 @@ const {
 const {
   getUserData,
   getUserOwnData,
-  updateUserDetails,
+  updateProfileDetails,
   updateUserCredentials,
   uploadUserAvatar,
 } = require('./handlers/users');
@@ -100,12 +95,11 @@ app.post('/post/:postId/unlike', fbAuth, unlikePost);
 app.post('/auth/signup', signup);
 app.post('/auth/login', login);
 app.get('/auth/logout', logout);
-app.get('/auth/verifyEmail', fbAuth, resendEmailVerification);
 
 // users routes
 app.get('/user', fbAuth, getUserOwnData);
 app.get('/user/:username', getUserData);
-app.post('/user/details', fbAuth, updateUserDetails);
+app.post('/user/profile', fbAuth, updateProfileDetails);
 app.post('/user/credentials', fbAuth, updateUserCredentials);
 app.post('/user/avatar', fbAuth, uploadUserAvatar);
 
