@@ -70,7 +70,9 @@ const UserEmailSetting = ({ email }) => {
     >
       <Fragment>
         <Typography variant="body2">Change your email accounts.</Typography>
-
+        <Typography variant="caption" color="secondary">
+          Please use a valid email address.
+        </Typography>
         <TextField
           name="email"
           id="email"
@@ -87,10 +89,6 @@ const UserEmailSetting = ({ email }) => {
           fullWidth
           disabled={isLoading}
         />
-        <FormHelperText color="secondary">
-          Please use a valid email address. Email verification link will be sent
-          to your new account.
-        </FormHelperText>
       </Fragment>
     </ExpandPanel>
   );

@@ -44,7 +44,7 @@ export default () =>
       },
       MuiCard: {
         root: {
-          borderRadius: 1,
+          borderRadius: 2,
         },
       },
       MuiAvatar: {
@@ -66,9 +66,12 @@ export default () =>
       },
       MuiExpansionPanel: {
         root: {
-          borderRadius: 1,
+          borderRadius: 2,
           boxShadow: 'none',
           border: '1px solid rgba(0,0,0, 0.085)',
+          '&:before': {
+            border: 'none',
+          },
         },
       },
     },

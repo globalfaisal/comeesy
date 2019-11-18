@@ -18,8 +18,10 @@ exports.validateLoginData = data => {
 };
 
 exports.validateSignupData = data => {
-  const errors = {};
+  let errors = {};
   if (validator.isEmpty(data.name)) errors.name = 'Must not be empty';
+  else if (!nameRegEx.test(data.name))
+    errors.name = 'Please use your authentic name';
 
   if (validator.isEmpty(data.username)) errors.username = 'Must not be empty';
 
@@ -27,12 +29,7 @@ exports.validateSignupData = data => {
   else if (!validator.isEmail(data.email))
     errors.email = 'Must be a valid email address';
 
-  if (validator.isEmpty(data.password)) errors.password = 'Must not be empty';
-  if (validator.isEmpty(data.confirmPassword))
-    errors.confirmPassword = 'Must not be empty';
-  if (!validator.equals(data.password, data.confirmPassword))
-    errors.confirmPassword = 'Password must match';
-
+  errors = { ...errors, ...this.validatePasswordContent(data).errors };
   return {
     errors,
     isValid: Object.keys(errors).length === 0 ? true : false,
@@ -85,22 +82,19 @@ exports.validEmail = email => {
 exports.validatePasswordContent = data => {
   const errors = {};
 
-  if (data.newPassword !== undefined && validator.isEmpty(data.newPassword))
-    errors.newPassword = 'Must not be empty';
-  else if (
-    data.newPassword !== undefined &&
-    !passwordRegEx.test(data.newPassword)
-  )
-    errors.newPassword = 'Password strength must meet the requirements';
+  if (data.password !== undefined && validator.isEmpty(data.password))
+    errors.password = 'Must not be empty';
+  if (data.password !== undefined && !passwordRegEx.test(data.password))
+    errors.password = 'Password strength must meet the requirements';
 
   if (
-    data.confirmNewPassword !== undefined &&
-    validator.isEmpty(data.confirmNewPassword)
+    data.confirmPassword !== undefined &&
+    validator.isEmpty(data.confirmPassword)
   )
-    errors.confirmNewPassword = 'Must not be empty';
+    errors.confirmPassword = 'Must not be empty';
 
-  if (!validator.equals(data.newPassword, data.confirmNewPassword))
-    errors.confirmPassword = 'Must match the new password';
+  if (!validator.equals(data.password, data.confirmPassword))
+    errors.confirmPassword = 'Must match the password';
 
   return {
     errors,

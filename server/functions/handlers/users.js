@@ -239,9 +239,7 @@ async function updateEmail(req, res) {
 // Update name
 async function updateName(req, res) {
   if (!validName(req.body.value)) {
-    return res
-      .status(400)
-      .json({ name: 'Provided name must follow our standards' });
+    return res.status(400).json({ name: 'Please use your authentic name' });
   }
 
   try {

@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 /* -- components -- */
 import UserNameSetting from './UserNameSetting';
+import UserPasswordSetting from './UserPasswordSetting';
 import UserEmailSetting from './UserEmailSetting';
 
 /* -- mui -- */
@@ -23,6 +24,7 @@ const AccountSettings = props => {
       <div className={classes.content}>
         <UserNameSetting name={credentials.name} />
         <UserEmailSetting email={credentials.email} />
+        <UserPasswordSetting />
       </div>
     </div>
   );

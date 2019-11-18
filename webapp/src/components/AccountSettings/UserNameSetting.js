@@ -71,6 +71,10 @@ const UserNameSetting = ({ name }) => {
     >
       <Fragment>
         <Typography variant="body2">Change your name!</Typography>
+        <Typography variant="caption" color="secondary">
+          Note: Name should be authentic. Don't add unusual capitalization,
+          punctuation, numbers or characters.
+        </Typography>
 
         <TextField
           name="name"
@@ -88,10 +92,6 @@ const UserNameSetting = ({ name }) => {
           fullWidth
           disabled={isLoading}
         />
-        <FormHelperText color="secondary">
-          Note: Don't add unusual capitalization, punctuation, numbers or
-          characters.
-        </FormHelperText>
       </Fragment>
     </ExpandPanel>
   );
