@@ -70,7 +70,7 @@ export default () =>
           boxShadow: 'none',
           border: '1px solid rgba(0,0,0, 0.085)',
           '&:before': {
-            border: 'none',
+            backgroundColor: 'transparent',
           },
         },
       },

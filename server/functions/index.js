@@ -22,9 +22,9 @@ const {
 const {
   getUserData,
   getUserOwnData,
-  updateProfileDetails,
+  updateUserDetails,
   updateUserCredentials,
-  uploadUserAvatar,
+  updateUserImage,
 } = require('./handlers/users');
 
 // Get all db trigger handlers
@@ -99,9 +99,9 @@ app.get('/auth/logout', logout);
 // users routes
 app.get('/user', fbAuth, getUserOwnData);
 app.get('/user/:username', getUserData);
-app.post('/user/profile', fbAuth, updateProfileDetails);
+app.post('/user/details', fbAuth, updateUserDetails);
 app.post('/user/credentials', fbAuth, updateUserCredentials);
-app.post('/user/avatar', fbAuth, uploadUserAvatar);
+app.post('/user/image', fbAuth, updateUserImage);
 
 // Notifications routes
 app.post('/notifications/markRead', fbAuth, markNotificationsRead);

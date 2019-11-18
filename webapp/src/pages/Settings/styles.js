@@ -33,4 +33,11 @@ export default makeStyles(theme => ({
       },
     },
   },
+
+  content: {
+    marginTop: 32,
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
 }));

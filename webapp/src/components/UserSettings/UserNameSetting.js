@@ -1,10 +1,10 @@
 /* -- libs -- */
 import React, { useState, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- actions -- */
-import { updateUserCredentials } from '../../actions/userActions.js';
+import { updateUserCredentials } from '../../actions/userActions';
 
 /* -- components -- */
 import ExpandPanel from '../UI/ExpandPanel';
@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
+import EditSharpIcon from '@material-ui/icons/EditSharp';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -33,11 +34,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserEmailSetting = ({ email }) => {
+const UserNameSetting = ({ name, errors, loading }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { errors, isLoading } = useSelector(state => state.UI);
-  const [input, setInput] = useState({ name: 'email', value: email });
+  const [input, setInput] = useState({ name: 'name', value: name });
 
   const handleChange = e => {
     e.persist();
@@ -49,52 +49,54 @@ const UserEmailSetting = ({ email }) => {
 
   return (
     <ExpandPanel
-      id="email"
+      id="name"
       summary={
         <Fragment>
-          <Typography className={classes.heading}>Email</Typography>
-          <Typography className={classes.secondaryHeading}>{email}</Typography>
+          <Typography className={classes.heading}>Name</Typography>
+          <Typography className={classes.secondaryHeading}>{name}</Typography>
         </Fragment>
       }
       action={
         <Button
           onClick={handleSubmit}
           color="primary"
-          disabled={
-            isLoading || !input.value || input.value.trim().length === 0
-          }
+          disabled={loading || !input.value || input.value.trim().length === 0}
         >
-          {isLoading && input.value ? 'Please Wait...' : ' Save Changes'}
+          {loading && input.value ? 'Please Wait...' : ' Save Changes'}
         </Button>
       }
     >
       <Fragment>
-        <Typography variant="body2">Change your email accounts.</Typography>
+        <Typography variant="body2">Change your name!</Typography>
         <Typography variant="caption" color="secondary">
-          Please use a valid email address.
+          Note: Name should be authentic. Don't add unusual capitalization,
+          punctuation, numbers or characters.
         </Typography>
+
         <TextField
-          name="email"
-          id="email"
+          name="name"
+          id="name"
           type="text"
           required
           value={input.value}
-          placeholder="Enter new email?"
+          placeholder="What is your name?"
           onChange={handleChange}
-          helperText={errors.settings && errors.settings.email}
-          error={errors.settings && !!errors.settings.email}
+          helperText={errors.settings && errors.settings.name}
+          error={errors.settings && !!errors.settings.name}
           className={classes.textField}
-          label="Email"
+          label="Name"
           variant="filled"
           fullWidth
-          disabled={isLoading}
+          disabled={loading}
         />
       </Fragment>
     </ExpandPanel>
   );
 };
-UserEmailSetting.propTypes = {
-  email: PropTypes.string.isRequired,
+UserNameSetting.propTypes = {
+  name: PropTypes.string.isRequired,
+  errors: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
-export default UserEmailSetting;
+export default UserNameSetting;

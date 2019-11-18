@@ -23,7 +23,7 @@ export default [
     name: 'Settings',
     component: Settings,
     layout: '/main',
-    protected: false, // TODO: PROTECT THIS ROUTE
+    protected: true, // TODO: PROTECT THIS ROUTE
   },
   {
     path: '/login',

@@ -37,42 +37,44 @@ const UserMenu = ({ user, onLogout }) => {
   };
 
   return (
-    <div className="user-menu">
-      <IconButton
-        onClick={onOpenMenu}
-        aria-controls="userMenu"
-        aria-haspopup="true"
-        className={classes.userMenuIconBtn}
-      >
-        <Avatar alt={user.username} src={user.imageUrl} />
-        <ArrowDropDownIcon htmlColor="white" />
-      </IconButton>
-      <PopupMenu
-        id="userMenu"
-        anchorEl={anchorEl}
-        open={!!anchorEl}
-        onClose={onCloseMenu}
-      >
-        <MenuItem
-          component={Link}
-          to={`/u/${user.username}`}
-          onClick={onCloseMenu}
+    user && (
+      <div className="user-menu">
+        <IconButton
+          onClick={onOpenMenu}
+          aria-controls="userMenu"
+          aria-haspopup="true"
+          className={classes.userMenuIconBtn}
         >
-          Profile
-        </MenuItem>
-        <MenuItem
-          component={Link}
-          to="/settings/account"
-          divider
-          onClick={onCloseMenu}
+          <Avatar alt={user.username} src={user.imageUrl} />
+          <ArrowDropDownIcon htmlColor="white" />
+        </IconButton>
+        <PopupMenu
+          id="userMenu"
+          anchorEl={anchorEl}
+          open={!!anchorEl}
+          onClose={onCloseMenu}
         >
-          Settings
-        </MenuItem>
-        <MenuItem component={Link} to="#" onClick={onLogout}>
-          Logout
-        </MenuItem>
-      </PopupMenu>
-    </div>
+          <MenuItem
+            component={Link}
+            to={`/u/${user.username}`}
+            onClick={onCloseMenu}
+          >
+            Profile
+          </MenuItem>
+          <MenuItem
+            component={Link}
+            to="/settings/account"
+            divider
+            onClick={onCloseMenu}
+          >
+            Settings
+          </MenuItem>
+          <MenuItem component={Link} to="#" onClick={onLogout}>
+            Logout
+          </MenuItem>
+        </PopupMenu>
+      </div>
+    )
   );
 };
 UserMenu.propTypes = {

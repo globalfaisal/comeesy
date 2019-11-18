@@ -1,6 +1,7 @@
 /* -- libs -- */
-import React, { useState, useEffect, Fragment } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, Fragment } from 'react';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 /* -- actions -- */
 import { updateUserCredentials } from '../../actions/userActions.js';
@@ -32,10 +33,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserPasswordSetting = () => {
+const UserPasswordSetting = ({ errors, loading }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const { errors, isLoading } = useSelector(state => state.UI);
   const INITIAL_STATE = {
     name: 'password',
     value: {
@@ -44,13 +44,6 @@ const UserPasswordSetting = () => {
     },
   };
   const [input, setInput] = useState(INITIAL_STATE);
-
-  useEffect(() => {
-    dispatch(clearError('settings'));
-    return () => {
-      dispatch(clearError('settings'));
-    };
-  }, [dispatch]);
 
   const handleChange = e => {
     e.persist();
@@ -80,10 +73,10 @@ const UserPasswordSetting = () => {
           onClick={handleSubmit}
           color="primary"
           disabled={
-            isLoading || !input.value.password || !input.value.confirmPassword
+            loading || !input.value.password || !input.value.confirmPassword
           }
         >
-          {isLoading && input.value.password && input.value.confirmPassword
+          {loading && input.value.password && input.value.confirmPassword
             ? 'Please Wait...'
             : ' Save Changes'}
         </Button>
@@ -121,7 +114,7 @@ const UserPasswordSetting = () => {
           label="New password"
           variant="filled"
           fullWidth
-          disabled={isLoading}
+          disabled={loading}
         />
         <TextField
           name="confirmPassword"
@@ -137,11 +130,15 @@ const UserPasswordSetting = () => {
           label="Re-type new Password"
           variant="filled"
           fullWidth
-          disabled={isLoading}
+          disabled={loading}
         />
       </Fragment>
     </ExpandPanel>
   );
+};
+UserPasswordSetting.propTypes = {
+  errors: PropTypes.object,
+  loading: PropTypes.bool,
 };
 
 export default UserPasswordSetting;

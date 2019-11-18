@@ -1,13 +1,20 @@
 /* -- libs -- */
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-import ProfileSettings from '../../components/ProfileSettings/ProfileSettings';
-import AccountSettings from '../../components/AccountSettings';
+// import ProfileSettings from '../../components/ProfileSettings/ProfileSettings';
+// import AccountSettings from '../../components/AccountSettings';
 import TabPanel from '../../components/UI/TabPanel';
+
+import UserNameSetting from '../../components/UserSettings/UserNameSetting';
+import UserPasswordSetting from '../../components/UserSettings/UserPasswordSetting';
+import UserEmailSetting from '../../components/UserSettings/UserEmailSetting';
+import UserImageSetting from '../../components/UserSettings/UserImageSetting';
+import UserDetailsSetting from '../../components/UserSettings/UserDetailsSetting';
 
 /* -- utils -- */
 import history from '../../utils/history';
@@ -18,11 +25,15 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+
 /* -- styles -- */
 import useStyles from './styles';
 
 const Settings = props => {
   const classes = useStyles();
+  const { credentials } = useSelector(state => state.user);
+  const { errors, isLoading } = useSelector(state => state.UI);
 
   const [selectedTab, setSelectedTab] = useState(0);
   const { pathname } = history.location;
@@ -31,10 +42,6 @@ const Settings = props => {
     if (pathname === '/settings/profile') setSelectedTab(0);
     if (pathname === '/settings/account') setSelectedTab(1);
   }, [pathname]);
-
-  const onTabSelect = (e, value) => {
-    setSelectedTab(value);
-  };
 
   const a11yProps = index => ({
     id: `tab-${index}`,
@@ -75,10 +82,35 @@ const Settings = props => {
           </Grid>
           <Grid item xs={12} sm={8}>
             <TabPanel active={selectedTab === 0} index={0}>
-              <ProfileSettings />
+              <Typography variant="h6">Profile Settings</Typography>
+              <div className={classes.content}>
+                <UserImageSetting
+                  imageUrl={credentials.imageUrl}
+                  errors={errors}
+                  loading={isLoading}
+                />
+                <UserDetailsSetting
+                  credentials={credentials}
+                  errors={errors}
+                  loading={isLoading}
+                />
+              </div>
             </TabPanel>
             <TabPanel active={selectedTab === 1} index={1}>
-              <AccountSettings />
+              <Typography variant="h6">Account Settings</Typography>
+              <div className={classes.content}>
+                <UserNameSetting
+                  name={credentials.name}
+                  errors={errors}
+                  loading={isLoading}
+                />
+                <UserEmailSetting
+                  email={credentials.email}
+                  errors={errors}
+                  loading={isLoading}
+                />
+                <UserPasswordSetting errors={errors} loading={isLoading} />
+              </div>
             </TabPanel>
           </Grid>
         </Grid>

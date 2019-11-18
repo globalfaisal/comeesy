@@ -16,7 +16,7 @@ const {
 const config = require('../config');
 
 // Update user profile details
-exports.updateProfileDetails = async (req, res) => {
+exports.updateUserDetails = async (req, res) => {
   const { isValid } = validateBodyContent(req.body);
 
   if (!isValid) {
@@ -110,7 +110,7 @@ exports.getUserData = (req, res) => {
 };
 
 // Post user profile image
-exports.uploadUserAvatar = (req, res) => {
+exports.updateUserImage = (req, res) => {
   let imageFileName;
   let imageToUpload = {};
 
@@ -125,7 +125,7 @@ exports.uploadUserAvatar = (req, res) => {
 
     // 1. Generate unique image filename
     const imageExt = filename.split('.')[filename.split('.').length - 1];
-    imageFileName = `${req.user.userId}.${imageExt}`;
+    imageFileName = `${Math.round(Math.random() * 10000000000000)}.${imageExt}`;
     // 2. Create filepath
     const filePath = path.join(os.tmpdir(), imageFileName);
     // 3. Create the file in the user's temp directory

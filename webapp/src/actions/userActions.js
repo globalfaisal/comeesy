@@ -92,15 +92,15 @@ export const getUserOwnData = () => dispatch => {
   comeesyAPI
     .get('/user', { headers: { Authorization: token } })
     .then(res => {
-      dispatch({ type: userTypes.SET_USER, payload: res.data });
       dispatch({ type: userTypes.SET_AUTHENTICATED });
+      dispatch({ type: userTypes.SET_USER, payload: res.data });
     })
     .catch(err => {
       console.error(err);
     });
 };
 
-export const updateUserProfile = data => dispatch => {
+export const updateUserDetails = data => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
@@ -108,11 +108,10 @@ export const updateUserProfile = data => dispatch => {
   dispatch(clearError('settings'));
 
   comeesyAPI
-    .post('/user/profile', data, {
+    .post('/user/details', data, {
       headers: { Authorization: token },
     })
     .then(res => {
-      console.log(res.data);
       dispatch(getUserOwnData());
       dispatch(clearError('settings'));
       dispatch(loadingUIFinished());
@@ -135,7 +134,6 @@ export const updateUserCredentials = data => dispatch => {
       headers: { Authorization: token },
     })
     .then(res => {
-      console.log(res.data);
       dispatch(getUserOwnData());
       dispatch(clearError('settings'));
       dispatch(loadingUIFinished());
@@ -146,7 +144,7 @@ export const updateUserCredentials = data => dispatch => {
     });
 };
 
-export const uploadUserAvatar = file => dispatch => {
+export const uploadUserImage = file => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
@@ -157,11 +155,10 @@ export const uploadUserAvatar = file => dispatch => {
   formData.append('file', file);
 
   comeesyAPI
-    .post('/user/avatar', formData, {
+    .post('/user/image', formData, {
       headers: { Authorization: token },
     })
     .then(res => {
-      console.log(res.data);
       dispatch(getUserOwnData());
       dispatch(clearError('upload'));
     })
