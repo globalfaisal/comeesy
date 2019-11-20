@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
 const UserMenu = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const credentials = useSelector(state => ({ ...state.user.credentials }));
+  const { isAuthenticated, data } = useSelector(state => state.user);
+  const credentials = data ? data.credentials : null;
   const [anchorEl, setAnchorEl] = useState(null);
 
   const onOpenMenu = e => {
@@ -46,6 +47,7 @@ const UserMenu = () => {
   };
 
   return (
+    isAuthenticated &&
     credentials && (
       <div className="user-menu">
         <IconButton

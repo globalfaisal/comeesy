@@ -24,13 +24,7 @@ import useStyles from './styles';
 const Profile = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { isAuthenticated, credentials } = useSelector(state => state.user);
   const { profile, isLoading } = useSelector(state => state.data);
-
-  const isProfileOwner = () => {
-    if (!isAuthenticated || !credentials) return false;
-    return credentials.username === params.username;
-  };
 
   useEffect(() => {
     dispatch(getProfileData(params.username));

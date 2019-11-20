@@ -48,7 +48,7 @@ export const login = formData => dispatch => {
         history.push('/');
       })
       .catch(err => {
-        console.error(err);
+        console.error(err.response);
         dispatch(userAuthFailed(err.response.data));
         reject(err.response);
       });
@@ -124,7 +124,7 @@ export const getUserOwnData = () => dispatch => {
         console.error(err);
         dispatch({
           type: userTypes.GET_USER_FAILED,
-          payload: err.response.data,
+          payload: err.response,
         });
         reject(err.response);
       });
@@ -200,7 +200,7 @@ export const uploadUserAvatar = file => dispatch => {
       .catch(err => {
         console.error(err);
         dispatch(updateUserDataFailed(err.response.data));
-        reject(err.response);
+        reject(err.response.data);
       });
   });
 };

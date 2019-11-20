@@ -1,13 +1,10 @@
 /* -- libs -- */
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 /* -- actions -- */
 import { login } from '../../actions/userActions';
-
-/* -- custom hooks -- */
-import useAuthForm from '../../hooks/useAuthForm';
 
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
@@ -19,9 +16,24 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './styles';
 
 const Login = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const { inputs, handleChange, handleSubmit } = useAuthForm(login);
-  const { isLoading, errors } = useSelector(state => state.UI);
+  const { loading, error } = useSelector(state => state.user);
+
+  const [inputs, setInputs] = useState({ email: '', password: '' });
+
+  const handleChange = event => {
+    event.persist();
+    setInputs(prevInputs => ({
+      ...prevInputs,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    dispatch(login(inputs));
+  };
 
   return (
     <div className="login-page">
@@ -46,9 +58,9 @@ const Login = () => {
             type="email"
             defaultValue={inputs.email}
             onChange={handleChange}
-            helperText={errors.auth && errors.auth.email}
-            error={errors.auth && !!errors.auth.email}
-            disabled={isLoading}
+            helperText={error && error.email}
+            error={error && !!error.email}
+            disabled={loading}
             label="Email"
             autoFocus
             color="primary"
@@ -62,9 +74,9 @@ const Login = () => {
             type="password"
             defaultValue={inputs.password}
             onChange={handleChange}
-            helperText={errors.auth && errors.auth.password}
-            error={errors.auth && !!errors.auth.password}
-            disabled={isLoading}
+            helperText={error && error.password}
+            error={error && !!error.password}
+            disabled={loading}
             label="Password"
             color="primary"
             fullWidth
@@ -76,11 +88,11 @@ const Login = () => {
               variant="contained"
               color="primary"
               size="small"
-              disabled={isLoading}
+              disabled={loading}
               className={classes.button}
             >
               Log in
-              {isLoading && (
+              {loading && (
                 <CircularProgress size={22} className={classes.loginProgress} />
               )}
             </Button>

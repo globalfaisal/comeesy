@@ -34,12 +34,12 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const { isLoading, isAuthenticated } = useSelector(state => state.user);
+  const { loading, isAuthenticated } = useSelector(state => state.user);
   const isDataLoading = useSelector(state => state.data.isLoading);
 
   return (
     <AppBar className={classes.appBar}>
-      <LinearLoading loading={isDataLoading || isLoading} />
+      <LinearLoading loading={isDataLoading || loading} />
 
       <Toolbar variant="dense">
         <Link to="/">
@@ -47,7 +47,7 @@ const Navbar = () => {
         </Link>
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
-          {isAuthenticated && <UserMenu />}
+          <UserMenu />
           {!isAuthenticated && (
             <React.Fragment>
               <Button

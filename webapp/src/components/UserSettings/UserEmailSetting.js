@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserEmailSetting = ({ email, errors, loading }) => {
+const UserEmailSetting = ({ email, error, loading }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [input, setInput] = useState({ name: 'email', value: email });
@@ -78,8 +78,8 @@ const UserEmailSetting = ({ email, errors, loading }) => {
           value={input.value}
           placeholder="Enter new email?"
           onChange={handleChange}
-          helperText={errors.settings && errors.settings.email}
-          error={errors.settings && !!errors.settings.email}
+          helperText={error && error.email}
+          error={error && !!error.email}
           className={classes.textField}
           label="Email"
           variant="filled"
@@ -92,7 +92,7 @@ const UserEmailSetting = ({ email, errors, loading }) => {
 };
 UserEmailSetting.propTypes = {
   email: PropTypes.string.isRequired,
-  errors: PropTypes.object,
+  error: PropTypes.object,
   loading: PropTypes.bool,
 };
 

@@ -6,13 +6,12 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { updateUserDetails } from '../../actions/userActions';
-import { clearError } from '../../actions/UIActions';
 
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
 
 /* -- utils -- */
-import { hasEmptyValues, subtractDateFromToday } from '../../utils/helperFns';
+import { subtractDateFromToday } from '../../utils/helperFns';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,7 +19,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
@@ -44,7 +42,7 @@ const useStyle = makeStyles(theme => ({
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/png'];
 
-const UserDetailsSetting = ({ credentials, errors, loading }) => {
+const UserDetailsSetting = ({ credentials, error, loading }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
 
@@ -57,9 +55,6 @@ const UserDetailsSetting = ({ credentials, errors, loading }) => {
 
   useEffect(() => {
     mapStateToCredentials(credentials);
-    return () => {
-      dispatch(clearError('settings'));
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [credentials]);
 
@@ -90,10 +85,8 @@ const UserDetailsSetting = ({ credentials, errors, loading }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!hasEmptyValues(inputs)) {
-      // dispatch data
-      dispatch(updateUserDetails(inputs));
-    }
+    // dispatch data
+    dispatch(updateUserDetails(inputs));
   };
 
   return (
@@ -167,7 +160,7 @@ const UserDetailsSetting = ({ credentials, errors, loading }) => {
           type="submit"
           variant="contained"
           color="primary"
-          disabled={loading || hasEmptyValues(inputs)}
+          disabled={loading}
           className={classes.button}
         >
           Save Changes
@@ -181,7 +174,7 @@ const UserDetailsSetting = ({ credentials, errors, loading }) => {
 };
 UserDetailsSetting.propTypes = {
   credentials: PropTypes.object.isRequired,
-  errors: PropTypes.object,
+  error: PropTypes.object,
   loading: PropTypes.bool,
 };
 export default UserDetailsSetting;

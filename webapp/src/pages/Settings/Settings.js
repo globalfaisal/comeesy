@@ -6,15 +6,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-// import ProfileSettings from '../../components/ProfileSettings/ProfileSettings';
-// import AccountSettings from '../../components/AccountSettings';
-import TabPanel from '../../components/UI/TabPanel';
-
 import UserNameSetting from '../../components/UserSettings/UserNameSetting';
 import UserPasswordSetting from '../../components/UserSettings/UserPasswordSetting';
 import UserEmailSetting from '../../components/UserSettings/UserEmailSetting';
 import UserAvatarSetting from '../../components/UserSettings/UserAvatarSetting';
 import UserDetailsSetting from '../../components/UserSettings/UserDetailsSetting';
+import TabPanel from '../../components/UI/TabPanel';
 
 /* -- utils -- */
 import history from '../../utils/history';
@@ -32,8 +29,7 @@ import useStyles from './styles';
 
 const Settings = props => {
   const classes = useStyles();
-  const { credentials } = useSelector(state => state.user);
-  const { errors, isLoading } = useSelector(state => state.UI);
+  const { data, loading, error } = useSelector(state => state.user);
 
   const [selectedTab, setSelectedTab] = useState(0);
   const { pathname } = history.location;
@@ -49,73 +45,75 @@ const Settings = props => {
   });
 
   return (
-    <Container maxWidth="md">
-      <div className={classes.settingsPage}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={3}>
-            <Tabs
-              value={selectedTab}
-              indicatorColor="primary"
-              component="nav"
-              variant="standard"
-              aria-label="settings tabs"
-              orientation={`${
-                props.width !== 'xs' ? 'vertical' : 'horizontal'
-              }`}
-              className={classes.tabs}
-            >
-              <Tab
-                component={Link}
-                to="/settings/profile"
-                label="Profile"
-                classes={{ root: classes.tab }}
-                {...a11yProps(0)}
-              />
-              <Tab
-                component={Link}
-                to="/settings/account"
-                label="Account"
-                classes={{ root: classes.tab }}
-                {...a11yProps(1)}
-              />
-            </Tabs>
+    data && (
+      <Container maxWidth="md">
+        <div className={classes.settingsPage}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={3}>
+              <Tabs
+                value={selectedTab}
+                indicatorColor="primary"
+                component="nav"
+                variant="standard"
+                aria-label="settings tabs"
+                orientation={`${
+                  props.width !== 'xs' ? 'vertical' : 'horizontal'
+                }`}
+                className={classes.tabs}
+              >
+                <Tab
+                  component={Link}
+                  to="/settings/profile"
+                  label="Profile"
+                  classes={{ root: classes.tab }}
+                  {...a11yProps(0)}
+                />
+                <Tab
+                  component={Link}
+                  to="/settings/account"
+                  label="Account"
+                  classes={{ root: classes.tab }}
+                  {...a11yProps(1)}
+                />
+              </Tabs>
+            </Grid>
+            <Grid item xs={12} sm={8}>
+              <TabPanel active={selectedTab === 0} index={0}>
+                <Typography variant="h6">Profile Settings</Typography>
+                <div className={classes.content}>
+                  <UserAvatarSetting
+                    imageUrl={data.credentials.imageUrl}
+                    error={error}
+                    loading={loading}
+                  />
+                  <UserDetailsSetting
+                    credentials={data.credentials}
+                    error={error}
+                    loading={loading}
+                  />
+                </div>
+              </TabPanel>
+              <TabPanel active={selectedTab === 1} index={1}>
+                <Typography variant="h6">Account Settings</Typography>
+                <div className={classes.content}>
+                  <UserNameSetting
+                    name={data.credentials.name}
+                    error={error}
+                    loading={loading}
+                  />
+                  <UserEmailSetting
+                    email={data.credentials.email}
+                    error={error}
+                    loading={loading}
+                  />
+                  <UserPasswordSetting error={error} loading={loading} />
+                </div>
+              </TabPanel>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={8}>
-            <TabPanel active={selectedTab === 0} index={0}>
-              <Typography variant="h6">Profile Settings</Typography>
-              <div className={classes.content}>
-                <UserAvatarSetting
-                  imageUrl={credentials.imageUrl}
-                  errors={errors}
-                  loading={isLoading}
-                />
-                <UserDetailsSetting
-                  credentials={credentials}
-                  errors={errors}
-                  loading={isLoading}
-                />
-              </div>
-            </TabPanel>
-            <TabPanel active={selectedTab === 1} index={1}>
-              <Typography variant="h6">Account Settings</Typography>
-              <div className={classes.content}>
-                <UserNameSetting
-                  name={credentials.name}
-                  errors={errors}
-                  loading={isLoading}
-                />
-                <UserEmailSetting
-                  email={credentials.email}
-                  errors={errors}
-                  loading={isLoading}
-                />
-                <UserPasswordSetting errors={errors} loading={isLoading} />
-              </div>
-            </TabPanel>
-          </Grid>
-        </Grid>
-      </div>
-    </Container>
+        </div>
+      </Container>
+    )
   );
 };
 

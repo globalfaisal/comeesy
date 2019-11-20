@@ -13,9 +13,7 @@ import ExpandPanel from '../UI/ExpandPanel';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
-import EditSharpIcon from '@material-ui/icons/EditSharp';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -34,7 +32,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserNameSetting = ({ name, errors, loading }) => {
+const UserNameSetting = ({ name, error, loading }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [input, setInput] = useState({ name: 'name', value: name });
@@ -81,8 +79,8 @@ const UserNameSetting = ({ name, errors, loading }) => {
           value={input.value}
           placeholder="What is your name?"
           onChange={handleChange}
-          helperText={errors.settings && errors.settings.name}
-          error={errors.settings && !!errors.settings.name}
+          helperText={error && error.name}
+          error={error && !!error.name}
           className={classes.textField}
           label="Name"
           variant="filled"
@@ -95,7 +93,7 @@ const UserNameSetting = ({ name, errors, loading }) => {
 };
 UserNameSetting.propTypes = {
   name: PropTypes.string.isRequired,
-  errors: PropTypes.object,
+  error: PropTypes.object,
   loading: PropTypes.bool,
 };
 

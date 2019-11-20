@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 /* -- actions -- */
 import { updateUserCredentials } from '../../actions/userActions.js';
-import { clearError } from '../../actions/UIActions';
 
 /* -- components -- */
 import ExpandPanel from '../UI/ExpandPanel';
@@ -33,17 +32,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserPasswordSetting = ({ errors, loading }) => {
+const UserPasswordSetting = ({ loading, error }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const INITIAL_STATE = {
+  const [input, setInput] = useState({
     name: 'password',
     value: {
       password: '',
       confirmPassword: '',
     },
-  };
-  const [input, setInput] = useState(INITIAL_STATE);
+  });
 
   const handleChange = e => {
     e.persist();
@@ -93,7 +91,7 @@ const UserPasswordSetting = ({ errors, loading }) => {
           id="currentPassword"
           type="password"
           disabled
-          value="123456"
+          value="123456789"
           className={classes.textField}
           label="Current password"
           variant="filled"
@@ -108,8 +106,8 @@ const UserPasswordSetting = ({ errors, loading }) => {
           value={input.value.password}
           placeholder="Enter new password?"
           onChange={handleChange}
-          helperText={errors.settings && errors.settings.password}
-          error={errors.settings && !!errors.settings.password}
+          helperText={error && error.password}
+          error={error && !!error.password}
           className={classes.textField}
           label="New password"
           variant="filled"
@@ -124,8 +122,8 @@ const UserPasswordSetting = ({ errors, loading }) => {
           value={input.value.confirmPassword}
           placeholder="Re-type new password?"
           onChange={handleChange}
-          helperText={errors.settings && errors.settings.confirmPassword}
-          error={errors.settings && !!errors.settings.confirmPassword}
+          helperText={error && error.confirmPassword}
+          error={error && !!error.confirmPassword}
           className={classes.textField}
           label="Re-type new Password"
           variant="filled"
@@ -137,8 +135,8 @@ const UserPasswordSetting = ({ errors, loading }) => {
   );
 };
 UserPasswordSetting.propTypes = {
-  errors: PropTypes.object,
   loading: PropTypes.bool,
+  error: PropTypes.object,
 };
 
 export default UserPasswordSetting;

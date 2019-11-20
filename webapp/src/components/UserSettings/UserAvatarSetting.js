@@ -6,7 +6,6 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { uploadUserAvatar } from '../../actions/userActions.js';
-import { clearError } from '../../actions/UIActions';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -37,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 /* -- constants -- */
-const acceptedTypes = ['image/jpeg', 'image/png'];
+const acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
 const readImageFile = file => {
   const reader = new FileReader();
@@ -51,15 +50,10 @@ const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const uploadErrorMsg = errors && errors.upload ? errors.upload.avatar : '';
-
   const [thumbnail, setThumbnail] = useState('');
 
   useEffect(() => {
     mapStateToCredentials(imageUrl);
-    return () => {
-      dispatch(clearError('upload'));
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
@@ -72,9 +66,10 @@ const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
-    dispatch(uploadUserAvatar(file));
     const fileDataUrl = await readImageFile(file);
     setThumbnail(fileDataUrl);
+    // dispatch action
+    dispatch(uploadUserAvatar(file)).catch(({ error }) => alert(error));
   };
 
   return (

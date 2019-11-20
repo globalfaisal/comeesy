@@ -120,7 +120,7 @@ exports.updateUserAvatar = (req, res) => {
       req.headers['content-length'],
       mimetype
     );
-    if (!isValid) return res.status(400).json({ avatar: error });
+    if (!isValid) return res.status(400).json({ error });
 
     // 1. Generate unique image filename
     const imageExt = filename.split('.')[filename.split('.').length - 1];
@@ -144,7 +144,10 @@ exports.updateUserAvatar = (req, res) => {
         metadata: {
           public: true,
           metadata: {
-            contentType: imageToUpload.mimetype,
+            contentType:
+              imageToUpload.mimetype === 'image/jpg'
+                ? 'image/jpeg'
+                : imageToUpload.mimetype,
           },
         },
       })

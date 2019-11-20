@@ -1,13 +1,10 @@
 /* -- libs -- */
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
-
-/* -- custom hooks -- */
-import useAuthForm from '../../hooks/useAuthForm';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -20,9 +17,30 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './styles';
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const { inputs, handleChange, handleSubmit } = useAuthForm(signup);
-  const { isLoading, errors } = useSelector(state => state.UI);
+  const { loading, error } = useSelector(state => state.user);
+
+  const [inputs, setInputs] = useState({
+    name: '',
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const handleChange = event => {
+    event.persist();
+    setInputs(prevInputs => ({
+      ...prevInputs,
+      [event.target.name]: event.target.value,
+    }));
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    dispatch(signup(inputs)).catch(error => console.log('SIGNUP: ', error));
+  };
 
   return (
     <div className="signup-page">
@@ -46,9 +64,9 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.name}
                 onChange={handleChange}
-                helperText={errors.auth && errors.auth.name}
-                error={errors.auth && !!errors.auth.name}
-                disabled={isLoading}
+                helperText={error && error.name}
+                error={error && !!error.name}
+                disabled={loading}
                 label="Name"
                 color="primary"
                 autoFocus
@@ -63,9 +81,9 @@ const Signup = () => {
                 type="text"
                 defaultValue={inputs.username}
                 onChange={handleChange}
-                helperText={errors.auth && errors.auth.username}
-                error={errors.auth && !!errors.auth.username}
-                disabled={isLoading}
+                helperText={error && error.username}
+                error={error && !!error.username}
+                disabled={loading}
                 label="Username"
                 color="primary"
                 fullWidth
@@ -79,9 +97,9 @@ const Signup = () => {
                 type="email"
                 defaultValue={inputs.email}
                 onChange={handleChange}
-                helperText={errors.auth && errors.auth.email}
-                error={errors.auth && !!errors.auth.email}
-                disabled={isLoading}
+                helperText={error && error.email}
+                error={error && !!error.email}
+                disabled={loading}
                 label="Email"
                 color="primary"
                 fullWidth
@@ -95,9 +113,9 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.password}
                 onChange={handleChange}
-                helperText={errors.auth && errors.auth.password}
-                error={errors.auth && !!errors.auth.password}
-                disabled={isLoading}
+                helperText={error && error.password}
+                error={error && !!error.password}
+                disabled={loading}
                 label="Password"
                 color="primary"
                 className={classes.textField}
@@ -110,9 +128,9 @@ const Signup = () => {
                 type="password"
                 defaultValue={inputs.confirmPassword}
                 onChange={handleChange}
-                helperText={errors.auth && errors.auth.confirmPassword}
-                error={errors.auth && !!errors.auth.confirmPassword}
-                disabled={isLoading}
+                helperText={error && error.confirmPassword}
+                error={error && !!error.confirmPassword}
+                disabled={loading}
                 label="Confirm Password"
                 color="primary"
                 className={classes.textField}
@@ -125,11 +143,11 @@ const Signup = () => {
               variant="contained"
               color="primary"
               size="small"
-              disabled={isLoading}
+              disabled={loading}
               className={classes.button}
             >
               Sign up
-              {isLoading && (
+              {loading && (
                 <CircularProgress
                   size={22}
                   className={classes.singupProgress}
