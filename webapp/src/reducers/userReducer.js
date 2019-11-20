@@ -2,30 +2,58 @@ import _ from 'lodash';
 import { userTypes } from '../actions/types';
 
 const INITIAL_STATE = {
-  /* data */
-  credentials: null,
-  notifications: [],
-  likes: [],
-  /* custom */
+  data: null,
+  error: null,
+  loading: false,
   isAuthenticated: false,
-  isLoading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case userTypes.SET_AUTHENTICATED:
-      return { ...state, isAuthenticated: true };
-    case userTypes.SET_UNAUTHENTICATED:
-      return INITIAL_STATE;
-    case userTypes.SET_USER:
+    case userTypes.USER_AUTH_SUCCESS:
       return {
         ...state,
-        isLoading: false,
-        ...action.payload,
+        isAuthenticated: true,
+        loading: false,
+        error: null,
       };
-    case userTypes.LOADING_USER:
-      return { ...state, isLoading: true };
-
+    case userTypes.USER_AUTH_FAILED:
+      return {
+        ...INITIAL_STATE,
+        error: action.payload,
+      };
+    case userTypes.GET_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        data: action.payload,
+      };
+    case userTypes.GET_USER_FAILED:
+      return {
+        ...state,
+        loading: false,
+        data: null,
+        error: action.payload,
+      };
+    case userTypes.UPDATE_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case userTypes.UPDATE_USER_DATA_FAILED:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case userTypes.LOGOUT:
+      return { ...INITIAL_STATE };
+    case userTypes.USER_LOADING:
+      return {
+        ...state,
+        loading: true,
+      };
     default:
       return state;
   }

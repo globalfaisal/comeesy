@@ -13,15 +13,41 @@ import relativeTime from 'dayjs/plugin/relativeTime';
  * @param token - jwt id token
  * @returns true if valid else false
  */
-export const isTokenExpired = token => {
-  if (!token) return true;
+const validateToken = token => {
+  if (!token) throw new Error('ERROR: Token cannot be undefined', token);
   try {
     const decodedToken = jwtDecode(token);
     const currentTime = Date.now().valueOf() / 1000;
-    return decodedToken.exp < currentTime; // expired
+    return decodedToken.exp > currentTime; // valid
   } catch (error) {
     console.error(error);
   }
+};
+
+/**
+ * Saves token to localstorage
+ * @param token - jwt id token
+ */
+export const saveToken = token => {
+  window.localStorage.setItem('token', token);
+};
+
+/**
+ * Removes token from localstorage
+ */
+export const removeToken = () => {
+  window.localStorage.removeItem('token');
+};
+
+/**
+ * Handles un-authorized actions
+ * dispatches given action if token is invalid or expired
+ * @param dispatch - functions
+ * @param action - functions
+ */
+export const handleUnAuthorizedAction = (dispatch, action) => {
+  const { token } = window.localStorage;
+  if (!token || !validateToken(token)) return dispatch(action());
 };
 
 /* ------------------------------------------------------ */

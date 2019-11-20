@@ -31,7 +31,7 @@ exports.updateUserDetails = async (req, res) => {
       .doc(`/users/${req.user.username}`)
       .update(req.body)
       .then(() =>
-        res.status(201).json({ message: 'Details updated successfully' })
+        res.status(200).json({ message: 'Details updated successfully' })
       );
   } catch (err) {
     console.error('Error while adding user own details ', err);

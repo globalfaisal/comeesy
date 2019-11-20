@@ -48,7 +48,7 @@ exports.logout = (req, res) => {
   firebase
     .auth()
     .signOut()
-    .then(() => res.json({ message: 'Logged out successfully' }))
+    .then(() => res.status(200).json({ message: 'Logged out successfully' }))
     .catch(err => {
       console.error('Error while logout ', err);
       return res.status(500).json({ error: err.code });
