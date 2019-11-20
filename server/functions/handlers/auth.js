@@ -70,7 +70,7 @@ exports.signup = (req, res) => {
   if (!isValid) return res.status(400).json(errors);
 
   let token, userId;
-  const defaultAvatarFileName = 'default-avatar.png';
+  const defaultAvatarPath = 'public/images/default-avatar.png';
 
   // Creates new user
   db.doc(`/users/${newUser.username}`)
@@ -108,7 +108,9 @@ exports.signup = (req, res) => {
         location: '',
         bio: '',
         createdAt: new Date().toISOString(),
-        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${defaultAvatarFileName}?alt=media`,
+        imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${encodeURIComponent(defaultAvatarPath)}?alt=media`,
         verified: data.user.emailVerified,
         userId: data.user.uid,
       };

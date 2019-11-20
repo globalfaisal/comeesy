@@ -24,7 +24,7 @@ const {
   getUserOwnData,
   updateUserDetails,
   updateUserCredentials,
-  updateUserImage,
+  updateUserAvatar,
 } = require('./handlers/users');
 
 // Get all db trigger handlers
@@ -38,7 +38,7 @@ const {
   onCommentReplyDelete,
 } = require('./triggers/comments');
 
-const { onUserAvatarChange, onNameChange } = require('./triggers/users');
+const { onUserAvatarChange, onUserNameChange } = require('./triggers/users');
 
 /* Enable CORS */
 //TODO: for Production change whitelist of allowed origin and pass to cors()
@@ -101,7 +101,7 @@ app.get('/user', fbAuth, getUserOwnData);
 app.get('/user/:username', getUserData);
 app.post('/user/details', fbAuth, updateUserDetails);
 app.post('/user/credentials', fbAuth, updateUserCredentials);
-app.post('/user/image', fbAuth, updateUserImage);
+app.post('/user/avatar', fbAuth, updateUserAvatar);
 
 // Notifications routes
 app.post('/notifications/markRead', fbAuth, markNotificationsRead);
@@ -163,4 +163,4 @@ exports.userAvatarChangeTrigger = functions
 exports.nameChangedTrigger = functions
   .region('europe-west1')
   .firestore.document('/users/{userId}')
-  .onUpdate(onNameChange);
+  .onUpdate(onUserNameChange);

@@ -5,6 +5,7 @@ const INITIAL_STATE = {
   /* data */
   credentials: null,
   notifications: [],
+  likes: [],
   /* custom */
   isAuthenticated: false,
   isLoading: false,

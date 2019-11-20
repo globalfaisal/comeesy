@@ -144,7 +144,7 @@ export const updateUserCredentials = data => dispatch => {
     });
 };
 
-export const uploadUserImage = file => dispatch => {
+export const uploadUserAvatar = file => dispatch => {
   const { token } = window.localStorage;
   if (isTokenExpired(token)) return dispatch(logout());
 
@@ -155,7 +155,7 @@ export const uploadUserImage = file => dispatch => {
   formData.append('file', file);
 
   comeesyAPI
-    .post('/user/image', formData, {
+    .post('/user/avatar', formData, {
       headers: { Authorization: token },
     })
     .then(res => {

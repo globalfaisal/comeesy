@@ -13,7 +13,7 @@ import TabPanel from '../../components/UI/TabPanel';
 import UserNameSetting from '../../components/UserSettings/UserNameSetting';
 import UserPasswordSetting from '../../components/UserSettings/UserPasswordSetting';
 import UserEmailSetting from '../../components/UserSettings/UserEmailSetting';
-import UserImageSetting from '../../components/UserSettings/UserImageSetting';
+import UserAvatarSetting from '../../components/UserSettings/UserAvatarSetting';
 import UserDetailsSetting from '../../components/UserSettings/UserDetailsSetting';
 
 /* -- utils -- */
@@ -84,7 +84,7 @@ const Settings = props => {
             <TabPanel active={selectedTab === 0} index={0}>
               <Typography variant="h6">Profile Settings</Typography>
               <div className={classes.content}>
-                <UserImageSetting
+                <UserAvatarSetting
                   imageUrl={credentials.imageUrl}
                   errors={errors}
                   loading={isLoading}

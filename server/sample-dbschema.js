@@ -8,7 +8,7 @@ const db = {
       createdAt: '2019-09-23T18:25:06.105Z',
       user: {
         imageUrl:
-          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
+          'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{imageUrl}?alt=media',
         name: 'Jane Doe',
         username: 'jane_doe',
       },
@@ -25,7 +25,7 @@ const db = {
       bio: 'Nam rick grimes malum cerebro.',
       gender: 'female',
       imageUrl:
-        'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
+        'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{imageUrl}?alt=media',
       createdAt: '2019-09-17T08:42:41.187Z',
     },
   ],
@@ -102,7 +102,7 @@ const userOwnData = {
     userId: 'z13NSegbLhQ4WyofzqCb46soqgj2',
     bio: 'Nam rick grimes malum cerebro.',
     imageUrl:
-      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{image.png}?alt=media',
+      'https://firebasestorage.googleapis.com/v0/b/{storageBucket}/o/{imageUrl}?alt=media',
     createdAt: '2019-09-17T08:42:41.187Z',
   },
   // All posts user liked

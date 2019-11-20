@@ -110,9 +110,8 @@ exports.getUserData = (req, res) => {
 };
 
 // Post user profile image
-exports.updateUserImage = (req, res) => {
-  let imageFileName;
-  let imageToUpload = {};
+exports.updateUserAvatar = (req, res) => {
+  let imageToUpload, imageFileName;
 
   const busboy = new BusBoy({ headers: req.headers });
   busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
@@ -140,25 +139,31 @@ exports.updateUserImage = (req, res) => {
       .storage()
       .bucket()
       .upload(imageToUpload.filePath, {
-        resumable: false,
+        gzip: true,
+        destination: `users/${req.user.userId}/${imageFileName}`,
         metadata: {
+          public: true,
           metadata: {
             contentType: imageToUpload.mimetype,
           },
         },
       })
-      .then(() => {
+      .then(data => {
         // 2. Get the file url from the storage
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/${imageFileName}?alt=media`;
+        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${
+          config.storageBucket
+        }/o/${encodeURIComponent(data[0].name)}?alt=media`;
 
         // 2. Add the imageUrl to the db
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });
       })
       .then(() =>
-        res.status(201).json({ message: 'Profile image updated successfully' })
+        res
+          .status(200)
+          .json({ message: 'Profile picture updated successfully' })
       )
       .catch(err => {
-        console.error('Error while uploading profile image ', err);
+        console.error('Error while uploading user avatar ', err);
         return res
           .status(500)
           .json({ general: 'Something went wrong, please try again' });
@@ -175,13 +180,13 @@ exports.updateUserCredentials = (req, res) => {
       .json({ error: 'Fieldname to update must be specified!' });
   }
 
-  if (req.body.name === 'name') return updateName(req, res);
-  else if (req.body.name === 'email') return updateEmail(req, res);
-  else if (req.body.name === 'password') return updatePassword(req, res);
+  if (req.body.name === 'name') return updateUserName(req, res);
+  else if (req.body.name === 'email') return updateUserEmail(req, res);
+  else if (req.body.name === 'password') return updateUserPassword(req, res);
 };
 
 // Update password
-async function updatePassword(req, res) {
+async function updateUserPassword(req, res) {
   const { errors, isValid } = validatePasswordContent(req.body.value);
   if (!isValid) return res.status(400).json(errors);
 
@@ -206,7 +211,7 @@ async function updatePassword(req, res) {
 }
 
 // Update email
-async function updateEmail(req, res) {
+async function updateUserEmail(req, res) {
   if (!validEmail(req.body.value)) {
     return res.status(400).json({ email: 'Must be valid email address' });
   }
@@ -237,7 +242,7 @@ async function updateEmail(req, res) {
 }
 
 // Update name
-async function updateName(req, res) {
+async function updateUserName(req, res) {
   if (!validName(req.body.value)) {
     return res.status(400).json({ name: 'Please use your authentic name' });
   }

@@ -1,7 +1,10 @@
 /* -- libs -- */
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
+/* -- actions -- */
+import { logout } from '../../actions/userActions';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,9 +28,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const UserMenu = ({ user, onLogout }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+const UserMenu = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const credentials = useSelector(state => ({ ...state.user.credentials }));
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const onOpenMenu = e => {
     setAnchorEl(e.currentTarget);
@@ -36,8 +41,12 @@ const UserMenu = ({ user, onLogout }) => {
     setAnchorEl(null);
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
-    user && (
+    credentials && (
       <div className="user-menu">
         <IconButton
           onClick={onOpenMenu}
@@ -45,7 +54,7 @@ const UserMenu = ({ user, onLogout }) => {
           aria-haspopup="true"
           className={classes.userMenuIconBtn}
         >
-          <Avatar alt={user.username} src={user.imageUrl} />
+          <Avatar alt={credentials.username} src={credentials.imageUrl} />
           <ArrowDropDownIcon htmlColor="white" />
         </IconButton>
         <PopupMenu
@@ -56,29 +65,25 @@ const UserMenu = ({ user, onLogout }) => {
         >
           <MenuItem
             component={Link}
-            to={`/u/${user.username}`}
+            to={`/u/${credentials.username}`}
             onClick={onCloseMenu}
           >
             Profile
           </MenuItem>
           <MenuItem
             component={Link}
-            to="/settings/account"
+            to="/settings/profile"
             divider
             onClick={onCloseMenu}
           >
             Settings
           </MenuItem>
-          <MenuItem component={Link} to="#" onClick={onLogout}>
+          <MenuItem component={Link} to="#" onClick={handleLogout}>
             Logout
           </MenuItem>
         </PopupMenu>
       </div>
     )
   );
-};
-UserMenu.propTypes = {
-  user: PropTypes.object.isRequired,
-  onLogout: PropTypes.func.isRequired,
 };
 export default UserMenu;

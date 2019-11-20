@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { uploadUserImage } from '../../actions/userActions.js';
+import { uploadUserAvatar } from '../../actions/userActions.js';
 import { clearError } from '../../actions/UIActions';
 
 /* -- mui -- */
@@ -47,7 +47,7 @@ const readImageFile = file => {
   });
 };
 
-const UserImageSetting = ({ imageUrl, errors, loading }) => {
+const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -72,7 +72,7 @@ const UserImageSetting = ({ imageUrl, errors, loading }) => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
-    dispatch(uploadUserImage(file));
+    dispatch(uploadUserAvatar(file));
     const fileDataUrl = await readImageFile(file);
     setThumbnail(fileDataUrl);
   };
@@ -104,9 +104,9 @@ const UserImageSetting = ({ imageUrl, errors, loading }) => {
   );
 };
 
-UserImageSetting.propTypes = {
+UserAvatarSetting.propTypes = {
   imageUrl: PropTypes.string.isRequired,
   errors: PropTypes.object,
   loading: PropTypes.bool,
 };
-export default UserImageSetting;
+export default UserAvatarSetting;

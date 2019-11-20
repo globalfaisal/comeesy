@@ -40,14 +40,11 @@ const Profile = ({ match: { params } }) => {
     if (isLoading) return <CircularLoading />;
     return (
       <div className="profile-page">
-        <ProfileCover user={profile.credentials} isOwner={isProfileOwner()} />
+        <ProfileCover user={profile.credentials} />
         <Container>
           <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={12} sm={5} md={3}>
-              <ProfileCard
-                user={profile.credentials}
-                canEdit={isProfileOwner()}
-              />
+              <ProfileCard user={profile.credentials} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <Hidden smUp>

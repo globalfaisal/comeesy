@@ -1,10 +1,7 @@
 /* -- libs -- */
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-/* -- actions -- */
-import { logout } from '../../actions/userActions';
 
 /* -- components -- */
 import LinearLoading from '../UI/LinearLoading';
@@ -37,18 +34,12 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const {
-    isLoading: isUserLoading,
-    isAuthenticated,
-    credentials,
-  } = useSelector(state => state.user);
-
+  const { isLoading, isAuthenticated } = useSelector(state => state.user);
   const isDataLoading = useSelector(state => state.data.isLoading);
 
   return (
     <AppBar className={classes.appBar}>
-      <LinearLoading loading={isDataLoading || isUserLoading} />
+      <LinearLoading loading={isDataLoading || isLoading} />
 
       <Toolbar variant="dense">
         <Link to="/">
@@ -56,10 +47,8 @@ const Navbar = () => {
         </Link>
         <div className={classes.grow} />
         <nav className={classes.navMenu}>
-          {isAuthenticated && (
-            <UserMenu user={credentials} onLogout={() => dispatch(logout())} />
-          )}
-          {!isAuthenticated && !isUserLoading && (
+          {isAuthenticated && <UserMenu />}
+          {!isAuthenticated && (
             <React.Fragment>
               <Button
                 component={Link}

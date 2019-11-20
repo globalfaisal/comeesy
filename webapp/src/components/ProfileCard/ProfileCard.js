@@ -1,6 +1,5 @@
 /* -- libs -- */
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
@@ -17,34 +16,18 @@ import Typography from '@material-ui/core/Typography';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import WatchLaterOutlinedIcon from '@material-ui/icons/WatchLaterOutlined';
 import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
-import Fab from '@material-ui/core/Fab';
-import EditIcon from '@material-ui/icons/Edit';
 
 /* -- styles -- */
 import useStyles from './styles';
 import { Hidden } from '@material-ui/core';
 
-const ProfileCard = ({ user, isOwner = false }) => {
+const ProfileCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
   const { username, bio, location, birthdate, createdAt } = user;
   return (
     <section className={classes.UserProfile}>
       <Card className={classes.card} elevation={1}>
-        {isOwner && (
-          <Hidden smUp>
-            <Fab
-              component={Link}
-              to="/settings/profile"
-              aria-label="edit-profile"
-              color="primary"
-              size="small"
-              className={classes.buttonEdit}
-            >
-              <EditIcon fontSize="inherit" />
-            </Fab>
-          </Hidden>
-        )}
         <CardHeader
           title={
             <Typography variant="subtitle1" className={classes.title}>
@@ -98,6 +81,5 @@ const ProfileCard = ({ user, isOwner = false }) => {
 
 ProfileCard.propTypes = {
   user: PropTypes.object.isRequired,
-  isOwner: PropTypes.bool.isRequired,
 };
 export default ProfileCard;

@@ -120,7 +120,7 @@ exports.onUserAvatarChange = async snapshot => {
   }
 };
 
-exports.onNameChange = async snapshot => {
+exports.onUserNameChange = async snapshot => {
   try {
     //1. Change name reference at all docs in posts collections
     await db
