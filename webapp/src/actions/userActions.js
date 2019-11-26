@@ -1,11 +1,7 @@
 import comeesyAPI from '../api/comeesy';
 import { userTypes } from './types';
 import history from '../utils/history';
-import {
-  saveToken,
-  removeToken,
-  handleUnAuthorizedAction,
-} from '../utils/helperFns';
+import { saveToken, removeToken, validateToken } from '../utils/helperFns';
 
 const userLoading = () => ({
   type: userTypes.USER_LOADING,
@@ -28,17 +24,12 @@ const updateUserDataFailed = error => ({
   payload: error,
 });
 
-export const login = formData => dispatch => {
-  const userData = {
-    email: formData.email || '',
-    password: formData.password || '',
-  };
+export const login = data => dispatch =>
+  new Promise((resolve, reject) => {
+    dispatch(userLoading());
 
-  dispatch(userLoading());
-
-  return new Promise((resolve, reject) => {
     comeesyAPI
-      .post('/auth/login', userData)
+      .post('/auth/login', data)
       .then(res => {
         resolve();
         const token = `Bearer ${res.data.token}`;
@@ -53,20 +44,13 @@ export const login = formData => dispatch => {
         reject(err.response);
       });
   });
-};
 
-export const signup = formData => dispatch => {
-  const userData = {
-    name: formData.name || '',
-    username: formData.username || '',
-    email: formData.email || '',
-    password: formData.password || '',
-    confirmPassword: formData.confirmPassword || '',
-  };
+export const signup = data => dispatch =>
+  new Promise((resolve, reject) => {
+    dispatch(userLoading());
 
-  return new Promise((resolve, reject) => {
     comeesyAPI
-      .post('/auth/signup', userData)
+      .post('/auth/signup', data)
       .then(res => {
         resolve();
         const token = `Bearer ${res.data.token}`;
@@ -81,11 +65,10 @@ export const signup = formData => dispatch => {
         reject(err.response);
       });
   });
-};
 
-export const logout = () => dispatch => {
-  dispatch(userLoading());
-  return new Promise((resolve, reject) => {
+export const logout = () => dispatch =>
+  new Promise((resolve, reject) => {
+    dispatch(userLoading());
     comeesyAPI
       .get('/auth/logout')
       .then(res => {
@@ -102,11 +85,10 @@ export const logout = () => dispatch => {
         reject(err.response);
       });
   });
-};
 
 export const getUserOwnData = () => dispatch => {
   const { token } = window.localStorage;
-  handleUnAuthorizedAction(dispatch, logout);
+  if (!token || !validateToken(token)) return dispatch(logout());
 
   dispatch(userLoading());
   return new Promise((resolve, reject) => {
@@ -133,7 +115,7 @@ export const getUserOwnData = () => dispatch => {
 
 export const updateUserDetails = data => dispatch => {
   const { token } = window.localStorage;
-  handleUnAuthorizedAction(dispatch, logout);
+  if (!token || !validateToken(token)) return dispatch(logout());
 
   dispatch(userLoading());
   return new Promise((resolve, reject) => {
@@ -156,7 +138,7 @@ export const updateUserDetails = data => dispatch => {
 
 export const updateUserCredentials = data => dispatch => {
   const { token } = window.localStorage;
-  handleUnAuthorizedAction(dispatch, logout);
+  if (!token || !validateToken(token)) return dispatch(logout());
 
   dispatch(userLoading());
 
@@ -180,7 +162,7 @@ export const updateUserCredentials = data => dispatch => {
 
 export const uploadUserAvatar = file => dispatch => {
   const { token } = window.localStorage;
-  handleUnAuthorizedAction(dispatch, logout);
+  if (!token || !validateToken(token)) return dispatch(logout());
 
   dispatch(userLoading());
 
