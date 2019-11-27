@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 /* -- actions -- */
 import { updateUserCredentials } from '../../actions/userActions.js';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
 import ExpandPanel from '../UI/ExpandPanel';
@@ -52,7 +53,13 @@ const UserPasswordSetting = ({ loading, error }) => {
   };
   const handleSubmit = () => {
     // dispatch form data
-    dispatch(updateUserCredentials(input));
+    dispatch(updateUserCredentials(input))
+      .then(({ message }) => {
+        dispatch(showAlert({ type: 'success', message }));
+      })
+      .catch(({ message }) => {
+        dispatch(showAlert({ type: 'error', message }));
+      });
   };
 
   return (

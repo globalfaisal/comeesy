@@ -22,7 +22,7 @@ exports.updateUserDetails = async (req, res) => {
   if (!isValid) {
     return res
       .status(400)
-      .json({ error: 'At least one field must be updated' });
+      .json({ message: 'At least one field must be updated' });
   }
 
   try {
@@ -178,7 +178,7 @@ exports.updateUserCredentials = (req, res) => {
   if (!req.body.name) {
     return res
       .status(400)
-      .json({ error: 'Fieldname to update must be specified!' });
+      .json({ message: 'Fieldname to update must be specified!' });
   }
 
   if (req.body.name === 'name') return updateUserName(req, res);

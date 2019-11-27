@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { updateUserDetails } from '../../actions/userActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
@@ -86,7 +87,13 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
   const handleSubmit = e => {
     e.preventDefault();
     // dispatch data
-    dispatch(updateUserDetails(inputs));
+    dispatch(updateUserDetails(inputs))
+      .then(({ message }) => {
+        dispatch(showAlert({ type: 'success', message }));
+      })
+      .catch(({ message }) => {
+        dispatch(showAlert({ type: 'error', message }));
+      });
   };
 
   return (

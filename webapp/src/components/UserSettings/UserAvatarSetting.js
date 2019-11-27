@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
-const readImageFile = file => {
+const createThumbnail = file => {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   return new Promise((resolve, reject) => {
@@ -71,10 +71,15 @@ const UserAvatarSetting = ({ imageUrl, loading }) => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
-    const fileDataUrl = await readImageFile(file);
+    // Create file thumbnail
+    const fileDataUrl = await createThumbnail(file);
     setThumbnail(fileDataUrl);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
     // dispatch action
-    dispatch(uploadUserAvatar(file))
+    dispatch(uploadUserAvatar(formData))
       .then(({ message }) => {
         dispatch(showAlert({ type: 'success', message }));
       })

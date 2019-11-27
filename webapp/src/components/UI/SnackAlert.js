@@ -11,7 +11,7 @@ import Portal from '../Portal/Portal';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
-import { amber, green } from '@material-ui/core/colors';
+import { blue, green, amber, red } from '@material-ui/core/colors';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Typography from '@material-ui/core/Typography';
@@ -25,23 +25,26 @@ import CloseIcon from '@material-ui/icons/Close';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   root: {
-    bottom: 0,
-    left: 0,
-    transform: 'none',
-    width: '100%',
+    top: 50,
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      transform: 'translateX(0)',
+      left: 0,
+    },
     display: 'block',
   },
   success: {
-    backgroundColor: green[600],
+    backgroundColor: green[300],
   },
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: red[300],
   },
   info: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: blue[300],
   },
   warning: {
-    backgroundColor: amber[700],
+    backgroundColor: amber[300],
   },
   icon: {
     fontSize: 20,
@@ -59,7 +62,7 @@ const useStyles = makeStyles(theme => ({
   message: {
     display: 'flex',
     justifyContent: 'space-between',
-    marginRight: 10,
+    marginRight: 24,
   },
   action: {
     position: 'absolute',
@@ -83,50 +86,47 @@ const SnackAlert = () => {
   const Icon = variantIcon[type || 'info'];
 
   const onClose = (event, reason) => {
-    if (reason !== 'clickaway') dispatch(hideAlert());
+    // if (reason !== 'clickaway')
+    dispatch(hideAlert());
   };
 
-  return (
-    open &&
-    type &&
-    message && (
-      <Portal>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          open={open}
-          autoHideDuration={10000}
-          onClose={onClose}
-          classes={{ root: classes.root }}
-        >
-          <SnackbarContent
-            className={clsx(classes[type], classes.content)}
-            aria-describedby="alert"
-            role="alert"
-            message={
-              <div id="alert" className={classes.message}>
-                <Icon className={clsx(classes.icon, classes.iconVariant)} />
-                <Typography variant="subtitle2">{message}</Typography>
-              </div>
-            }
-            action={
-              <IconButton
-                key="close"
-                aria-label="close"
-                color="inherit"
-                onClick={onClose}
-                className={classes.action}
-              >
-                <CloseIcon className={classes.icon} />
-              </IconButton>
-            }
-          />
-        </Snackbar>
-      </Portal>
-    )
-  );
+  return open && type && message ? (
+    <Portal>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        open={open}
+        onClose={onClose}
+        autoHideDuration={8000}
+        classes={{ root: classes.root }}
+      >
+        <SnackbarContent
+          className={clsx(classes[type], classes.content)}
+          aria-describedby="alert"
+          role="alert"
+          message={
+            <div id="alert" className={classes.message}>
+              <Icon className={clsx(classes.icon, classes.iconVariant)} />
+              <Typography variant="body2">{message}</Typography>
+            </div>
+          }
+          action={
+            <IconButton
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={onClose}
+              className={classes.action}
+            >
+              <CloseIcon className={classes.icon} />
+            </IconButton>
+          }
+        />
+      </Snackbar>
+    </Portal>
+  ) : null;
 };
 
 export default SnackAlert;
