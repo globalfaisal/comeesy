@@ -97,6 +97,8 @@ export const getUserOwnData = () => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
+      dispatch(userLoading());
+
       const response = await comeesyAPI.get('/user', {
         headers: { Authorization: token },
       });
@@ -116,7 +118,6 @@ export const getUserOwnData = () => dispatch =>
       // only throw errors from http request
       if (error.response) reject(error.response);
     }
-    dispatch(userLoading());
   });
 
 export const updateUserDetails = data => dispatch =>
@@ -125,7 +126,7 @@ export const updateUserDetails = data => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      await dispatch(userLoading());
+      dispatch(userLoading());
 
       const response = await comeesyAPI.post('/user/details', data, {
         headers: { Authorization: token },
