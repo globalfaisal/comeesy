@@ -3,28 +3,32 @@ import { uiTypes } from '../actions/types';
 
 const INITIAL_STATE = {
   isLoading: false,
-  errors: {},
+  alert: {
+    open: false,
+    type: '',
+    message: '',
+  },
 };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case uiTypes.SET_ERROR:
+    case uiTypes.SHOW_ALERT:
       return {
         ...state,
-        isLoading: false,
-        errors: {
-          ...state.errors,
-          [action.payload.type]: action.payload.data,
+        alert: {
+          open: true,
+          ...action.payload,
         },
       };
-    case uiTypes.CLEAR_ERROR:
+    case uiTypes.HIDE_ALERT:
       return {
         ...state,
-        errors: { ..._.omit(state.errors, action.payload) },
+        alert: {
+          open: false,
+          type: '',
+          message: '',
+        },
       };
-
-    case uiTypes.CLEAR_ERRORS:
-      return { ...state, isLoading: false, errors: null };
     case uiTypes.LOADING_UI:
       return { ...state, isLoading: true };
     case uiTypes.LOADING_UI_FINISHED:

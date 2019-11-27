@@ -27,16 +27,21 @@ export const validateToken = token => {
  * Saves token to localstorage
  * @param token - jwt id token
  */
-export const saveToken = token => {
+export const storeToken = token => {
   window.localStorage.setItem('token', token);
 };
 
 /**
- * Removes token from localstorage
+ * Clear token from localstorage
  */
-export const removeToken = () => {
+export const clearToken = () => {
   window.localStorage.removeItem('token');
 };
+
+/**
+ * Get token from localstorage
+ */
+export const getStoredToken = () => window.localStorage.token;
 
 /* ------------------------------------------------------ */
 /* DATE FORMAT HELPERS */

@@ -23,7 +23,7 @@ exports.login = (req, res) => {
     .then(data => {
       return data.user.getIdToken();
     })
-    .then(token => res.status(200).json({ token }))
+    .then(idToken => res.status(200).json({ idToken }))
     .catch(err => {
       console.error('Error while user login ', err);
       if (err.code === 'auth/user-not-found') {
@@ -69,7 +69,7 @@ exports.signup = (req, res) => {
   const { isValid, errors } = validateSignupData(newUser);
   if (!isValid) return res.status(400).json(errors);
 
-  let token, userId;
+  let idToken;
   const defaultAvatarPath = 'public/images/default-avatar.png';
 
   // Creates new user
@@ -96,7 +96,7 @@ exports.signup = (req, res) => {
       });
 
       // Get user token
-      token = await data.user.getIdToken();
+      idToken = await data.user.getIdToken();
 
       // Persist the newly created user credentials to the db
       const userCredentials = {
@@ -119,7 +119,7 @@ exports.signup = (req, res) => {
     .then(doc => {
       // created successfully
       console.log(`User created successfully`);
-      return res.status(201).json({ token });
+      return res.status(201).json({ idToken });
     })
     .catch(err => {
       console.error('Error while user sing-up ', err);

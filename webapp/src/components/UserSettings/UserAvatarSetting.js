@@ -6,19 +6,19 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { uploadUserAvatar } from '../../actions/userActions.js';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
-
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   avatarWrapper: {
     height: 160,
     width: 160,
-
     alignSelf: 'center',
     position: 'relative',
   },
@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => ({
     height: '100%',
     border: `4px solid ${theme.palette.colors.greylight}`,
     backgroundColor: theme.palette.colors.greylight,
+    cursor: 'pointer',
+    transition: 'all .2s ease-in-out',
+    '&:hover': {
+      transform: 'scale(1.1)',
+    },
   },
   fab: {
     position: 'absolute',
@@ -46,7 +51,7 @@ const readImageFile = file => {
   });
 };
 
-const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
+const UserAvatarSetting = ({ imageUrl, loading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -69,12 +74,24 @@ const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
     const fileDataUrl = await readImageFile(file);
     setThumbnail(fileDataUrl);
     // dispatch action
-    dispatch(uploadUserAvatar(file)).catch(({ error }) => alert(error));
+    dispatch(uploadUserAvatar(file))
+      .then(({ message }) => {
+        dispatch(showAlert({ type: 'success', message }));
+      })
+      .catch(({ message }) => {
+        dispatch(showAlert({ type: 'error', message }));
+      });
   };
-
   return (
     <div className={classes.avatarWrapper}>
-      <Avatar src={thumbnail} className={classes.avatar} />
+      <Tooltip title="Update profile picture (maxsize: 2MB)">
+        <Avatar
+          src={thumbnail}
+          className={classes.avatar}
+          component="label"
+          htmlFor="userImageInput"
+        />
+      </Tooltip>
       <Fab
         size="small"
         color="inherit"
@@ -84,8 +101,11 @@ const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
         className={classes.fab}
         disabled={loading}
       >
-        <AddAPhotoIcon fontSize="small" />
+        <Tooltip title="Update profile picture (maxsize: 2MB)">
+          <AddAPhotoIcon fontSize="small" />
+        </Tooltip>
       </Fab>
+
       <input
         name="userImage"
         id="userImageInput"
@@ -101,7 +121,6 @@ const UserAvatarSetting = ({ imageUrl, errors, loading }) => {
 
 UserAvatarSetting.propTypes = {
   imageUrl: PropTypes.string.isRequired,
-  errors: PropTypes.object,
   loading: PropTypes.bool,
 };
 export default UserAvatarSetting;

@@ -83,7 +83,6 @@ const Settings = props => {
                 <div className={classes.content}>
                   <UserAvatarSetting
                     imageUrl={data.credentials.imageUrl}
-                    error={error}
                     loading={loading}
                   />
                   <UserDetailsSetting

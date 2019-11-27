@@ -56,11 +56,12 @@ exports.validateImageFile = (file, size, mimetype) => {
   const acceptedFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
   let error = '';
 
-  if (!file) error = 'Upload failed. Invalid file submitted';
+  if (!file) error = 'Upload failed. Invalid file.';
   else if (file && !acceptedFileTypes.includes(mimetype))
-    error = 'Upload failed. Upload either .jpeg or .png image';
+    error =
+      'Upload failed. File must be one of the following types: jpeg, jpg or png';
   if (file && size - 100 >= maxFileSizeAllowed)
-    error = 'Upload failed. Please submit a file less than 2MB';
+    error = 'Upload failed. Image size must be less than 2MB.';
 
   return {
     error,

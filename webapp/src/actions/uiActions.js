@@ -14,3 +14,11 @@ export const setError = error => ({
   type: uiTypes.SET_ERROR,
   payload: error,
 });
+
+export const showAlert = ({ type, message }) => ({
+  type: uiTypes.SHOW_ALERT,
+  payload: { type, message },
+});
+export const hideAlert = () => ({
+  type: uiTypes.HIDE_ALERT,
+});

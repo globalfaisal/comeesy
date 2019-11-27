@@ -120,7 +120,7 @@ exports.updateUserAvatar = (req, res) => {
       req.headers['content-length'],
       mimetype
     );
-    if (!isValid) return res.status(400).json({ error });
+    if (!isValid) return res.status(400).json({ message: error });
 
     // 1. Generate unique image filename
     const imageExt = filename.split('.')[filename.split('.').length - 1];
@@ -161,9 +161,7 @@ exports.updateUserAvatar = (req, res) => {
         return db.doc(`/users/${req.user.username}`).update({ imageUrl });
       })
       .then(() =>
-        res
-          .status(200)
-          .json({ message: 'Profile picture updated successfully' })
+        res.status(200).json({ message: 'Profile image updated successfully' })
       )
       .catch(err => {
         console.error('Error while uploading user avatar ', err);

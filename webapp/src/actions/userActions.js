@@ -1,7 +1,12 @@
 import comeesyAPI from '../api/comeesy';
 import { userTypes } from './types';
 import history from '../utils/history';
-import { saveToken, removeToken, validateToken } from '../utils/helperFns';
+import {
+  storeToken,
+  clearToken,
+  getStoredToken,
+  validateToken,
+} from '../utils/helperFns';
 
 const userLoading = () => ({
   type: userTypes.USER_LOADING,
@@ -32,8 +37,8 @@ export const login = data => dispatch =>
       .post('/auth/login', data)
       .then(res => {
         resolve();
-        const token = `Bearer ${res.data.token}`;
-        saveToken(token);
+        const idToken = `Bearer ${res.data.idToken}`;
+        storeToken(idToken);
         dispatch(userAuthSuccess());
         dispatch(getUserOwnData());
         history.push('/');
@@ -53,8 +58,8 @@ export const signup = data => dispatch =>
       .post('/auth/signup', data)
       .then(res => {
         resolve();
-        const token = `Bearer ${res.data.token}`;
-        saveToken(token);
+        const idToken = `Bearer ${res.data.idToken}`;
+        storeToken(idToken);
         dispatch(userAuthSuccess());
         dispatch(getUserOwnData());
         history.push('/');
@@ -73,25 +78,26 @@ export const logout = () => dispatch =>
       .get('/auth/logout')
       .then(res => {
         resolve();
-        removeToken();
+        clearToken();
         dispatch({ type: userTypes.LOGOUT });
         history.push('/');
       })
       .catch(err => {
         console.error(err);
-        removeToken();
+        clearToken();
         dispatch({ type: userTypes.LOGOUT });
         history.push('/');
         reject(err.response);
       });
   });
 
-export const getUserOwnData = () => dispatch => {
-  const { token } = window.localStorage;
-  if (!token || !validateToken(token)) return dispatch(logout());
+export const getUserOwnData = () => dispatch =>
+  new Promise((resolve, reject) => {
+    const token = getStoredToken();
+    checkUserAuthorization(dispatch);
 
-  dispatch(userLoading());
-  return new Promise((resolve, reject) => {
+    dispatch(userLoading());
+
     comeesyAPI
       .get('/user', { headers: { Authorization: token } })
       .then(res => {
@@ -111,14 +117,14 @@ export const getUserOwnData = () => dispatch => {
         reject(err.response);
       });
   });
-};
 
-export const updateUserDetails = data => dispatch => {
-  const { token } = window.localStorage;
-  if (!token || !validateToken(token)) return dispatch(logout());
+export const updateUserDetails = data => dispatch =>
+  new Promise((resolve, reject) => {
+    const token = getStoredToken();
+    checkUserAuthorization(dispatch);
 
-  dispatch(userLoading());
-  return new Promise((resolve, reject) => {
+    dispatch(userLoading());
+
     comeesyAPI
       .post('/user/details', data, {
         headers: { Authorization: token },
@@ -134,15 +140,17 @@ export const updateUserDetails = data => dispatch => {
         reject(err.response);
       });
   });
-};
 
-export const updateUserCredentials = data => dispatch => {
-  const { token } = window.localStorage;
-  if (!token || !validateToken(token)) return dispatch(logout());
+export const updateUserCredentials = data => dispatch =>
+  new Promise((resolve, reject) => {
+    const token = getStoredToken();
+    if (!token || !validateToken(token)) {
+      reject(new Error('Something went worng'));
+      dispatch(logout());
+    }
 
-  dispatch(userLoading());
+    dispatch(userLoading());
 
-  return new Promise((resolve, reject) => {
     comeesyAPI
       .post('/user/credentials', data, {
         headers: { Authorization: token },
@@ -158,18 +166,17 @@ export const updateUserCredentials = data => dispatch => {
         reject(err.response);
       });
   });
-};
 
-export const uploadUserAvatar = file => dispatch => {
-  const { token } = window.localStorage;
-  if (!token || !validateToken(token)) return dispatch(logout());
+export const uploadUserAvatar = file => dispatch =>
+  new Promise((resolve, reject) => {
+    const token = getStoredToken();
+    checkUserAuthorization(dispatch);
 
-  dispatch(userLoading());
+    const formData = new FormData();
+    formData.append('file', file);
 
-  const formData = new FormData();
-  formData.append('file', file);
+    dispatch(userLoading());
 
-  return new Promise((resolve, reject) => {
     comeesyAPI
       .post('/user/avatar', formData, {
         headers: { Authorization: token },
@@ -180,9 +187,16 @@ export const uploadUserAvatar = file => dispatch => {
         dispatch(getUserOwnData());
       })
       .catch(err => {
-        console.error(err);
+        console.error(err.response);
         dispatch(updateUserDataFailed(err.response.data));
         reject(err.response.data);
       });
   });
+
+const checkUserAuthorization = dispatch => {
+  const token = getStoredToken();
+  if (!token || !validateToken(token)) {
+    dispatch(logout());
+    throw new Error('Authorization failed. You need to login again.');
+  }
 };
