@@ -238,6 +238,13 @@ async function updateUserEmail(req, res) {
       });
   } catch (err) {
     console.error('Error while updating email ', err);
+    if (err.code === 'auth/email-already-exists') {
+      return res.status(400).json({
+        email: 'The email address is already in use by another account.',
+      });
+    } else if (err.code === 'auth/invalid-email') {
+      return res.status(400).json({ email: 'Invalid email address' });
+    }
     return res.status(500).json({ error: err.code });
   }
 }

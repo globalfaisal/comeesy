@@ -26,8 +26,8 @@ import CloseIcon from '@material-ui/icons/Close';
 const useStyles = makeStyles(theme => ({
   root: {
     top: 50,
-    width: '50%',
-    [theme.breakpoints.down('sm')]: {
+    width: 600,
+    [theme.breakpoints.down('xs')]: {
       width: '100%',
       transform: 'translateX(0)',
       left: 0,
@@ -35,25 +35,29 @@ const useStyles = makeStyles(theme => ({
     display: 'block',
   },
   success: {
-    backgroundColor: green[300],
+    color: green[300],
   },
   error: {
-    backgroundColor: red[300],
+    color: red[300],
   },
   info: {
-    backgroundColor: blue[300],
+    color: blue[300],
   },
   warning: {
-    backgroundColor: amber[300],
+    color: amber[300],
   },
   icon: {
-    fontSize: 20,
+    borderRadius: '50%',
+    fontSize: 32,
+    position: 'absolute',
+    top: 10,
+    left: 4,
   },
   iconVariant: {
     opacity: 0.9,
-    marginRight: theme.spacing(1),
   },
   content: {
+    backgroundColor: theme.palette.colors.white,
     borderRadius: 0,
     display: 'flex',
     flexDirection: 'column',
@@ -61,13 +65,14 @@ const useStyles = makeStyles(theme => ({
   },
   message: {
     display: 'flex',
-    justifyContent: 'space-between',
-    marginRight: 24,
+    marginLeft: theme.spacing(4),
+    marginRight: theme.spacing(4),
   },
   action: {
     position: 'absolute',
     top: 4,
     right: 4,
+    color: theme.palette.text.secondary,
   },
 }));
 
@@ -81,46 +86,52 @@ const variantIcon = {
 const SnackAlert = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { open, type, message } = useSelector(state => state.UI.alert);
+  const { isOpen, type, message } = useSelector(state => state.UI.alert);
 
   const Icon = variantIcon[type || 'info'];
 
   const onClose = (event, reason) => {
-    // if (reason !== 'clickaway')
     dispatch(hideAlert());
   };
 
-  return open && type && message ? (
+  return isOpen && type && message ? (
     <Portal>
       <Snackbar
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'center',
         }}
-        open={open}
+        open={isOpen}
         onClose={onClose}
         autoHideDuration={8000}
         classes={{ root: classes.root }}
       >
         <SnackbarContent
-          className={clsx(classes[type], classes.content)}
+          className={clsx(classes.content)}
           aria-describedby="alert"
           role="alert"
           message={
             <div id="alert" className={classes.message}>
-              <Icon className={clsx(classes.icon, classes.iconVariant)} />
-              <Typography variant="body2">{message}</Typography>
+              <Icon
+                className={clsx(
+                  classes.icon,
+                  classes[type],
+                  classes.iconVariant
+                )}
+              />
+              <Typography variant="body2" color="textPrimary">
+                {message}
+              </Typography>
             </div>
           }
           action={
             <IconButton
               key="close"
               aria-label="close"
-              color="inherit"
               onClick={onClose}
               className={classes.action}
             >
-              <CloseIcon className={classes.icon} />
+              <CloseIcon fontSize="small" />
             </IconButton>
           }
         />

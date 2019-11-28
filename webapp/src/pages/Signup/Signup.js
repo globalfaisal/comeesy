@@ -1,10 +1,11 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
+import { clearErrors } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -29,6 +30,11 @@ const Signup = () => {
     confirmPassword: '',
   });
 
+  useEffect(() => {
+    dispatch(clearErrors());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleChange = event => {
     event.persist();
     setInputs(prevInputs => ({
@@ -51,9 +57,9 @@ const Signup = () => {
           </Typography>
         </div>
         <form
-          noValidate
           name="signup-form"
           onSubmit={handleSubmit}
+          noValidate
           className={classes.form}
         >
           <Grid container spacing={2}>
@@ -118,6 +124,7 @@ const Signup = () => {
                 disabled={loading}
                 label="Password"
                 color="primary"
+                autoComplete="new-password"
                 className={classes.textField}
               />
             </Grid>
@@ -133,6 +140,7 @@ const Signup = () => {
                 disabled={loading}
                 label="Confirm Password"
                 color="primary"
+                autoComplete="new-password"
                 className={classes.textField}
               />
             </Grid>

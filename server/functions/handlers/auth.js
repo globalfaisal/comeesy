@@ -27,9 +27,9 @@ exports.login = (req, res) => {
     .catch(err => {
       console.error('Error while user login ', err);
       if (err.code === 'auth/user-not-found') {
-        return res
-          .status(403)
-          .json({ email: 'This email does not exist. Please try again' });
+        return res.status(403).json({
+          email: "That account doesn't. Enter different account or Create one",
+        });
       }
       if (err.code === 'auth/wrong-password') {
         return res

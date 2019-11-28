@@ -71,9 +71,19 @@ const UserAvatarSetting = ({ imageUrl, loading }) => {
     e.persist();
     const file = e.target.files[0];
     if (!file) return null;
+    if (file && !acceptedTypes.includes(file.type)) {
+      dispatch(
+        showAlert({
+          type: 'error',
+          message:
+            'Error! Image must be one of the following types: jpeg, jpg or png',
+        })
+      );
+      return;
+    }
     // Create file thumbnail
-    const fileDataUrl = await createThumbnail(file);
-    setThumbnail(fileDataUrl);
+    // const fileDataUrl = await createThumbnail(file);
+    // setThumbnail(fileDataUrl);
 
     const formData = new FormData();
     formData.append('file', file);

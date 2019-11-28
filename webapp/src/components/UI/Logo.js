@@ -10,12 +10,16 @@ import logoWhitePath from '../../assets/images/logo-white.svg';
 import logoBlackPath from '../../assets/images/logo-black.svg';
 
 /* -- styles -- */
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   logo: {
     width: 32,
     height: 32,
+    [theme.breakpoints.down('xs')]: {
+      width: 22,
+      height: 22,
+    },
   },
-});
+}));
 
 const Logo = ({ variant = 'white', title }) => {
   const classes = useStyles();

@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { userTypes } from '../actions/types';
+import { userTypes, uiTypes } from '../actions/types';
 
 const INITIAL_STATE = {
   data: null,
@@ -37,9 +37,11 @@ export default (state = INITIAL_STATE, action) => {
         error: action.payload,
       };
     case userTypes.UPDATE_USER_DATA_SUCCESS:
+    case uiTypes.CLEAR_ERRORS:
       return {
         ...state,
         loading: false,
+        error: null,
       };
     case userTypes.UPDATE_USER_DATA_FAILED:
       return {
