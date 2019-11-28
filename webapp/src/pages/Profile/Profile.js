@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- actions -- */
-import { getProfileData } from '../../actions/dataActions';
+import { getProfile } from '../../actions/dataActions';
 
 /* -- components -- */
 import ProfileCover from '../../components/ProfileCover/ProfileCover';
@@ -24,21 +24,23 @@ import useStyles from './styles';
 const Profile = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { profile, isLoading } = useSelector(state => state.data);
+  const { user } = useSelector(state => state.data);
+  const { loading } = useSelector(state => state.UI);
 
   useEffect(() => {
-    dispatch(getProfileData(params.username));
+    dispatch(getProfile(params.username));
   }, [dispatch, params.username]);
 
   const renderContent = () => {
-    if (isLoading) return <CircularLoading />;
+    if (loading) return <CircularLoading />;
+    if (!user) return null;
     return (
       <div className="profile-page">
-        <ProfileCover user={profile.credentials} />
+        <ProfileCover user={user.credentials} />
         <Container>
           <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={12} sm={5} md={3}>
-              <ProfileCard user={profile.credentials} />
+              <ProfileCard user={user.credentials} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <Hidden smUp>
@@ -46,7 +48,7 @@ const Profile = ({ match: { params } }) => {
                   Posts
                 </Typography>
               </Hidden>
-              <Posts posts={profile.posts} />
+              <Posts posts={user.posts} />
             </Grid>
           </Grid>
         </Container>

@@ -12,7 +12,7 @@ exports.getPosts = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting posts ', err);
-      return res.status(500).json({ error: err.code });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };
 
@@ -43,7 +43,7 @@ exports.getPost = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting a post ', err);
-      res.status(500).json({ error: err.code });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };
 
@@ -75,9 +75,7 @@ exports.addPost = (req, res) => {
     })
     .catch(err => {
       console.error('Error while adding a new post ', err);
-      return res
-        .status(500)
-        .json({ general: 'Something went wrong, please try again' });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };
 
@@ -107,8 +105,6 @@ exports.deletePost = (req, res) => {
     })
     .catch(err => {
       console.error('Error while deleting post ', err);
-      return res
-        .status(500)
-        .json({ general: 'Something went wrong, please try again' });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };

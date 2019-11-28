@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 /* -- actions -- */
 import { getPosts } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
 import Posts from '../../components/Posts/Posts.js';
@@ -24,9 +25,12 @@ const useStyles = makeStyles(theme => ({
 const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { posts, isLoading } = useSelector(state => state.data);
+  const { posts } = useSelector(state => state.data);
+  const { loading } = useSelector(state => state.UI);
   useEffect(() => {
-    dispatch(getPosts());
+    dispatch(getPosts()).catch(({ message }) => {
+      dispatch(showAlert({ type: 'error', message }));
+    });
   }, [dispatch]);
 
   return (
@@ -34,7 +38,7 @@ const Home = props => {
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <Posts posts={posts} loading={isLoading} />
+            <Posts posts={posts} loading={loading} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>

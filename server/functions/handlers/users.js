@@ -35,7 +35,7 @@ exports.updateUserDetails = async (req, res) => {
       );
   } catch (err) {
     console.error('Error while adding user own details ', err);
-    return res.status(500).json({ error: err.code });
+    return res.status(500).json({ message: 'Something went wrong' });
   }
 };
 
@@ -77,7 +77,7 @@ exports.getUserOwnData = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting user own data ', err);
-      return res.status(500).json({ error: err.code });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };
 
@@ -105,7 +105,7 @@ exports.getUserData = (req, res) => {
     })
     .catch(err => {
       console.error('Error while getting user data ', err);
-      return res.status(500).json({ error: err.code });
+      return res.status(500).json({ message: 'Something went wrong' });
     });
 };
 
@@ -207,7 +207,7 @@ async function updateUserPassword(req, res) {
       );
   } catch (err) {
     console.error('Error while updating password ', err);
-    return res.status(500).json({ error: err.code });
+    return res.status(500).json({ message: 'Something went wrong' });
   }
 }
 
@@ -245,7 +245,7 @@ async function updateUserEmail(req, res) {
     } else if (err.code === 'auth/invalid-email') {
       return res.status(400).json({ email: 'Invalid email address' });
     }
-    return res.status(500).json({ error: err.code });
+    return res.status(500).json({ message: 'Something went wrong' });
   }
 }
 
@@ -273,6 +273,6 @@ async function updateUserName(req, res) {
       );
   } catch (err) {
     console.error('Error while updating name ', err);
-    return res.status(500).json({ error: err.code });
+    return res.status(500).json({ message: 'Something went wrong' });
   }
 }

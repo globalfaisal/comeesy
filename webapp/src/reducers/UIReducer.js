@@ -2,10 +2,10 @@ import _ from 'lodash';
 import { uiTypes } from '../actions/types';
 
 const INITIAL_STATE = {
-  isLoading: false,
+  loading: false,
   errors: null,
   alert: {
-    isOpen: true,
+    isOpen: false,
     type: '',
     message: '',
   },
@@ -31,13 +31,13 @@ export default (state = INITIAL_STATE, action) => {
         },
       };
     case uiTypes.SET_ERROR:
-      return { ...state, isLoading: false, errors: action.payload };
+      return { ...state, loading: false, errors: action.payload };
     case uiTypes.CLEAR_ERRORS:
-      return { ...state, isLoading: false, errors: null };
+      return { ...state, loading: false, errors: null };
     case uiTypes.LOADING_UI:
-      return { ...state, isLoading: true };
+      return { ...state, loading: true };
     case uiTypes.LOADING_UI_FINISHED:
-      return { ...state, isLoading: false };
+      return { ...state, loading: false };
 
     default:
       return state;

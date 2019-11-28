@@ -51,7 +51,7 @@ export default (state = INITIAL_STATE, action) => {
       };
     case userTypes.LOGOUT:
       return { ...INITIAL_STATE };
-    case userTypes.USER_LOADING:
+    case userTypes.LOADING_USER:
       return {
         ...state,
         loading: true,

@@ -26,7 +26,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%',
     border: `4px solid ${theme.palette.colors.greylight}`,
-    backgroundColor: theme.palette.colors.greylight,
     cursor: 'pointer',
     transition: 'all .2s ease-in-out',
     '&:hover': {

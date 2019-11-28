@@ -9,10 +9,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* -- images -- */
-import logoPath from '../../assets/images/logo-blue.svg';
+import logoPath from '../../assets/images/logo-white.svg';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    zIndex: 9999,
+    background: 'rgba(0, 0, 0, 0.6)',
+  },
   loading: {
     position: 'absolute',
     top: '50%',
@@ -25,10 +34,10 @@ const useStyles = makeStyles(theme => ({
     maxHeight: 85,
   },
   top: {
-    color: theme.palette.primary.light,
+    color: theme.palette.colors.greylight,
   },
   bottom: {
-    color: theme.palette.primary.main,
+    color: theme.palette.colors.white,
     animationDuration: '3s',
     position: 'absolute',
     left: 0,
@@ -50,27 +59,29 @@ const CircularLoading = props => {
   const classes = useStyles();
   return (
     <Portal>
-      <div className={classes.loading}>
-        <div className={classes.content}>
-          <CircularProgress
-            variant="determinate"
-            value={100}
-            size={80}
-            thickness={1}
-            className={classes.top}
-            {...props}
-          />
-          <div className={classes.center}>
-            <img src={logoPath} alt="logo" />
+      <div className={classes.overlay}>
+        <div className={classes.loading}>
+          <div className={classes.content}>
+            <CircularProgress
+              variant="determinate"
+              value={100}
+              size={80}
+              thickness={1}
+              className={classes.top}
+              {...props}
+            />
+            <div className={classes.center}>
+              <img src={logoPath} alt="logo" />
+            </div>
+            <CircularProgress
+              variant="indeterminate"
+              // disableShrink
+              size={80}
+              thickness={3}
+              className={classes.bottom}
+              {...props}
+            />
           </div>
-          <CircularProgress
-            variant="indeterminate"
-            // disableShrink
-            size={80}
-            thickness={3}
-            className={classes.bottom}
-            {...props}
-          />
         </div>
       </div>
     </Portal>

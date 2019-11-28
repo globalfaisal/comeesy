@@ -49,7 +49,8 @@ export default () =>
       },
       MuiAvatar: {
         root: {
-          border: `1px solid rgba(0,0,0, 0.05)`,
+          border: '1px solid rgba(0,0,0, 0.05)',
+          backgroundColor: 'rgba(0,0,0, 0.05)',
           width: 32,
           height: 32,
         },

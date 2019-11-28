@@ -8,8 +8,8 @@ import {
   validateToken,
 } from '../utils/helperFns';
 
-const userLoading = () => ({
-  type: userTypes.USER_LOADING,
+const loadingUser = () => ({
+  type: userTypes.LOADING_USER,
 });
 
 const userAuthSuccess = () => ({
@@ -31,7 +31,7 @@ const updateUserDataFailed = error => ({
 
 export const login = data => dispatch =>
   new Promise((resolve, reject) => {
-    dispatch(userLoading());
+    dispatch(loadingUser());
 
     comeesyAPI
       .post('/auth/login', data)
@@ -52,7 +52,7 @@ export const login = data => dispatch =>
 
 export const signup = data => dispatch =>
   new Promise((resolve, reject) => {
-    dispatch(userLoading());
+    dispatch(loadingUser());
 
     comeesyAPI
       .post('/auth/signup', data)
@@ -73,7 +73,7 @@ export const signup = data => dispatch =>
 
 export const logout = () => dispatch =>
   new Promise((resolve, reject) => {
-    dispatch(userLoading());
+    dispatch(loadingUser());
     comeesyAPI
       .get('/auth/logout')
       .then(res => {
@@ -97,7 +97,7 @@ export const getUserOwnData = () => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      dispatch(userLoading());
+      dispatch(loadingUser());
 
       const response = await comeesyAPI.get('/user', {
         headers: { Authorization: token },
@@ -126,7 +126,7 @@ export const updateUserDetails = data => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      dispatch(userLoading());
+      dispatch(loadingUser());
 
       const response = await comeesyAPI.post('/user/details', data, {
         headers: { Authorization: token },
@@ -148,7 +148,7 @@ export const updateUserCredentials = data => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      dispatch(userLoading());
+      dispatch(loadingUser());
 
       const response = await comeesyAPI.post('/user/credentials', data, {
         headers: { Authorization: token },
@@ -169,7 +169,7 @@ export const uploadUserAvatar = formData => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      dispatch(userLoading());
+      dispatch(loadingUser());
 
       const response = await comeesyAPI.post('/user/avatar', formData, {
         headers: { Authorization: token },
