@@ -12,8 +12,8 @@ import logoBlackPath from '../../assets/images/logo-black.svg';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   logo: {
-    width: 32,
-    height: 32,
+    width: 28,
+    height: 28,
     [theme.breakpoints.down('xs')]: {
       width: 22,
       height: 22,

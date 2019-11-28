@@ -26,7 +26,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const useStyles = makeStyles(theme => ({
   root: {
     top: 50,
-    width: 600,
+    width: 480,
     [theme.breakpoints.down('xs')]: {
       width: '100%',
       transform: 'translateX(0)',
@@ -59,9 +59,6 @@ const useStyles = makeStyles(theme => ({
   content: {
     backgroundColor: theme.palette.colors.white,
     borderRadius: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'center',
   },
   message: {
     display: 'flex',

@@ -6,9 +6,8 @@ const INITIAL_STATE = {
   errors: null,
   alert: {
     isOpen: true,
-    type: 'success',
-    message:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam, molestias.',
+    type: '',
+    message: '',
   },
 };
 
