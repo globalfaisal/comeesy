@@ -19,25 +19,25 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const Posts = ({ posts = [], loading = false }) => {
+const PostList = ({ posts = [], loading = false }) => {
   const classes = useStyle();
   if (loading) return <SkeletonCard count={3} />;
   const renderPosts = () => {
-    if (!loading && posts.length) {
-      return posts.map((post, key) => <Post key={key} post={post} />);
-    }
-    return (
-      <EmptyData
-        text="No posts to show"
-        image={imagePath}
-        className={classes.emptyPosts}
-      />
-    );
+    if (!loading && !posts.length)
+      return (
+        <EmptyData
+          text="No posts to show"
+          image={imagePath}
+          className={classes.emptyPosts}
+        />
+      );
+
+    return posts.map((post, key) => <Post key={key} post={post} />);
   };
   return <div className="posts">{renderPosts()}</div>;
 };
-Posts.propTypes = {
+PostList.propTypes = {
   posts: PropTypes.array.isRequired,
   loading: PropTypes.bool,
 };
-export default Posts;
+export default PostList;

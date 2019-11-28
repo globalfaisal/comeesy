@@ -9,7 +9,7 @@ import { getProfile } from '../../actions/dataActions';
 /* -- components -- */
 import ProfileCover from '../../components/ProfileCover/ProfileCover';
 import ProfileCard from '../../components/ProfileCard/ProfileCard';
-import Posts from '../../components/Posts/Posts';
+import PostList from '../../components/Posts/PostList';
 import CircularLoading from '../../components/UI/CircularLoading.js';
 
 /* -- mui -- */
@@ -48,7 +48,7 @@ const Profile = ({ match: { params } }) => {
                   Posts
                 </Typography>
               </Hidden>
-              <Posts posts={user.posts} />
+              <PostList posts={user.posts} />
             </Grid>
           </Grid>
         </Container>

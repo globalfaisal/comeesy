@@ -3,42 +3,26 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+/* -- components -- */
+import LikeCounter from '../UI/LikeCounter';
+import CommentCounter from '../UI/CommentCounter';
+
 /* -- utils -- */
 import { formatDateToRelTime } from '../../utils/helperFns';
 
 /* -- mui -- */
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 
 /* -- styles -- */
-const useStyle = makeStyles(theme => ({
-  post: {
-    '&:not(:first-child)': {
-      marginTop: theme.spacing(2),
-    },
-  },
-  title: {
-    textTransform: 'capitalize',
-    marginRight: 8,
-    '& + span': {
-      color: theme.palette.colors.steelblue,
-      fontWeight: 300,
-    },
-  },
-  createdAt: {
-    display: 'block',
-    marginTop: -theme.spacing(0.5),
-  },
-}));
+import useStyles from './postStyles';
 
 const Post = ({ post }) => {
-  const classes = useStyle();
+  const classes = useStyles();
   return (
     <div className={classes.post}>
       <Card>
@@ -49,6 +33,7 @@ const Post = ({ post }) => {
               src={post.user.imageUrl}
               component={Link}
               to={`/u/${post.user.username}`}
+              className={classes.avatar}
             />
           }
           title={
@@ -72,17 +57,16 @@ const Post = ({ post }) => {
               {formatDateToRelTime(post.createdAt)}
             </Typography>
           }
-          // action={
-          //   <IconButton aria-label="actions">
-          //     <MoreHorizIcon />
-          //   </IconButton>
-          // }
         />
         <CardContent>
           <Typography variant="body1" color="textSecondary">
             {post.body}
           </Typography>
         </CardContent>
+        <CardActions disableSpacing>
+          <LikeCounter count={post.likeCount} />
+          <CommentCounter count={post.commentCount} />
+        </CardActions>
       </Card>
     </div>
   );

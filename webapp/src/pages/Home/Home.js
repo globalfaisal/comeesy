@@ -7,7 +7,7 @@ import { getPosts } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import Posts from '../../components/Posts/Posts.js';
+import PostList from '../../components/Posts/PostList.js';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts } = useSelector(state => state.data);
+  const { data } = useSelector(state => state.user);
   const { loading } = useSelector(state => state.UI);
   useEffect(() => {
     dispatch(getPosts()).catch(({ message }) => {
@@ -38,7 +39,7 @@ const Home = props => {
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <Posts posts={posts} loading={loading} />
+            <PostList posts={posts} loading={loading} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>
