@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LikeCounter = ({ count = 0, liked = false, onLike }) => {
+const LikeCounter = ({ count = 0, liked, onLike }) => {
   const classes = useStyles();
   const renderContent = () => (
     <div className={classes.root}>
@@ -40,7 +40,7 @@ const LikeCounter = ({ count = 0, liked = false, onLike }) => {
         className={classes.likeIconBtn}
         onClick={onLike}
       >
-        {!liked ? (
+        {liked ? (
           <FavoriteIcon fontSize="inherit" className={classes.liked} />
         ) : (
           <FavoriteBorderIcon fontSize="inherit" />
@@ -56,6 +56,6 @@ const LikeCounter = ({ count = 0, liked = false, onLike }) => {
 LikeCounter.propTypes = {
   count: PropTypes.number.isRequired,
   onLike: PropTypes.func.isRequired,
-  liked: PropTypes.bool,
+  liked: PropTypes.bool.isRequired,
 };
 export default LikeCounter;

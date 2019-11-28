@@ -1,6 +1,7 @@
 /* -- libs -- */
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 /* -- components -- */
 import Post from './Post';
@@ -19,10 +20,13 @@ const useStyle = makeStyles(theme => ({
   },
 }));
 
-const PostList = ({ posts = [], loading = false }) => {
+const PostList = ({ posts = [], likes = [], loading = false }) => {
   const classes = useStyle();
-  if (loading) return <SkeletonCard count={3} />;
+  const handlePostLike = id => {
+    console.log(id);
+  };
   const renderPosts = () => {
+    if (loading) return <SkeletonCard count={3} />;
     if (!loading && !posts.length)
       return (
         <EmptyData
@@ -32,12 +36,18 @@ const PostList = ({ posts = [], loading = false }) => {
         />
       );
 
-    return posts.map((post, key) => <Post key={key} post={post} />);
+    return posts.map((post, key) => {
+      const liked = likes.some(like => like.postId === post.postId);
+      return (
+        <Post key={key} post={post} liked={liked} onLike={handlePostLike} />
+      );
+    });
   };
   return <div className="posts">{renderPosts()}</div>;
 };
 PostList.propTypes = {
   posts: PropTypes.array.isRequired,
+  likes: PropTypes.array.isRequired,
   loading: PropTypes.bool,
 };
 export default PostList;

@@ -28,18 +28,24 @@ const Home = props => {
   const { posts } = useSelector(state => state.data);
   const { data } = useSelector(state => state.user);
   const { loading } = useSelector(state => state.UI);
+
   useEffect(() => {
     dispatch(getPosts()).catch(({ message }) => {
       dispatch(showAlert({ type: 'error', message }));
     });
   }, [dispatch]);
 
+  const getLikes = () => {
+    if (!data) return [];
+    return data.likes;
+  };
+
   return (
     <div className={classes.homeWrapper}>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <PostList posts={posts} loading={loading} />
+            <PostList posts={posts} loading={loading} likes={getLikes()} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>

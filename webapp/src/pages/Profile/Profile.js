@@ -25,11 +25,17 @@ const Profile = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { user } = useSelector(state => state.data);
+  const { data } = useSelector(state => state.user);
   const { loading } = useSelector(state => state.UI);
 
   useEffect(() => {
     dispatch(getProfile(params.username));
   }, [dispatch, params.username]);
+
+  const getLikes = () => {
+    if (!data) return [];
+    return data.likes;
+  };
 
   const renderContent = () => {
     if (loading) return <CircularLoading />;
@@ -48,7 +54,7 @@ const Profile = ({ match: { params } }) => {
                   Posts
                 </Typography>
               </Hidden>
-              <PostList posts={user.posts} />
+              <PostList posts={user.posts} likes={getLikes()} />
             </Grid>
           </Grid>
         </Container>
