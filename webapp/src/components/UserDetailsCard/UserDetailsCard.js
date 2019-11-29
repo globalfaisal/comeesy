@@ -19,9 +19,8 @@ import CakeOutlinedIcon from '@material-ui/icons/CakeOutlined';
 
 /* -- styles -- */
 import useStyles from './styles';
-import { Hidden } from '@material-ui/core';
 
-const ProfileCard = ({ user }) => {
+const UserDetailsCard = ({ user }) => {
   const classes = useStyles();
   if (!user) return null;
   const { username, bio, location, birthdate, createdAt } = user;
@@ -79,7 +78,7 @@ const ProfileCard = ({ user }) => {
   );
 };
 
-ProfileCard.propTypes = {
+UserDetailsCard.propTypes = {
   user: PropTypes.object.isRequired,
 };
-export default ProfileCard;
+export default UserDetailsCard;

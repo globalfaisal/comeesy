@@ -6,9 +6,9 @@ export const colors = {
     contrastText: '#ffffff',
   },
   secondary: {
-    light: '#ffbd45',
-    main: '#fb8c00',
-    dark: '#c25e00',
+    light: '#fff04e',
+    main: '#f5be02',
+    dark: '#bd8e00',
     contrastText: '#ffffff',
   },
   textPrimary: 'rgba(52, 61, 72, 0.85);',
