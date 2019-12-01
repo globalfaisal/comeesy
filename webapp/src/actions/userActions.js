@@ -43,10 +43,11 @@ export const login = data => dispatch =>
         dispatch(getUserOwnData());
         history.push('/');
       })
-      .catch(err => {
-        console.error(err.response);
-        dispatch(userAuthFailed(err.response.data));
-        reject(err.response);
+      .catch(error => {
+        console.error(error.response);
+        dispatch(userAuthFailed(error.response.data));
+        if (error.response) reject(error.response.data);
+        else reject(new Error('Something went wrong'));
       });
   });
 
@@ -64,10 +65,11 @@ export const signup = data => dispatch =>
         dispatch(getUserOwnData());
         history.push('/');
       })
-      .catch(err => {
-        console.error(err);
-        dispatch(userAuthFailed(err.response.data));
-        reject(err.response);
+      .catch(error => {
+        console.error(error);
+        dispatch(userAuthFailed(error.response.data));
+        if (error.response) reject(error.response.data);
+        else reject(new Error('Something went wrong'));
       });
   });
 
@@ -82,12 +84,13 @@ export const logout = () => dispatch =>
         dispatch({ type: userTypes.LOGOUT });
         history.push('/');
       })
-      .catch(err => {
-        console.error(err);
+      .catch(error => {
+        console.error(error);
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
         history.push('/');
-        reject(err.response);
+        if (error.response) reject(error.response.data);
+        else reject(new Error('Something went wrong'));
       });
   });
 
@@ -115,8 +118,7 @@ export const getUserOwnData = () => dispatch =>
         type: userTypes.GET_USER_FAILED,
         payload: error.response,
       });
-      // only throw errors from http request
-      if (error.response) reject(error.response);
+      if (error.response) reject(error.response.data);
     }
   });
 
@@ -138,7 +140,8 @@ export const updateUserDetails = data => dispatch =>
     } catch (error) {
       console.error(error);
       dispatch(updateUserDataFailed(error.response.data));
-      reject(error.response);
+      if (error.response) reject(error.response.data);
+      else reject(new Error('Something went wrong'));
     }
   });
 
@@ -159,7 +162,8 @@ export const updateUserCredentials = data => dispatch =>
     } catch (error) {
       console.error(error);
       dispatch(updateUserDataFailed(error.response.data));
-      reject(error.response);
+      if (error.response) reject(error.response.data);
+      else reject(new Error('Something went wrong'));
     }
   });
 
@@ -181,7 +185,8 @@ export const uploadUserAvatar = formData => dispatch =>
     } catch (error) {
       console.error(error.response);
       dispatch(updateUserDataFailed(error.response.data));
-      reject(error.response.data);
+      if (error.response) reject(error.response.data);
+      else reject(new Error('Something went wrong'));
     }
   });
 

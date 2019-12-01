@@ -18,7 +18,8 @@ export const getPosts = () => dispatch =>
       .catch(error => {
         console.error(error);
         dispatch(loadingUIFinished());
-        reject(error.response.data);
+        if (error.response) reject(error.response.data);
+        else reject(new Error('Something went wrong'));
       });
   });
 
@@ -37,6 +38,7 @@ export const getProfile = username => dispatch =>
       .catch(error => {
         console.error(error);
         dispatch(loadingUIFinished());
-        reject(error.response.data);
+        if (error.response) reject(error.response.data);
+        else reject(new Error('Something went wrong'));
       });
   });
