@@ -79,10 +79,10 @@ const UserAvatarSetting = ({ imageUrl, loading }) => {
     // dispatch action
     dispatch(uploadUserAvatar(formData))
       .then(({ message }) => {
-        dispatch(showAlert({ type: 'success', message }));
+        dispatch(showAlert('success', message));
       })
       .catch(({ message }) => {
-        dispatch(showAlert({ type: 'error', message }));
+        dispatch(showAlert('error', message));
       });
   };
   return (

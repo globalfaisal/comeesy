@@ -24,7 +24,6 @@ const useStyles = makeStyles(theme => ({
   },
   navMenu: {
     marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(3),
   },
   navLink: {
     margin: theme.spacing(1),

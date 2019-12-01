@@ -55,10 +55,10 @@ const UserPasswordSetting = ({ loading, error }) => {
     // dispatch form data
     dispatch(updateUserCredentials(input))
       .then(({ message }) => {
-        dispatch(showAlert({ type: 'success', message }));
+        dispatch(showAlert('success', message));
       })
       .catch(({ message }) => {
-        dispatch(showAlert({ type: 'error', message }));
+        dispatch(showAlert('error', message));
       });
   };
 

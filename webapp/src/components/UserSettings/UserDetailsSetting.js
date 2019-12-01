@@ -89,10 +89,10 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
     // dispatch data
     dispatch(updateUserDetails(inputs))
       .then(({ message }) => {
-        dispatch(showAlert({ type: 'success', message }));
+        dispatch(showAlert('success', message));
       })
       .catch(({ message }) => {
-        dispatch(showAlert({ type: 'error', message }));
+        dispatch(showAlert('error', message));
       });
   };
 
