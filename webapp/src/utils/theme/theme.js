@@ -34,7 +34,7 @@ export default () =>
       MuiButton: {
         root: {
           textTransform: 'none',
-          borderRadius: 2,
+          borderRadius: 4,
         },
         text: {
           '&:hover': {
@@ -44,7 +44,7 @@ export default () =>
       },
       MuiCard: {
         root: {
-          borderRadius: 2,
+          borderRadius: 4,
         },
       },
       MuiAvatar: {
@@ -67,7 +67,7 @@ export default () =>
       },
       MuiExpansionPanel: {
         root: {
-          borderRadius: 2,
+          borderRadius: 4,
           boxShadow: 'none',
           border: '1px solid rgba(0,0,0, 0.085)',
           '&:before': {

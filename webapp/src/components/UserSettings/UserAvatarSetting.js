@@ -42,14 +42,6 @@ const useStyles = makeStyles(theme => ({
 /* -- constants -- */
 const acceptedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
 
-const createThumbnail = file => {
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  return new Promise((resolve, reject) => {
-    reader.onloadend = () => resolve(reader.result);
-  });
-};
-
 const UserAvatarSetting = ({ imageUrl, loading }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -75,14 +67,11 @@ const UserAvatarSetting = ({ imageUrl, loading }) => {
         showAlert({
           type: 'error',
           message:
-            'Error! Image must be one of the following types: jpeg, jpg or png',
+            'Selected file is not supported. Please select one of the following image types: jpeg, jpg or png.',
         })
       );
       return;
     }
-    // Create file thumbnail
-    // const fileDataUrl = await createThumbnail(file);
-    // setThumbnail(fileDataUrl);
 
     const formData = new FormData();
     formData.append('file', file);
