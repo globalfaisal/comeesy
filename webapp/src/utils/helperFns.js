@@ -1,6 +1,7 @@
 /* -- libs -- */
 import _ from 'lodash';
 import jwtDecode from 'jwt-decode';
+import numeral from 'numeral';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
@@ -10,7 +11,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 /**
  * Checks user auth status
- * @param token - jwt id token
+ * @param  {string} token - jwt id token
  * @returns true if valid else false
  */
 export const validateToken = token => {
@@ -25,7 +26,7 @@ export const validateToken = token => {
 
 /**
  * Saves token to localstorage
- * @param token - jwt id token
+ * @param {string} token - jwt id token
  */
 export const storeToken = token => {
   window.localStorage.setItem('token', token);
@@ -107,6 +108,16 @@ export const subtractDateFromToday = num => {
  * Checks if every value of the given object
  * is falsy value
  * @param obj - data object
- * @returns true if all else false
+ * @returns {boolean}
  */
 export const hasEmptyValues = obj => _.values(obj).every(_.isEmpty);
+
+/**
+ * Shorten number to thousands, millions, billions, etc.
+ * @param {number} num
+ * @returns {string|number}
+ */
+export const shortenNumbers = num => {
+  if (!num) return;
+  return numeral(num).format('1a');
+};

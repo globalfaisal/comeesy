@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-import LikeCounter from '../UI/LikeCounter';
-import CommentCounter from '../UI/CommentCounter';
+import CommentPost from '../CommentPost/CommentPost';
+import LikePost from '../LikePost/LikePost';
 
 /* -- utils -- */
 import { formatDateToRelTime } from '../../utils/helperFns';
@@ -17,6 +17,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 
 /* -- styles -- */
 import useStyles from './postStyles';
@@ -63,9 +64,10 @@ const Post = ({ post }) => {
             {post.body}
           </Typography>
         </CardContent>
+        {/* <Divider /> */}
         <CardActions disableSpacing>
-          <LikeCounter post={post} />
-          <CommentCounter count={post.commentCount} />
+          <LikePost post={post} />
+          <CommentPost post={post} />
         </CardActions>
       </Card>
     </div>
