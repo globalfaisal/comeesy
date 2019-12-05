@@ -74,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   action: {
     position: 'absolute',
     top: 4,
-    right: 1,
+    right: 4,
     color: theme.palette.colors.grey,
   },
 }));
@@ -157,10 +157,11 @@ const SnackAlert = () => {
             <IconButton
               key="close"
               aria-label="close"
+              size="small"
               onClick={onClose}
               className={classes.action}
             >
-              <CloseIcon fontSize="small" />
+              <CloseIcon />
             </IconButton>
           }
         />

@@ -9,6 +9,7 @@ import routes from '../../routes/routes';
 import Navbar from '../../components/Navbar/Navbar';
 import ProtectedRoute from '../../routes/ProtectedRoute';
 import SnackAlert from '../../components/UI/SnackAlert';
+import Modal from '../../components/UI/Modal';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -48,6 +49,7 @@ const MainLayout = props => {
       <main className={classes.main}>
         <Switch>{getRoutes(routes)}</Switch>
         <SnackAlert />
+        <Modal />
       </main>
     </Fragment>
   );

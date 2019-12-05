@@ -1,6 +1,9 @@
 import comeesyAPI from '../api/comeesy';
-import { userTypes } from './types';
 import history from '../utils/history';
+import { userTypes } from './types';
+import { openModal, closeModal } from './UIActions';
+import Login from '../pages/Login/Login';
+
 import {
   storeToken,
   clearToken,
@@ -41,7 +44,10 @@ export const login = data => dispatch =>
         storeToken(idToken);
         dispatch(userAuthSuccess());
         dispatch(getUserOwnData());
-        history.push('/');
+        dispatch(closeModal());
+        if (history.location.pathname === '/auth/login') {
+          history.push('/');
+        }
       })
       .catch(error => {
         console.error(error.response);
@@ -63,7 +69,9 @@ export const signup = data => dispatch =>
         storeToken(idToken);
         dispatch(userAuthSuccess());
         dispatch(getUserOwnData());
-        history.push('/');
+        if (history.location.pathname === '/auth/login') {
+          history.push('/');
+        }
       })
       .catch(error => {
         console.error(error);
@@ -82,7 +90,7 @@ export const logout = () => dispatch =>
         resolve();
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
-        history.push('/auth/login');
+        dispatch(openModal(Login));
       })
       .catch(error => {
         console.error(error);

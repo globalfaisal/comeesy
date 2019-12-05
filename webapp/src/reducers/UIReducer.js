@@ -1,9 +1,14 @@
 import _ from 'lodash';
 import { uiTypes } from '../actions/types';
+import Modal from '../components/UI/Modal';
 
 const INITIAL_STATE = {
   loading: false,
   errors: null,
+  modal: {
+    isOpen: false,
+    content: null,
+  },
   alert: {
     isOpen: false,
     type: '',
@@ -38,6 +43,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: true };
     case uiTypes.LOADING_UI_FINISHED:
       return { ...state, loading: false };
+    case uiTypes.OPEN_MODAL:
+      return { ...state, modal: { isOpen: true, content: action.payload } };
+    case uiTypes.CLOSE_MODAL:
+      return { ...state, modal: { isOpen: false, content: null } };
 
     default:
       return state;

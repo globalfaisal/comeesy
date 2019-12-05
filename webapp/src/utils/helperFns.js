@@ -118,6 +118,6 @@ export const hasEmptyValues = obj => _.values(obj).every(_.isEmpty);
  * @returns {string|number}
  */
 export const shortenNumbers = num => {
-  if (!num) return;
+  if (!num) return num;
   return numeral(num).format('1a');
 };

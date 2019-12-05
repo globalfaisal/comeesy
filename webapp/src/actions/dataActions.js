@@ -60,8 +60,6 @@ export const unlike = postId => dispatch =>
       const token = getStoredToken();
       await checkUserAuthorization(dispatch);
 
-      // dispatch(loadingUI());
-
       const response = await comeesyAPI.post(`/post/${postId}/unlike`, null, {
         headers: { Authorization: token },
       });
@@ -72,10 +70,8 @@ export const unlike = postId => dispatch =>
       });
 
       resolve();
-      // dispatch(loadingUIFinished());
     } catch (error) {
       console.error(error);
-      // dispatch(loadingUIFinished());
       reject();
     }
   });

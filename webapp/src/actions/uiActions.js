@@ -13,3 +13,11 @@ export const showAlert = (type, message) => ({
 export const hideAlert = () => ({
   type: uiTypes.HIDE_ALERT,
 });
+
+export const openModal = content => ({
+  type: uiTypes.OPEN_MODAL,
+  payload: content,
+});
+export const closeModal = () => ({
+  type: uiTypes.CLOSE_MODAL,
+});

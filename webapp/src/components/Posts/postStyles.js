@@ -32,4 +32,7 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     marginRight: 16,
   },
+  cardAction: {
+    borderTop: `1px solid ${theme.palette.colors.greylight}`,
+  },
 }));

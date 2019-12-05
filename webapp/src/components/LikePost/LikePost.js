@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
-/* -- utils -- */
-import { shortenNumbers } from '../../utils/helperFns';
-
 /* -- actions -- */
 import { like, unlike } from '../../actions/dataActions';
+
+/* -- utils -- */
+import { shortenNumbers } from '../../utils/helperFns';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';

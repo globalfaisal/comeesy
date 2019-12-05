@@ -38,11 +38,12 @@ const UserMenu = () => {
   const onOpenMenu = e => {
     setAnchorEl(e.currentTarget);
   };
-  const onCloseMenu = e => {
+  const onCloseMenu = () => {
     setAnchorEl(null);
   };
 
   const handleLogout = () => {
+    onCloseMenu();
     dispatch(logout());
   };
 
@@ -51,6 +52,7 @@ const UserMenu = () => {
     credentials && (
       <div className="user-menu">
         <IconButton
+          id="userMenuButton"
           onClick={onOpenMenu}
           aria-controls="userMenu"
           aria-haspopup="true"
@@ -61,7 +63,7 @@ const UserMenu = () => {
         </IconButton>
         <PopupMenu
           id="userMenu"
-          anchorEl={anchorEl}
+          anchorEl={anchorEl || null}
           open={!!anchorEl}
           onClose={onCloseMenu}
         >
