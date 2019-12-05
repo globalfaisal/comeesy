@@ -13,7 +13,7 @@ export const colors = {
   },
   textPrimary: 'rgba(52, 61, 72, 0.85);',
   textSecondary: 'rgba(0,0,0, 0.54)',
-  defaultBackground: '#f6f9fc',
+  defaultBackground: '#fafafa',
 
   others: {
     white: '#ffffff',

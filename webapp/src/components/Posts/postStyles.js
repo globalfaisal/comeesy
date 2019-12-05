@@ -8,6 +8,9 @@ export default makeStyles(theme => ({
       marginTop: theme.spacing(2),
     },
   },
+  postCard: {
+    border: '1px solid #e6e6e6',
+  },
   avatar: {
     width: 40,
     height: 40,

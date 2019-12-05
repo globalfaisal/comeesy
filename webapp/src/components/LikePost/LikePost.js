@@ -4,6 +4,9 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
+/* -- utils -- */
+import { shortenNumbers } from '../../utils/helperFns';
+
 /* -- actions -- */
 import { like, unlike } from '../../actions/dataActions';
 
@@ -11,8 +14,7 @@ import { like, unlike } from '../../actions/dataActions';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import FavoriteIcon from '@material-ui/icons/FavoriteOutlined';
 import Typography from '@material-ui/core/Typography';
 
 /* -- styles -- */
@@ -26,16 +28,33 @@ const useStyles = makeStyles(theme => ({
     padding: 6,
     marginRight: 6,
     '&:hover': {
-      color: red[500],
       backgroundColor: red[50],
     },
   },
-  liked: {
+  likeIconActive: {
     color: red[300],
+    transformOrigin: 'center',
+    animation: `$beat .25s ${theme.transitions.easing.easeInOut}`,
+  },
+  likeIconNormal: {
+    color: 'transparent',
+    strokeWidth: 2,
+    stroke: theme.palette.colors.steelblue,
+  },
+  '@keyframes beat': {
+    '0%': {
+      transform: 'scale(1)',
+    },
+    '50%': {
+      transform: 'scale(1.5)',
+    },
+    '100%': {
+      transform: 'scale(1)',
+    },
   },
 }));
 
-const LikeCounter = ({ post }) => {
+const LikePost = ({ post }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const likes = useSelector(state =>
@@ -56,26 +75,24 @@ const LikeCounter = ({ post }) => {
     <div className={classes.root}>
       <IconButton
         aria-label="like"
-        size="small"
+        size="medium"
+        disableFocusRipple
         className={classes.likeIconBtn}
         onClick={onLikeClick}
       >
-        {liked ? (
-          <FavoriteIcon fontSize="inherit" className={classes.liked} />
-        ) : (
-          <FavoriteBorderIcon fontSize="inherit" />
-        )}
+        <FavoriteIcon
+          fontSize="inherit"
+          className={liked ? classes.likeIconActive : classes.likeIconNormal}
+        />
       </IconButton>
       <Typography variant="body2" color="textSecondary">
-        {post.likeCount}
+        {shortenNumbers(post.likeCount)}
       </Typography>
     </div>
   );
   return renderContent();
 };
-LikeCounter.propTypes = {
+LikePost.propTypes = {
   post: PropTypes.object.isRequired,
-  // onLike: PropTypes.func.isRequired,
-  // liked: PropTypes.bool.isRequired,
 };
-export default LikeCounter;
+export default LikePost;
