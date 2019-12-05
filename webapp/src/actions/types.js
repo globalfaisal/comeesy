@@ -19,6 +19,10 @@ export const uiTypes = {
 };
 
 export const dataTypes = {
-  SET_POSTS: 'GET_POSTS',
+  LOADING_DATA: 'LOADING_DATA',
+  SET_POSTS: 'SET_POSTS',
+  SET_POST: 'SET_POST',
+  LIKE_POST: 'LIKE_POST',
+  UNLIKE_POST: 'UNLIKE_POST',
   SET_PROFILE: 'GET_PROFILE',
 };

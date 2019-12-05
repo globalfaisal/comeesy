@@ -1,6 +1,11 @@
 /* -- libs -- */
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import _ from 'lodash';
+
+/* -- actions -- */
+import { like, unlike } from '../../actions/dataActions';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,15 +35,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LikeCounter = ({ count = 0, liked, onLike }) => {
+const LikeCounter = ({ post }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const likes = useSelector(state =>
+    state.user.data ? state.user.data.likes : []
+  );
+
+  const liked = !!_.find(likes, { postId: post.postId });
+
+  const onLikeClick = () => {
+    if (!liked) {
+      dispatch(like(post.postId));
+    } else {
+      dispatch(unlike(post.postId));
+    }
+  };
+
   const renderContent = () => (
     <div className={classes.root}>
       <IconButton
         aria-label="like"
         size="small"
         className={classes.likeIconBtn}
-        onClick={onLike}
+        onClick={onLikeClick}
       >
         {liked ? (
           <FavoriteIcon fontSize="inherit" className={classes.liked} />
@@ -47,15 +67,15 @@ const LikeCounter = ({ count = 0, liked, onLike }) => {
         )}
       </IconButton>
       <Typography variant="body2" color="textSecondary">
-        {count}
+        {post.likeCount}
       </Typography>
     </div>
   );
   return renderContent();
 };
 LikeCounter.propTypes = {
-  count: PropTypes.number.isRequired,
-  onLike: PropTypes.func.isRequired,
-  liked: PropTypes.bool.isRequired,
+  post: PropTypes.object.isRequired,
+  // onLike: PropTypes.func.isRequired,
+  // liked: PropTypes.bool.isRequired,
 };
 export default LikeCounter;

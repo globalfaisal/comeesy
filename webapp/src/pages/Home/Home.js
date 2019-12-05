@@ -1,6 +1,7 @@
 /* -- libs -- */
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import _ from 'lodash';
 
 /* -- actions -- */
 import { getPosts } from '../../actions/dataActions';
@@ -25,9 +26,7 @@ const useStyles = makeStyles(theme => ({
 const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { posts } = useSelector(state => state.data);
-  const { data } = useSelector(state => state.user);
-  const { loading } = useSelector(state => state.UI);
+  const { posts, loading } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(getPosts()).catch(({ message }) => {
@@ -35,17 +34,12 @@ const Home = props => {
     });
   }, [dispatch]);
 
-  const getLikes = () => {
-    if (!data) return [];
-    return data.likes;
-  };
-
   return (
     <div className={classes.homeWrapper}>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>
-            <PostList posts={posts} loading={loading} likes={getLikes()} />
+            <PostList posts={_.values(posts)} loading={loading} />
           </Grid>
           <Hidden only="xs">
             <Grid item sm={4}>

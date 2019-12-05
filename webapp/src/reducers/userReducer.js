@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { userTypes, uiTypes } from '../actions/types';
+import { userTypes, dataTypes, uiTypes } from '../actions/types';
 
 const INITIAL_STATE = {
   data: null,
@@ -55,6 +55,25 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loading: true,
+      };
+    case dataTypes.LIKE_POST:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          likes: [...state.data.likes, { postId: action.payload.postId }],
+        },
+      };
+    case dataTypes.UNLIKE_POST:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          // likes: _.without(state.data.likes, { postId: action.payload.postId }),
+          likes: state.data.likes.filter(
+            like => like.postId !== action.payload.postId
+          ),
+        },
       };
     default:
       return state;

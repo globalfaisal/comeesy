@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
 const Navbar = () => {
   const classes = useStyles();
   const { loading, isAuthenticated } = useSelector(state => state.user);
-  const isDataLoading = useSelector(state => state.data.isLoading);
+  const isDataLoading = useSelector(state => state.data.loading);
 
   return (
     <AppBar className={classes.appBar}>

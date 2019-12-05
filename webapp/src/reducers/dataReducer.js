@@ -1,9 +1,11 @@
+import _ from 'lodash';
 import { dataTypes } from '../actions/types.js';
 
 const INITIAL_STATE = {
-  posts: [],
-  user: null,
+  posts: null,
+  profile: null,
   error: null,
+  loading: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -11,12 +13,38 @@ export default (state = INITIAL_STATE, action) => {
     case dataTypes.SET_POSTS:
       return {
         ...state,
-        posts: action.payload,
+        posts: _.mapKeys(action.payload, 'postId'),
+        loading: false,
+      };
+    case dataTypes.LIKE_POST:
+    case dataTypes.UNLIKE_POST:
+      return {
+        ...state,
+        posts: { ...state.posts, [action.payload.postId]: action.payload },
+        profile:
+          state.profile && state.profile.posts
+            ? {
+                ...state.profile,
+                posts: {
+                  ...state.profile.posts,
+                  [action.payload.postId]: action.payload,
+                },
+              }
+            : state.profile,
       };
     case dataTypes.SET_PROFILE:
       return {
         ...state,
-        user: { ...state.user, ...action.payload },
+        profile: {
+          ...action.payload,
+          posts: _.mapKeys(action.payload.posts, 'postId'),
+        },
+        loading: false,
+      };
+    case dataTypes.LOADING_DATA:
+      return {
+        ...state,
+        loading: true,
       };
 
     default:

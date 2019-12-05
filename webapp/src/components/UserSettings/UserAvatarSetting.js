@@ -64,11 +64,10 @@ const UserAvatarSetting = ({ imageUrl, loading }) => {
     if (!file) return null;
     if (file && !acceptedTypes.includes(file.type)) {
       dispatch(
-        showAlert({
-          type: 'error',
-          message:
-            'Selected file is not supported. Please select one of the following image types: jpeg, jpg or png.',
-        })
+        showAlert(
+          'error',
+          'Selected file is not supported. Please select one of the following image types: jpeg, jpg or png.'
+        )
       );
       return;
     }

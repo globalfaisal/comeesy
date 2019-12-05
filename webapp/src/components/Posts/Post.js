@@ -21,7 +21,7 @@ import Typography from '@material-ui/core/Typography';
 /* -- styles -- */
 import useStyles from './postStyles';
 
-const Post = ({ post, liked, onLike }) => {
+const Post = ({ post }) => {
   const classes = useStyles();
   return (
     <div className={classes.post}>
@@ -64,11 +64,7 @@ const Post = ({ post, liked, onLike }) => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <LikeCounter
-            count={post.likeCount}
-            liked={liked}
-            onLike={() => onLike(post.postId)}
-          />
+          <LikeCounter post={post} />
           <CommentCounter count={post.commentCount} />
         </CardActions>
       </Card>
@@ -78,7 +74,5 @@ const Post = ({ post, liked, onLike }) => {
 
 Post.propTypes = {
   post: PropTypes.object.isRequired,
-  liked: PropTypes.bool.isRequired,
-  onLike: PropTypes.func.isRequired,
 };
 export default Post;

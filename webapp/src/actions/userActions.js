@@ -82,7 +82,7 @@ export const logout = () => dispatch =>
         resolve();
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
-        history.push('/');
+        history.push('/auth/login');
       })
       .catch(error => {
         console.error(error);
@@ -190,7 +190,7 @@ export const uploadUserAvatar = formData => dispatch =>
     }
   });
 
-const checkUserAuthorization = dispatch =>
+export const checkUserAuthorization = dispatch =>
   new Promise((resolve, reject) => {
     const token = getStoredToken();
     if (!token || !validateToken(token)) {

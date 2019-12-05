@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 /* -- actions -- */
 import { getProfile } from '../../actions/dataActions';
@@ -24,39 +25,32 @@ import useStyles from './styles';
 const Profile = ({ match: { params } }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.data);
-  const { data } = useSelector(state => state.user);
-  const { loading } = useSelector(state => state.UI);
+  const { profile, loading } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(getProfile(params.username));
   }, [dispatch, params.username]);
 
-  const getLikes = () => {
-    if (!data) return [];
-    return data.likes;
-  };
-
   const renderContent = () => {
-    if (loading || !user) return <CircularLoading />;
+    if (loading || !profile) return <CircularLoading />;
     return (
       <div className="profile-page">
         <section className={classes.cover}>
           <div className={classes.coverContent}>
             <Avatar
-              alt={user.credentials.username}
-              src={user.credentials.imageUrl}
+              alt={profile.credentials.username}
+              src={profile.credentials.imageUrl}
               className={classes.coverAvatar}
             />
             <Typography component="h3" className={classes.coverTitle}>
-              {user.credentials.name}
+              {profile.credentials.name}
             </Typography>
           </div>
         </section>
         <Container>
           <Grid container spacing={3} className={classes.grid}>
             <Grid item xs={12} sm={5} md={3}>
-              <UserDetailsCard user={user.credentials} />
+              <UserDetailsCard user={profile.credentials} />
             </Grid>
             <Grid item xs={12} sm={7}>
               <Hidden smUp>
@@ -64,7 +58,7 @@ const Profile = ({ match: { params } }) => {
                   Posts
                 </Typography>
               </Hidden>
-              <PostList posts={user.posts} likes={getLikes()} />
+              <PostList posts={_.values(profile.posts)} />
             </Grid>
           </Grid>
         </Container>
