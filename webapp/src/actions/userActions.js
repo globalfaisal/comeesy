@@ -69,7 +69,7 @@ export const signup = data => dispatch =>
         storeToken(idToken);
         dispatch(userAuthSuccess());
         dispatch(getUserOwnData());
-        if (history.location.pathname === '/auth/login') {
+        if (history.location.pathname === '/auth/signup') {
           history.push('/');
         }
       })
@@ -90,15 +90,13 @@ export const logout = () => dispatch =>
         resolve();
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
-        dispatch(openModal(Login));
       })
       .catch(error => {
         console.error(error);
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
         history.push('/');
-        if (error.response) reject(error.response.data);
-        else reject(new Error('Something went wrong'));
+        reject();
       });
   });
 
@@ -106,7 +104,9 @@ export const getUserOwnData = () => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       dispatch(loadingUser());
 
@@ -134,7 +134,9 @@ export const updateUserDetails = data => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       dispatch(loadingUser());
 
@@ -157,7 +159,9 @@ export const updateUserCredentials = data => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       dispatch(loadingUser());
 
@@ -179,7 +183,9 @@ export const uploadUserAvatar = formData => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       dispatch(loadingUser());
 
@@ -198,12 +204,11 @@ export const uploadUserAvatar = formData => dispatch =>
     }
   });
 
-export const checkUserAuthorization = dispatch =>
-  new Promise((resolve, reject) => {
-    const token = getStoredToken();
-    if (!token || !validateToken(token)) {
-      dispatch(logout());
-      throw new Error('Authorization failed. You need to login again.');
-    }
-    resolve();
-  });
+export const hasAuthorization = dispatch => {
+  const token = getStoredToken();
+  if (!token || !validateToken(token)) {
+    if (dispatch) dispatch(logout());
+    return false;
+  }
+  return true;
+};

@@ -1,7 +1,9 @@
 import comeesyAPI from '../api/comeesy';
 import { dataTypes } from './types';
-import { checkUserAuthorization } from './userActions';
+import { hasAuthorization } from './userActions';
 import { getStoredToken } from '../utils/helperFns';
+import { openModal, closeModal } from './UIActions';
+import Login from '../pages/Login/Login';
 
 export const loadingData = () => ({ type: dataTypes.LOADING_DATA });
 
@@ -32,9 +34,9 @@ export const like = postId => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
-
-      // dispatch(loadingUI());
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       const response = await comeesyAPI.post(`/post/${postId}/like`, null, {
         headers: { Authorization: token },
@@ -46,10 +48,8 @@ export const like = postId => dispatch =>
       });
 
       resolve();
-      // dispatch(loadingUIFinished());
     } catch (error) {
       console.error(error);
-      // dispatch(loadingUIFinished());
       reject();
     }
   });
@@ -58,7 +58,9 @@ export const unlike = postId => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      await checkUserAuthorization(dispatch);
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
 
       const response = await comeesyAPI.post(`/post/${postId}/unlike`, null, {
         headers: { Authorization: token },

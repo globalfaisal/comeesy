@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { getPosts } from '../../actions/dataActions';
-import { showAlert } from '../../actions/UIActions';
+import { showAlert, closeModal } from '../../actions/UIActions';
 
 /* -- components -- */
 import PostList from '../../components/Posts/PostList.js';
@@ -27,12 +27,14 @@ const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, loading } = useSelector(state => state.data);
+  const { isOpen } = useSelector(state => state.UI.modal);
 
   useEffect(() => {
+    if (isOpen) dispatch(closeModal());
     dispatch(getPosts()).catch(({ message }) => {
       dispatch(showAlert({ type: 'error', message }));
     });
-  }, [dispatch]);
+  }, [dispatch, isOpen]);
 
   return (
     <div className={classes.homeWrapper}>

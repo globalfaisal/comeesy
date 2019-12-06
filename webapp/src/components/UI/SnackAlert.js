@@ -21,26 +21,34 @@ import InfoIcon from '@material-ui/icons/Info';
 import ErrorIcon from '@material-ui/icons/Error';
 import WarningIcon from '@material-ui/icons/Warning';
 import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
+
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   root: {
+    width: 320,
+    height: 100,
+    overflow: 'hidden',
+    borderRadius: 3,
+    boxShadow: theme.shadows[5],
+    backgroundColor: theme.palette.colors.white,
     [theme.breakpoints.down('xs')]: {
       left: 0,
+      right: 0,
       bottom: 0,
+      width: '100%',
     },
   },
   success: {
-    color: green[300],
+    color: green[400],
   },
   error: {
-    color: red[300],
+    color: red[400],
   },
   info: {
-    color: blue[300],
+    color: blue[400],
   },
   warning: {
-    color: amber[300],
+    color: amber[400],
   },
   icon: {
     fontSize: 22,
@@ -49,29 +57,27 @@ const useStyles = makeStyles(theme => ({
     left: 6,
   },
   iconVariant: {
-    opacity: 0.8,
+    opacity: 0.9,
   },
   content: {
     padding: 6,
-    minWidth: 320,
-    maxWidth: 320,
-    minHeight: 100,
-    maxHeight: 120,
-    backgroundColor: theme.palette.colors.white,
+    width: '100%',
+    height: '100%',
     alignItems: 'flex-start',
+    backgroundColor: 'transparent',
   },
   label: {
-    marginLeft: theme.spacing(3),
+    marginLeft: theme.spacing(4),
     fontSize: 16,
   },
   message: {
     fontSize: 13,
     lineHeight: 1,
     marginTop: 4,
-    paddingLeft: theme.spacing(3),
+    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(3),
   },
-  action: {
+  closeButton: {
     position: 'absolute',
     top: 4,
     right: 4,
@@ -86,16 +92,12 @@ const variantIcon = {
   info: InfoIcon,
 };
 
-function SlideDown(props) {
-  return <Slide {...props} direction="down" />;
-}
-
 const SnackAlert = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { isOpen, type, message } = useSelector(state => state.UI.alert);
 
-  const Icon = variantIcon[type || 'info'];
+  const Icon = variantIcon[type] || variantIcon.info;
 
   const onClose = (event, reason) => {
     if (reason !== 'clickaway') {
@@ -107,7 +109,7 @@ const SnackAlert = () => {
     if (label === 'info') return 'Heads up!';
     if (label === 'success') return 'Success!';
     if (label === 'warning') return 'Warning!';
-    if (label === 'error') return 'Oh snap!';
+    if (label === 'error') return 'Error!';
     return null;
   };
 
@@ -116,8 +118,7 @@ const SnackAlert = () => {
       <Snackbar
         open={isOpen}
         onClose={onClose}
-        TransitionComponent={SlideDown}
-        autoHideDuration={8000}
+        // autoHideDuration={8000}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -131,6 +132,7 @@ const SnackAlert = () => {
           message={
             <div id="alert" className={classes.messageWrapper}>
               <Icon
+                color="action"
                 className={clsx(
                   classes.icon,
                   classes[type],
@@ -146,7 +148,7 @@ const SnackAlert = () => {
               </Typography>
               <Typography
                 variant="body2"
-                color="textSecondary"
+                color="textPrimary"
                 className={classes.message}
               >
                 {message}
@@ -159,7 +161,7 @@ const SnackAlert = () => {
               aria-label="close"
               size="small"
               onClick={onClose}
-              className={classes.action}
+              className={classes.closeButton}
             >
               <CloseIcon />
             </IconButton>

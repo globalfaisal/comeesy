@@ -23,10 +23,18 @@ const useStyles = makeStyles(theme => ({
   paper: {
     backgroundColor: theme.palette.colors.white,
     boxShadow: theme.shadows[5],
-    padding: theme.spacing(4),
+    padding: '42px 32px',
     borderRadius: 3,
     minWidth: 320,
     maxWidth: '80%',
+    [theme.breakpoints.down(420)]: {
+      minWidth: '100%',
+      maxWidth: '100%',
+      minHeight: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     position: 'relative',
     '&:focus': {
       outline: 'none',
@@ -34,8 +42,8 @@ const useStyles = makeStyles(theme => ({
   },
   closeButton: {
     position: 'absolute',
-    top: 4,
-    right: 4,
+    top: 6,
+    right: 6,
     color: theme.palette.colors.grey,
   },
 }));
