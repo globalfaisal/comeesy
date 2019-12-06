@@ -27,14 +27,12 @@ const Home = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, loading } = useSelector(state => state.data);
-  const { isOpen } = useSelector(state => state.UI.modal);
 
   useEffect(() => {
-    if (isOpen) dispatch(closeModal());
     dispatch(getPosts()).catch(({ message }) => {
       dispatch(showAlert({ type: 'error', message }));
     });
-  }, [dispatch, isOpen]);
+  }, [dispatch]);
 
   return (
     <div className={classes.homeWrapper}>

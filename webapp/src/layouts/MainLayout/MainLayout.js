@@ -47,7 +47,10 @@ const MainLayout = props => {
     <Fragment>
       <Navbar />
       <main className={classes.main}>
-        <Switch>{getRoutes(routes)}</Switch>
+        <Switch>
+          {getRoutes(routes)}
+          <Redirect to="/404" />
+        </Switch>
         <SnackAlert />
         <Modal />
       </main>

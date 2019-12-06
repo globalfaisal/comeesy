@@ -2,7 +2,7 @@ import comeesyAPI from '../api/comeesy';
 import { dataTypes } from './types';
 import { hasAuthorization } from './userActions';
 import { getStoredToken } from '../utils/helperFns';
-import { openModal, closeModal } from './UIActions';
+import { openModal } from './UIActions';
 import Login from '../pages/Login/Login';
 
 export const loadingData = () => ({ type: dataTypes.LOADING_DATA });

@@ -3,6 +3,7 @@ import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
 import Settings from '../pages/Settings/Settings';
+import Page404 from '../pages/Page404/Page404';
 
 export default [
   {
@@ -36,5 +37,11 @@ export default [
     name: 'Signup',
     component: Signup,
     layout: '/auth',
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: Page404,
+    layout: '/main',
   },
 ];
