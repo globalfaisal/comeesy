@@ -18,7 +18,6 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     textAlign: 'center',
     padding: 32,
-    border: '1px solid red',
   },
   title: {
     marginBottom: 10,
