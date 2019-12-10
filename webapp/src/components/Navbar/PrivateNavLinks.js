@@ -43,7 +43,10 @@ const PrivateNavLinks = () => {
       >
         <ExploreIcon fontSize="inherit" />
       </IconButton>
-      <NotificationMenu notifications={notifications} />
+      <NotificationMenu
+        notifications={notifications}
+        onMarkRead={ids => console.log(ids)}
+      />
       <UserMenu user={credentials} onLogout={() => dispatch(logout())} />
     </Fragment>
   );

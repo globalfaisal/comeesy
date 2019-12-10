@@ -31,7 +31,11 @@ const EmptyData = ({ text, image, className }) => {
   return (
     <div className={clsx(classes.root, className)}>
       <img src={image} alt={text} className={classes.media} />
-      <Typography variant="h6" color="textSecondary" className={classes.text}>
+      <Typography
+        variant="body1"
+        color="textSecondary"
+        className={classes.text}
+      >
         {text}
       </Typography>
     </div>

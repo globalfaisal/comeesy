@@ -59,6 +59,11 @@ export default () =>
           height: 32,
         },
       },
+      MuiList: {
+        root: {
+          width: '100%',
+        },
+      },
       MuiMenu: {
         paper: {
           minWidth: 100,
@@ -66,7 +71,6 @@ export default () =>
           borderRadius: 0,
         },
       },
-
       MuiSkeleton: {
         root: {
           backgroundColor: colors.others.greylight,

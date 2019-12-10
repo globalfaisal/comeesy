@@ -9,6 +9,8 @@ import { formatDateToRelTime } from '../../utils/helperFns';
 
 /* -- components -- */
 import PopupMenu from '../UI/PopupMenu';
+import RippleBadge from '../UI/RippleBadge';
+import EmptyData from '../UI/EmptyData';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,7 +19,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
+
+/* -- image -- */
+import imagePath from '../../assets/images/notification.svg';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -27,8 +31,12 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     width: 320,
+    minHeight: 150,
+    maxHeight: 350,
     paddingTop: 8,
     paddingBottom: 8,
+    overflowY: 'auto',
+    display: 'flex',
   },
   menuItem: {
     whiteSpace: 'normal',
@@ -46,7 +54,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: 8,
   },
   unReadIndicator: {
-    backgroundColor: theme.palette.error.main,
+    backgroundColor: theme.palette.colors.whitesmoke,
     marginTop: 4,
   },
   sender: {
@@ -54,10 +62,8 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 400,
     letterSpacing: 0.3,
   },
-  badge: {
-    position: 'absolute',
-    top: 15,
-    right: 18,
+  empty: {
+    minHeight: 130,
   },
 }));
 
@@ -67,29 +73,39 @@ const notificationTypes = {
   reply: 'replied on comment...',
 };
 
-const NotificationMenu = ({ notifications = [] }) => {
+const NotificationMenu = ({ notifications = [], onMarkRead }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
   const onOpenMenu = e => {
+    // 1. Set anchor element
     setAnchorEl(e.currentTarget);
-  };
-  const onNotificationClick = () => {
-    setAnchorEl(null);
-    // TODO: MARK NOTIFICATION READ
-  };
 
-  const renderContent = () => {
-    if (!notifications || notifications.length === 0) {
-      return null;
+    // 2. Mark notification read
+    if (notifications && notifications.length > 0) {
+      setTimeout(() => {
+        const unReadNotificationIds = notifications
+          .filter(item => !item.read)
+          .map(item => item.notificationId);
+
+        if (unReadNotificationIds.length > 0) onMarkRead(unReadNotificationIds);
+      }, 3000);
     }
+  };
+  const onCloseMenu = e => {
+    setAnchorEl(null);
+  };
 
-    return notifications.map(item => (
+  const renderNotifications = () =>
+    notifications.map(item => (
       <MenuItem
         component={Link}
         to={`/post/${item.postId}`}
-        onClick={onNotificationClick}
-        className={classes.menuItem}
+        onClick={onCloseMenu}
+        className={clsx(
+          classes.menuItem,
+          !item.read ? classes.unReadIndicator : ''
+        )}
         dense
       >
         <Avatar
@@ -104,12 +120,6 @@ const NotificationMenu = ({ notifications = [] }) => {
             className={classes.sender}
           >
             {item.sender.name}{' '}
-            <div
-              className={clsx(
-                'dot inline medium',
-                !item.read ? classes.unReadIndicator : ''
-              )}
-            />{' '}
             <Typography
               variant="caption"
               color="textSecondary"
@@ -125,7 +135,6 @@ const NotificationMenu = ({ notifications = [] }) => {
         </div>
       </MenuItem>
     ));
-  };
   return (
     <div className="notification-menu">
       <IconButton
@@ -137,19 +146,27 @@ const NotificationMenu = ({ notifications = [] }) => {
         className={classes.navLink}
       >
         {notifications && notifications.some(el => el.read === false) && (
-          <Badge color="secondary" variant="dot" className={classes.badge} />
+          <RippleBadge>
+            <NotificationIcon fontSize="inherit" />
+          </RippleBadge>
         )}
-
-        <NotificationIcon fontSize="inherit" />
       </IconButton>
       <PopupMenu
         id="notificationMenu"
         anchorEl={anchorEl || null}
-        open={anchorEl}
-        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+        onClose={onCloseMenu}
         classes={{ paper: classes.paper }}
       >
-        {renderContent()}
+        {notifications && notifications.length > 0 ? (
+          renderNotifications()
+        ) : (
+          <EmptyData
+            text="You don't have any notifications"
+            image={imagePath}
+            className={classes.empty}
+          />
+        )}
       </PopupMenu>
     </div>
   );
@@ -157,6 +174,7 @@ const NotificationMenu = ({ notifications = [] }) => {
 
 NotificationMenu.propTypes = {
   notifications: PropTypes.array.isRequired,
+  onMarkRead: PropTypes.func.isRequired,
 };
 
 export default NotificationMenu;
