@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
-import { logout } from '../../actions/userActions';
+import { logout, markNotificationsRead } from '../../actions/userActions';
 
 /* -- components -- */
 import UserMenu from './UserMenu';
@@ -45,7 +45,7 @@ const PrivateNavLinks = () => {
       </IconButton>
       <NotificationMenu
         notifications={notifications}
-        onMarkRead={ids => console.log(ids)}
+        onMarkRead={ids => dispatch(markNotificationsRead(ids))}
       />
       <UserMenu user={credentials} onLogout={() => dispatch(logout())} />
     </Fragment>

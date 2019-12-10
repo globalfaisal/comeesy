@@ -69,10 +69,20 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         data: {
           ...state.data,
-          // likes: _.without(state.data.likes, { postId: action.payload.postId }),
           likes: state.data.likes.filter(
             like => like.postId !== action.payload.postId
           ),
+        },
+      };
+    case userTypes.MARK_NOTIFICATIONS_READ:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          notifications: state.data.notifications.map(item => {
+            item.read = true;
+            return item;
+          }),
         },
       };
     default:

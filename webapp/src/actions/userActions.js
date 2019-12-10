@@ -204,6 +204,34 @@ export const uploadUserAvatar = formData => dispatch =>
     }
   });
 
+export const markNotificationsRead = notificationIds => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.post(
+        '/notifications/markRead',
+        notificationIds,
+        {
+          headers: { Authorization: token },
+        }
+      );
+
+      dispatch({
+        type: userTypes.MARK_NOTIFICATIONS_READ,
+        payload: response.data,
+      });
+
+      resolve();
+    } catch (error) {
+      console.error(error);
+      reject();
+    }
+  });
+
 export const hasAuthorization = dispatch => {
   const token = getStoredToken();
   if (!token || !validateToken(token)) {

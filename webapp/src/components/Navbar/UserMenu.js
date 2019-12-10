@@ -57,18 +57,20 @@ const UserMenu = ({ user, onLogout }) => {
           component={Link}
           to={`/u/${user.username}`}
           onClick={onCloseMenu}
+          dense
         >
           Profile
         </MenuItem>
         <MenuItem
           component={Link}
           to="/settings/profile"
-          divider
           onClick={onCloseMenu}
+          dense
+          divider
         >
           Settings
         </MenuItem>
-        <MenuItem component={Link} to="#" onClick={onLogout}>
+        <MenuItem component={Link} to="#" onClick={onLogout} dense>
           Logout
         </MenuItem>
       </PopupMenu>

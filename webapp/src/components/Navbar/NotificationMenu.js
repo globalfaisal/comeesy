@@ -145,10 +145,12 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
         color="inherit"
         className={classes.navLink}
       >
-        {notifications && notifications.some(el => el.read === false) && (
+        {notifications && notifications.some(el => el.read === false) ? (
           <RippleBadge>
             <NotificationIcon fontSize="inherit" />
           </RippleBadge>
+        ) : (
+          <NotificationIcon fontSize="inherit" />
         )}
       </IconButton>
       <PopupMenu
