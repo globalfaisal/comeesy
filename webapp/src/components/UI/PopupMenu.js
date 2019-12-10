@@ -15,18 +15,28 @@ const Menu = withStyles({
   },
 })(MuiMenu);
 
-const PopupMenu = ({ children, ...props }) => (
-  <Menu
+const PopupMenu = ({ id, anchorEl, open, onClose, children, ...rest }) => (
+  <MuiMenu
+    id={id}
+    anchorEl={anchorEl}
+    open={open}
+    onClose={onClose}
+    {...rest}
     getContentAnchorEl={null}
     anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
     transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-    {...props}
+    variant="menu"
+    role="menu"
   >
     {children}
-  </Menu>
+  </MuiMenu>
 );
 
 PopupMenu.propTypes = {
-  children: PropTypes.node.isRequired,
+  id: PropTypes.string.isRequired,
+  anchorEl: PropTypes.node.isRequired,
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  children: PropTypes.any.isRequired,
 };
 export default PopupMenu;

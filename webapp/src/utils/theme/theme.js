@@ -61,9 +61,12 @@ export default () =>
       },
       MuiMenu: {
         paper: {
+          minWidth: 100,
+          marginTop: -1,
           borderRadius: 0,
         },
       },
+
       MuiSkeleton: {
         root: {
           backgroundColor: colors.others.greylight,

@@ -33,3 +33,28 @@ html {
 a {
 	text-decoration: none;
 }
+
+.dot {
+	width: 3px;
+	height: 3px;
+	margin: 2px;
+	border-radius: 50%;
+	background-color: var(--color-grey-dark);
+}
+.dot.inline {
+	display: inline-block;
+}
+.dot.small {
+	width: 3px;
+	height: 3px;
+}
+
+.dot.medium {
+	width: 6px;
+	height: 6px;
+}
+
+.dot.large {
+	width: 9px;
+	height: 9px;
+}
