@@ -27,45 +27,43 @@ const PostCard = ({ post }) => {
   return (
     <div className={classes.post}>
       <Card>
-        <MuiLink component={Link} to={`/post/${post.postId}`} underline="none">
-          <CardHeader
-            avatar={
-              <Avatar
-                alt={post.user.username}
-                src={post.user.imageUrl}
+        <CardHeader
+          avatar={
+            <Avatar
+              alt={post.user.username}
+              src={post.user.imageUrl}
+              component={Link}
+              to={`/u/${post.user.username}`}
+              className={classes.avatar}
+            />
+          }
+          title={
+            <Fragment>
+              <Typography
                 component={Link}
                 to={`/u/${post.user.username}`}
-                className={classes.avatar}
-              />
-            }
-            title={
-              <Fragment>
-                <Typography
-                  component={Link}
-                  to={`/u/${post.user.username}`}
-                  variant="subtitle1"
-                  color="primary"
-                  className={classes.title}
-                >{`${post.user.name}`}</Typography>
-                <span>{`@${post.user.username}`}</span>
-              </Fragment>
-            }
-            subheader={
-              <Typography
-                variant="caption"
-                color="textSecondary"
-                className={classes.createdAt}
-              >
-                {formatDateToRelTime(post.createdAt)}
-              </Typography>
-            }
-          />
-          <CardContent>
-            <Typography variant="body1" color="textSecondary">
-              {post.body}
+                variant="subtitle1"
+                color="primary"
+                className={classes.title}
+              >{`${post.user.name}`}</Typography>
+              <span>{`@${post.user.username}`}</span>
+            </Fragment>
+          }
+          subheader={
+            <Typography
+              variant="caption"
+              color="textSecondary"
+              className={classes.createdAt}
+            >
+              {formatDateToRelTime(post.createdAt)}
             </Typography>
-          </CardContent>
-        </MuiLink>
+          }
+        />
+        <CardContent>
+          <Typography variant="body1" color="textSecondary">
+            {post.body}
+          </Typography>
+        </CardContent>
         <CardActions disableSpacing>
           <LikePostIcon post={post} />
           <CommentPostIcon post={post} />

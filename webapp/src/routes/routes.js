@@ -2,6 +2,7 @@ import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
 import Signup from '../pages/Signup/Signup';
 import Profile from '../pages/Profile/Profile';
+import Post from '../pages/Post/Post';
 import Settings from '../pages/Settings/Settings';
 import Page404 from '../pages/Page404/Page404';
 
@@ -25,6 +26,12 @@ export default [
     component: Settings,
     layout: '/main',
     protected: true, // TODO: PROTECT THIS ROUTE
+  },
+  {
+    path: '/post/:postId',
+    name: 'post',
+    component: Post,
+    layout: '/main',
   },
   {
     path: '/login',

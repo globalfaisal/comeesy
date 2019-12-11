@@ -16,6 +16,13 @@ export default (state = INITIAL_STATE, action) => {
         posts: _.mapKeys(action.payload, 'postId'),
         loading: false,
       };
+    case dataTypes.SET_POST:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        posts: { ...state.posts, [action.payload.postId]: action.payload },
+        loading: false,
+      };
     case dataTypes.LIKE_POST:
     case dataTypes.UNLIKE_POST:
       return {
