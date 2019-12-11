@@ -51,11 +51,9 @@ const Signup = () => {
   return (
     <div className="signup-page">
       <div className={classes.content}>
-        <div>
-          <Typography variant="h5" paragraph>
-            Join Us!
-          </Typography>
-        </div>
+        <Typography variant="h6" paragraph>
+          Sign up
+        </Typography>
         <form
           name="signup-form"
           onSubmit={handleSubmit}

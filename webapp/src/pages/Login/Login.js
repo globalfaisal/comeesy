@@ -44,14 +44,9 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className={classes.content}>
-        <div>
-          <Typography variant="h5" gutterBottom>
-            Login
-          </Typography>
-          <Typography variant="body1" color="textSecondary" paragraph>
-            To keep connected with us please login with your personal info.
-          </Typography>
-        </div>
+        <Typography variant="h6" gutterBottom>
+          Login
+        </Typography>
         <form
           noValidate
           name="login-form"
