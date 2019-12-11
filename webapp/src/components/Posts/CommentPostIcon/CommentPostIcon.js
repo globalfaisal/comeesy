@@ -1,5 +1,6 @@
 /* -- libs -- */
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
@@ -8,6 +9,7 @@ import { shortenNumbers } from '../../../utils/helperFns';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
+import MuiLink from '@material-ui/core/Link';
 import IconButton from '@material-ui/core/IconButton';
 import CommentIcon from '@material-ui/icons/ModeComment';
 import Typography from '@material-ui/core/Typography';
@@ -40,6 +42,8 @@ const CommentPostIcon = ({ post }) => {
   const renderContent = () => (
     <div className={classes.root}>
       <IconButton
+        component={Link}
+        to={`/post/${post.postId}#comment`}
         aria-label="comment"
         size="medium"
         disableFocusRipple

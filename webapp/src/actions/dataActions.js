@@ -30,6 +30,25 @@ export const getPosts = () => dispatch =>
       });
   });
 
+export const getPost = postId => dispatch =>
+  new Promise(async (resolve, reject) => {
+    dispatch(loadingData());
+    comeesyAPI
+      .get(`/post/${postId}`)
+      .then(response => {
+        resolve();
+        dispatch({
+          type: dataTypes.SET_POST,
+          payload: response.data,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        dispatch({ type: dataTypes.SET_POST, payload: null });
+        reject(new Error('Something went wrong'));
+      });
+  });
+
 export const like = postId => dispatch =>
   new Promise(async (resolve, reject) => {
     try {

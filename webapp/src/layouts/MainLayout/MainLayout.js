@@ -10,6 +10,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import ProtectedRoute from '../../routes/ProtectedRoute';
 import SnackAlert from '../../components/UI/SnackAlert';
 import Modal from '../../components/UI/Modal';
+import ScrollHandler from '../../components/ScrollHandler/ScrollHandler';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -51,6 +52,7 @@ const MainLayout = props => {
           {getRoutes(routes)}
           <Redirect to="/404" />
         </Switch>
+        <ScrollHandler />
         <SnackAlert />
         <Modal />
       </main>
