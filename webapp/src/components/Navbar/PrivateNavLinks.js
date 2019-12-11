@@ -7,8 +7,8 @@ import { Link } from 'react-router-dom';
 import { logout, markNotificationsRead } from '../../actions/userActions';
 
 /* -- components -- */
-import UserMenu from './UserMenu';
-import NotificationMenu from './NotificationMenu';
+import UserMenu from '../Menus/UserMenu';
+import NotificationMenu from '../Menus/NotificationMenu';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';

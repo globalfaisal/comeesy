@@ -17,8 +17,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
 import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import Typography from '@material-ui/core/Typography';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import CommentIcon from '@material-ui/icons/Comment';
+import CommentReplyIcon from '@material-ui/icons/QuestionAnswer';
 
 /* -- image -- */
 import imagePath from '../../assets/images/notification.svg';
@@ -30,8 +34,8 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   paper: {
-    width: 320,
-    minHeight: 150,
+    width: 400,
+    minHeight: 100,
     maxHeight: 350,
     paddingTop: 8,
     paddingBottom: 8,
@@ -67,10 +71,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const notificationTypes = {
-  like: 'liked your post',
-  comment: 'commented on your post',
-  reply: 'replied on comment...',
+const variantIcon = {
+  like: FavoriteIcon,
+  comment: CommentIcon,
+  reply: CommentReplyIcon,
 };
 
 const NotificationMenu = ({ notifications = [], onMarkRead }) => {
@@ -96,6 +100,16 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
     setAnchorEl(null);
   };
 
+  const getNotificationTypIcon = type => {
+    if (!type) return;
+    const Icon = variantIcon[type];
+    return (
+      <Box component="span" marginRight={1}>
+        <Icon fontSize="inherit" />
+      </Box>
+    );
+  };
+
   const renderNotifications = () =>
     notifications.map(item => (
       <MenuItem
@@ -119,17 +133,19 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
             color="textPrimary"
             className={classes.sender}
           >
-            {item.sender.name}{' '}
+            {item.sender.name}
+            <div className="dot inline small" />{' '}
             <Typography
               variant="caption"
               color="textSecondary"
               component="small"
             >
-              {notificationTypes[item.type]}
+              {item.body}
             </Typography>
           </Typography>
 
           <Typography variant="caption" color="textSecondary">
+            {getNotificationTypIcon(item.type)}
             {formatDateToRelTime(item.createdAt)}
           </Typography>
         </div>

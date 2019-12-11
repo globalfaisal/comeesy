@@ -23,14 +23,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Home = props => {
+const Home = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, loading } = useSelector(state => state.data);
 
   useEffect(() => {
     dispatch(getPosts()).catch(({ message }) => {
-      dispatch(showAlert({ type: 'error', message }));
+      dispatch(showAlert('error', message || 'Something went wrong'));
     });
   }, [dispatch]);
 
