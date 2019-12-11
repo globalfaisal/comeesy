@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { getProfile } from '../../actions/dataActions';
 
 /* -- components -- */
-import PostList from '../../components/Posts/PostList';
+import PostList from '../../components/Posts/PostList/PostList';
 import UserDetailsCard from '../../components/UserDetailsCard/UserDetailsCard';
 import CircularLoading from '../../components/UI/CircularLoading.js';
 

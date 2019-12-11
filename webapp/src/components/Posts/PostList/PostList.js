@@ -4,14 +4,14 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 /* -- components -- */
-import Post from './Post';
-import SkeletonCard from '../UI/SkeletonCard';
-import EmptyData from '../UI/EmptyData';
+import PostCard from '../PostCard/PostCard';
+import SkeletonCard from '../../UI/SkeletonCard';
+import EmptyData from '../../UI/EmptyData';
 
 /* -- mui -- */
 
 /* -- images -- */
-import imagePath from '../../assets/images/empty-data.svg';
+import imagePath from '../../../assets/images/empty-data.svg';
 
 const PostList = ({ posts = [], loading = false }) => {
   const renderPosts = () => {
@@ -19,7 +19,7 @@ const PostList = ({ posts = [], loading = false }) => {
     if (!loading && !posts.length)
       return <EmptyData text="No Posts Yet" image={imagePath} />;
 
-    return posts.map((post, key) => <Post key={key} post={post} />);
+    return posts.map((post, key) => <PostCard key={key} post={post} />);
   };
   return <div className="posts">{renderPosts()}</div>;
 };

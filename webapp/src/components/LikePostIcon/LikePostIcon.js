@@ -5,10 +5,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { like, unlike } from '../../actions/dataActions';
+import { like, unlike } from '../../../actions/dataActions';
 
 /* -- utils -- */
-import { shortenNumbers } from '../../utils/helperFns';
+import { shortenNumbers } from '../../../utils/helperFns';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: 16,
+    color: theme.palette.colors.steelblue,
   },
   likeIconBtn: {
     padding: 6,
@@ -38,7 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   likeIconNormal: {
     color: 'transparent',
-    strokeWidth: 2,
+    strokeWidth: 1,
     stroke: theme.palette.colors.steelblue,
   },
   '@keyframes beat': {
@@ -54,7 +55,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const LikePost = ({ post }) => {
+const LikePostIcon = ({ post }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const likes = useSelector(state =>
@@ -85,14 +86,12 @@ const LikePost = ({ post }) => {
           className={liked ? classes.likeIconActive : classes.likeIconNormal}
         />
       </IconButton>
-      <Typography variant="body2" color="textSecondary">
-        {shortenNumbers(post.likeCount)}
-      </Typography>
+      <Typography variant="body2">{shortenNumbers(post.likeCount)}</Typography>
     </div>
   );
   return renderContent();
 };
-LikePost.propTypes = {
+LikePostIcon.propTypes = {
   post: PropTypes.object.isRequired,
 };
-export default LikePost;
+export default LikePostIcon;

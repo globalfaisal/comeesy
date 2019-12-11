@@ -63,8 +63,6 @@ const Modal = () => {
       className={classes.modal}
       open={isOpen}
       onClose={onClose}
-      // disableBackdropClick
-      // disableEscapeKeyDown
       disableAutoFocus
       closeAfterTransition
       BackdropComponent={Backdrop}

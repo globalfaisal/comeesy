@@ -5,10 +5,10 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { getPosts } from '../../actions/dataActions';
-import { showAlert, closeModal } from '../../actions/UIActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostList from '../../components/Posts/PostList.js';
+import PostList from '../../components/Posts/PostList/PostList';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -18,8 +18,8 @@ import Hidden from '@material-ui/core/Hidden';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
-  homeWrapper: {
-    padding: `${theme.spacing(8)}px 0px`,
+  root: {
+    padding: `${theme.spacing(6)}px 0px`,
   },
 }));
 
@@ -30,12 +30,12 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(getPosts()).catch(({ message }) => {
-      dispatch(showAlert('error', message || 'Something went wrong'));
+      dispatch(showAlert('error', message));
     });
   }, [dispatch]);
 
   return (
-    <div className={classes.homeWrapper}>
+    <div className={classes.root}>
       <Container>
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8} md={6}>

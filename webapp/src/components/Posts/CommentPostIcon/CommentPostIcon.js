@@ -3,13 +3,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* -- utils -- */
-import { shortenNumbers } from '../../utils/helperFns';
+import { shortenNumbers } from '../../../utils/helperFns';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import { blue } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
-import CommentIcon from '@material-ui/icons/ModeCommentOutlined';
+import CommentIcon from '@material-ui/icons/ModeComment';
 import Typography from '@material-ui/core/Typography';
 
 /* -- styles -- */
@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     marginRight: 16,
+    color: theme.palette.colors.steelblue,
   },
 
   commentIconBtn: {
@@ -28,11 +29,13 @@ const useStyles = makeStyles(theme => ({
     },
   },
   commentIcon: {
-    color: theme.palette.colors.steelblue,
+    color: 'transparent',
+    strokeWidth: 1,
+    stroke: theme.palette.colors.steelblue,
   },
 }));
 
-const CommentPost = ({ post }) => {
+const CommentPostIcon = ({ post }) => {
   const classes = useStyles();
   const renderContent = () => (
     <div className={classes.root}>
@@ -44,14 +47,14 @@ const CommentPost = ({ post }) => {
       >
         <CommentIcon fontSize="inherit" className={classes.commentIcon} />
       </IconButton>
-      <Typography variant="body2" color="textSecondary">
+      <Typography variant="body2">
         {shortenNumbers(post.commentCount)}
       </Typography>
     </div>
   );
   return renderContent();
 };
-CommentPost.propTypes = {
+CommentPostIcon.propTypes = {
   post: PropTypes.object.isRequired,
 };
-export default CommentPost;
+export default CommentPostIcon;
