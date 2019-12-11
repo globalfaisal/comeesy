@@ -20,6 +20,7 @@ const createLikeNotification = async snapshot => {
           sender: snapshot.data().user,
           recipient: postRef.data().user.username,
           postId: postRef.data().postId,
+          body: 'liked your post',
           createdAt: new Date().toISOString(),
           type: 'like',
           read: false,
