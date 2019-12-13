@@ -9,7 +9,7 @@ export default makeStyles(theme => ({
     },
   },
   postCard: {
-    border: '1px solid #e6e6e6',
+    border: `1px solid ${theme.palette.colors.greylight}`,
   },
   avatar: {
     width: 40,

@@ -10,6 +10,7 @@ import { showAlert } from '../../actions/UIActions';
 /* -- components -- */
 import PostCard from '../../components/Posts/PostCard/PostCard';
 import CircularLoading from '../../components/UI/CircularLoading';
+import CommentBox from '../../components/CommentBox/CommentBox';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,6 +48,7 @@ const Post = ({ match }) => {
     <div className={classes.root}>
       <Container maxWidth="md">
         <PostCard post={posts[match.params.postId]} />
+        <CommentBox />
       </Container>
     </div>
   );

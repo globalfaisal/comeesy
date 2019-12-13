@@ -6,16 +6,22 @@ import history from '../../utils/history';
 
 const ScrollHandler = () => {
   const { location } = history;
-  useEffect(() => {
-    const element = document.getElementById(location.hash);
 
-    setTimeout(() => {
-      window.scrollTo({
-        behavior: element ? 'smooth' : 'auto',
-        top: element ? element.offsetTop : 0,
-      });
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const element = document.getElementById(location.hash.slice(1));
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      }
     }, 100);
-  }, [location]);
+    return () => {
+      window.clearTimeout(timeout);
+    };
+  });
 
   return null;
 };

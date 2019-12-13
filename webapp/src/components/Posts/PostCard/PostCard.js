@@ -63,7 +63,7 @@ const PostCard = ({ post }) => {
           <TypographyTruncate
             variant="body1"
             color="textSecondary"
-            line={2}
+            line={3}
             more="Show More"
           >
             {post.body}
