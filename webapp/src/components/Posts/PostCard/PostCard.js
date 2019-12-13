@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
+import TypographyTruncate from '../../TypographyTruncate/TypographyTruncate';
 import CommentPostIcon from '../CommentPostIcon/CommentPostIcon';
 import LikePostIcon from '../LikePostIcon/LikePostIcon';
 
@@ -11,7 +12,6 @@ import LikePostIcon from '../LikePostIcon/LikePostIcon';
 import { formatDateToRelTime } from '../../../utils/helperFns';
 
 /* -- mui -- */
-import MuiLink from '@material-ui/core/Link';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -60,9 +60,14 @@ const PostCard = ({ post }) => {
           }
         />
         <CardContent>
-          <Typography variant="body1" color="textSecondary">
+          <TypographyTruncate
+            variant="body1"
+            color="textSecondary"
+            line={2}
+            more="Show More"
+          >
             {post.body}
-          </Typography>
+          </TypographyTruncate>
         </CardContent>
         <CardActions disableSpacing>
           <LikePostIcon post={post} />
