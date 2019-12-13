@@ -1,7 +1,6 @@
 /* -- libs -- */
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { logout, markNotificationsRead } from '../../actions/userActions';
@@ -10,20 +9,7 @@ import { logout, markNotificationsRead } from '../../actions/userActions';
 import UserMenu from '../Menus/UserMenu';
 import NotificationMenu from '../Menus/NotificationMenu';
 
-/* -- mui -- */
-import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import ExploreIcon from '@material-ui/icons/ExploreOutlined';
-
-/* -- styles -- */
-const useStyles = makeStyles(theme => ({
-  navLink: {
-    fontSize: 28,
-  },
-}));
-
 const PrivateNavLinks = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const credentials = useSelector(state =>
@@ -35,14 +21,6 @@ const PrivateNavLinks = () => {
 
   return (
     <Fragment>
-      <IconButton
-        component={Link}
-        to="/"
-        color="inherit"
-        className={classes.navLink}
-      >
-        <ExploreIcon fontSize="inherit" />
-      </IconButton>
       <NotificationMenu
         notifications={notifications}
         onMarkRead={ids => dispatch(markNotificationsRead(ids))}

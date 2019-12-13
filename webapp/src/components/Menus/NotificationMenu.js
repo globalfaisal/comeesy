@@ -111,8 +111,9 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
   };
 
   const renderNotifications = () =>
-    notifications.map(item => (
+    notifications.map((item, idx) => (
       <MenuItem
+        key={idx}
         component={Link}
         to={`/post/${item.postId}`}
         onClick={onCloseMenu}

@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import ExploreIcon from '@material-ui/icons/ExploreOutlined';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -21,13 +20,12 @@ const PublicNavLinks = () => {
     <Fragment>
       <Button
         component={Link}
-        to="/"
-        size="small"
+        to="/auth/login"
         color="inherit"
-        startIcon={<ExploreIcon />}
+        size="small"
         className={classes.navLink}
       >
-        Explore
+        Log in
       </Button>
       <Button
         component={Link}
@@ -37,7 +35,7 @@ const PublicNavLinks = () => {
         size="small"
         className={classes.navLink}
       >
-        Log in / Sign up
+        Sign up
       </Button>
     </Fragment>
   );
