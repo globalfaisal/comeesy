@@ -117,3 +117,24 @@ export const getProfile = username => dispatch =>
         reject(new Error('Something went wrong'));
       });
   });
+  
+export const submitComment = (postId, body) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.post(
+        `/post/${postId}/comment`,
+        { body },
+        {
+          headers: { Authorization: token },
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      reject(new Error('Something went wrong. Please try again'));
+    }
+  });

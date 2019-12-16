@@ -1,13 +1,17 @@
 /* -- libs -- */
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+/* -- actions -- */
+import { submitComment } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
+import useAuthChecker from '../../hooks/useAuthChecker';
 
 /* -- mui -- */
-import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
@@ -19,54 +23,21 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import deafultAvatarPath from '../../assets/images/default-avatar.png';
 
 /* -- styles -- */
-const useStyles = makeStyles(theme => ({
-  commentBox: {
-    marginTop: 8,
-    marginBottom: 8,
-    display: 'flex',
-  },
-  avatar: {
-    width: 30,
-    height: 30,
-  },
-  paper: {
-    display: 'flex',
-    flexDirection: 'column',
-    flex: 1,
-    marginLeft: 8,
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.colors.white,
-    border: `1px solid ${theme.palette.colors.greylight}`,
-  },
-  input: {
-    padding: '6px 8px',
-    color: theme.palette.text.secondary,
-  },
-  action: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingTop: 8,
-  },
-  button: {
-    padding: '0 6px',
-    minWidth: 0,
-  },
-  count: {
-    margin: '0 8px',
-  },
-}));
+import useStyles from './styles';
 
 const MAX_CHAR = 500;
 
-const CommentBox = () => {
+const CommentBox = ({ postId }) => {
   const classes = useStyles();
-  const { data, isAuthenticated } = useSelector(state => state.user);
+  const dispatch = useDispatch();
+  const { data } = useSelector(state => state.user);
   const user = data ? data.credentials : null;
+
+  const [input, setInput] = useState('');
+  const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     MAX_CHAR
   );
-  const [input, setInput] = useState('');
 
   const handleChange = e => {
     e.persist();
@@ -76,9 +47,9 @@ const CommentBox = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    // TODO: Dispatch action
-    console.log(input.trim());
+    dispatch(submitComment(postId, input.trim()));
   };
+
   return (
     <div className={classes.commentBox}>
       <Avatar
@@ -91,6 +62,7 @@ const CommentBox = () => {
         elevation={0}
         className={classes.paper}
         onSubmit={handleSubmit}
+        onClick={() => authenticate()}
       >
         <FormControl fullWidth error={hasExceededLimit}>
           <InputBase
@@ -127,6 +99,10 @@ const CommentBox = () => {
       </Paper>
     </div>
   );
+};
+
+CommentBox.propTypes = {
+  postId: PropTypes.string.isRequired,
 };
 
 export default CommentBox;

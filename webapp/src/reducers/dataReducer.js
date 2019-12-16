@@ -23,6 +23,19 @@ export default (state = INITIAL_STATE, action) => {
         posts: { ...state.posts, [action.payload.postId]: action.payload },
         loading: false,
       };
+    case dataTypes.SUBMIT_COMMENT:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          ...state.posts,
+          [action.payload.postId]: {
+            ...state.posts[action.payload.postId],
+            comments: [action.payload, ...state.posts.comments],
+          },
+        },
+      };
     case dataTypes.LIKE_POST:
     case dataTypes.UNLIKE_POST:
       return {

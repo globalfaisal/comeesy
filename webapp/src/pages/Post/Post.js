@@ -36,19 +36,17 @@ const Post = ({ match }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!posts) {
-      dispatch(getPost(match.params.postId)).catch(({ message }) => {
-        dispatch(showAlert('error', message));
-      });
-    }
-  }, [dispatch, match.params, posts]);
+    dispatch(getPost(match.params.postId)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
+  }, [dispatch, match.params]);
 
   if (!posts) return <CircularLoading />;
   return (
     <div className={classes.root}>
       <Container maxWidth="md">
         <PostCard post={posts[match.params.postId]} />
-        <CommentBox />
+        <CommentBox postId={match.params.postId} />
       </Container>
     </div>
   );
