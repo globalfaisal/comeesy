@@ -2,14 +2,21 @@
 	"extends": ["wesbos"],
 	"rules": {
 		"no-var": 2,
-		"no-console": 1,
+		"no-console": 0,
 		"no-const-assign": 2,
 		"no-unused-vars": 0,
 		"jsx-a11y/anchor-is-valid": 0,
 		"import/order": 0,
-		"react-hooks/exhaustive-deps": 2,
+		"react-hooks/exhaustive-deps": 0,
 		"react/destructuring-assignment": 1,
 		"react/prop-types": 0,
-		"no-use-before-define": ["error", { "functions": false, "variables": false }]
+		"import/no-cycle": 0,
+		"no-use-before-define": [
+			"error",
+			{
+				"functions": false,
+				"variables": false
+			}
+		]
 	}
 }
