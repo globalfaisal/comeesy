@@ -117,7 +117,7 @@ export const getProfile = username => dispatch =>
         reject(new Error('Something went wrong'));
       });
   });
-  
+
 export const submitComment = (postId, body) => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
@@ -133,8 +133,10 @@ export const submitComment = (postId, body) => dispatch =>
           headers: { Authorization: token },
         }
       );
+      resolve();
     } catch (error) {
       console.error(error);
+      if (error.response) reject(error.response.data);
       reject(new Error('Something went wrong. Please try again'));
     }
   });

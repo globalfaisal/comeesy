@@ -36,10 +36,12 @@ exports.validateSignupData = data => {
   };
 };
 
-exports.validateBodyContent = content => {
+exports.validateBodyContent = (content, maxLength) => {
   let error = '';
   if (typeof content === 'string' && validator.isEmpty(content))
     error = 'Must not be empty';
+  if (typeof content === 'string' && maxLength && content.length > maxLength)
+    error = `You have exceeded the maximum character limit of ${maxLength}`;
   else if (Array.isArray(content) && content.length === 0)
     error = 'Must not be empty';
   else if (typeof content === 'object' && Object.keys(content).length === 0)

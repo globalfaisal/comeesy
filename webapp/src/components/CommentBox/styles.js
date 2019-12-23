@@ -38,4 +38,8 @@ export default makeStyles(theme => ({
   count: {
     margin: '0 8px',
   },
+  errorMsg: {
+    margin: '0 4px',
+    color: theme.palette.colors.red,
+  },
 }));

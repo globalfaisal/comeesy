@@ -1,11 +1,10 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- actions -- */
 import { submitComment } from '../../actions/dataActions';
-import { showAlert } from '../../actions/UIActions';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
@@ -30,10 +29,12 @@ const MAX_CHAR = 500;
 const CommentBox = ({ postId }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const inputRef = useRef(null);
   const { data } = useSelector(state => state.user);
   const user = data ? data.credentials : null;
 
   const [input, setInput] = useState('');
+  const [commentError, setCommentError] = useState('');
   const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     MAX_CHAR
@@ -47,7 +48,14 @@ const CommentBox = ({ postId }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(submitComment(postId, input.trim()));
+    dispatch(submitComment(postId, input.trim()))
+      .then(() => setCommentError(''))
+      .catch(({ error }) => setCommentError(error));
+  };
+
+  const checkAuth = () => {
+    authenticate();
+    inputRef.current.focus();
   };
 
   return (
@@ -62,7 +70,7 @@ const CommentBox = ({ postId }) => {
         elevation={0}
         className={classes.paper}
         onSubmit={handleSubmit}
-        onClick={() => authenticate()}
+        onClick={checkAuth}
       >
         <FormControl fullWidth error={hasExceededLimit}>
           <InputBase
@@ -74,11 +82,18 @@ const CommentBox = ({ postId }) => {
             onChange={handleChange}
             inputProps={{ 'aria-label': 'comment' }}
             placeholder="Write a comment..."
+            inputRef={inputRef}
             rowsMax={6}
+            autoFocus
             className={classes.input}
           />
 
           <div className={classes.action}>
+            {commentError && (
+              <FormHelperText className={classes.errorMsg}>
+                {commentError}
+              </FormHelperText>
+            )}
             <FormHelperText className={classes.count}>
               {!hasExceededLimit
                 ? `${textLength}/${MAX_CHAR}`
