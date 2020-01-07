@@ -9,7 +9,7 @@ import CommentPostIcon from '../CommentPostIcon/CommentPostIcon';
 import LikePostIcon from '../LikePostIcon/LikePostIcon';
 
 /* -- utils -- */
-import { formatDateToRelTime } from '../../../utils/helperFns';
+import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
 
 /* -- mui -- */
 import Card from '@material-ui/core/Card';
@@ -69,9 +69,24 @@ const PostCard = ({ post }) => {
             {post.body}
           </TypographyTruncate>
         </CardContent>
-        <CardActions disableSpacing>
-          <LikePostIcon post={post} />
-          <CommentPostIcon post={post} />
+        <CardActions disableSpacing className={classes.cardAction}>
+          <div>
+            <LikePostIcon post={post} />
+            <CommentPostIcon post={post} />
+          </div>
+          <div>
+            <Typography variant="caption">
+              {shortenNumbers(post.likeCount)} Likes
+            </Typography>
+            <Typography
+              component={Link}
+              to={`/post/${post.postId}#commentList`}
+              className={classes.commentCount}
+              variant="caption"
+            >
+              {shortenNumbers(post.commentCount)} Comments
+            </Typography>
+          </div>
         </CardActions>
       </Card>
     </div>

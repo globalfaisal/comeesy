@@ -7,53 +7,12 @@ import _ from 'lodash';
 /* -- actions -- */
 import { like, unlike } from '../../../actions/dataActions';
 
-/* -- utils -- */
-import { shortenNumbers } from '../../../utils/helperFns';
-
 /* -- mui -- */
-import { makeStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/FavoriteOutlined';
-import Typography from '@material-ui/core/Typography';
 
 /* -- styles -- */
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: 16,
-    color: theme.palette.colors.steelblue,
-  },
-  likeIconBtn: {
-    padding: 6,
-    marginRight: 6,
-    '&:hover': {
-      backgroundColor: red[50],
-    },
-  },
-  likeIconActive: {
-    color: red[300],
-    transformOrigin: 'center',
-    animation: `$beat .25s ${theme.transitions.easing.easeInOut}`,
-  },
-  likeIconNormal: {
-    color: 'transparent',
-    strokeWidth: 1,
-    stroke: theme.palette.colors.steelblue,
-  },
-  '@keyframes beat': {
-    '0%': {
-      transform: 'scale(1)',
-    },
-    '50%': {
-      transform: 'scale(1.5)',
-    },
-    '100%': {
-      transform: 'scale(1)',
-    },
-  },
-}));
+import useStyles from './styles';
 
 const LikePost = ({ post }) => {
   const classes = useStyles();
@@ -73,21 +32,18 @@ const LikePost = ({ post }) => {
   };
 
   const renderContent = () => (
-    <div className={classes.root}>
-      <IconButton
-        aria-label="like"
-        size="medium"
-        disableFocusRipple
-        className={classes.likeIconBtn}
-        onClick={onLikeClick}
-      >
-        <FavoriteIcon
-          fontSize="inherit"
-          className={liked ? classes.likeIconActive : classes.likeIconNormal}
-        />
-      </IconButton>
-      <Typography variant="body2">{shortenNumbers(post.likeCount)}</Typography>
-    </div>
+    <IconButton
+      aria-label="like"
+      size="medium"
+      disableFocusRipple
+      className={classes.likeIconBtn}
+      onClick={onLikeClick}
+    >
+      <FavoriteIcon
+        fontSize="inherit"
+        className={liked ? classes.likeIconActive : classes.likeIconNormal}
+      />
+    </IconButton>
   );
   return renderContent();
 };

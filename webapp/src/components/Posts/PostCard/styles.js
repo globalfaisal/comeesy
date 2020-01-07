@@ -27,9 +27,17 @@ export default makeStyles(theme => ({
     display: 'block',
     marginTop: -theme.spacing(0.5),
   },
-  action: {
+  cardAction: {
     display: 'flex',
-    alignItems: 'center',
-    marginRight: 16,
+    justifyContent: 'space-between',
+    borderTop: `1px solid ${theme.palette.colors.greylight}`,
+  },
+
+  commentCount: {
+    marginLeft: 10,
+    color: theme.palette.colors.steelblue,
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 }));
