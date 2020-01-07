@@ -23,6 +23,16 @@ export default makeStyles(theme => ({
       fontWeight: 300,
     },
   },
+  menuItem: {
+    minHeight: 20,
+    '& > .MuiSvgIcon-root': {
+      color: theme.palette.colors.steelblue,
+    },
+    '& > .MuiTypography-root': {
+      marginLeft: 8,
+      color: theme.palette.colors.steelblue,
+    },
+  },
   createdAt: {
     display: 'block',
     marginTop: -theme.spacing(0.5),

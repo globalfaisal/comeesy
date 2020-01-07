@@ -32,6 +32,7 @@
 		"identity-obj-proxy": "3.0.0",
 		"jwt-decode": "^2.2.0",
 		"lodash": "^4.17.15",
+		"material-ui-popup-state": "^1.5.1",
 		"mini-css-extract-plugin": "0.8.0",
 		"numeral": "^2.0.6",
 		"optimize-css-assets-webpack-plugin": "5.0.3",

@@ -12,18 +12,26 @@ import LikePostIcon from '../LikePostIcon/LikePostIcon';
 import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
 
 /* -- mui -- */
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Typography from '@material-ui/core/Typography';
+import Editcon from '@material-ui/icons/EditRounded';
+import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
 
 /* -- styles -- */
 import useStyles from './styles';
 
 const PostCard = ({ post }) => {
   const classes = useStyles();
+
   return (
     <div className={classes.post}>
       <Card>
@@ -57,6 +65,46 @@ const PostCard = ({ post }) => {
             >
               {formatDateToRelTime(post.createdAt)}
             </Typography>
+          }
+          action={
+            <PopupState variant="popover" popupId="cardActionMenu">
+              {popupState => (
+                <Fragment>
+                  <IconButton {...bindTrigger(popupState)} size="small">
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    {...bindMenu(popupState)}
+                    getContentAnchorEl={null}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                  >
+                    <MenuItem
+                      className={classes.menuItem}
+                      onClick={() => {
+                        // TODO: CALL EDIT POST FUNC.
+                        popupState.close();
+                      }}
+                    >
+                      <Editcon fontSize="small" />
+                      <Typography variant="body2">Edit</Typography>
+                    </MenuItem>
+                    <MenuItem
+                      className={classes.menuItem}
+                      onClick={() => {
+                        // TODO: DISPATCH DELETE ACTION.
+                        popupState.close();
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                      <Typography variant="body2">Delete</Typography>
+                    </MenuItem>
+                  </Menu>
+                </Fragment>
+              )}
+            </PopupState>
           }
         />
         <CardContent>
