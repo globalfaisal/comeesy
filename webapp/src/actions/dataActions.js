@@ -49,6 +49,30 @@ export const getPost = postId => dispatch =>
       });
   });
 
+export const deletePost = postId => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.delete(`/post/${postId}`, {
+        headers: { Authorization: token },
+      });
+
+      dispatch({
+        type: dataTypes.DELETE_POST,
+        payload: { postId }, // Deleted post ID
+      });
+
+      resolve(response.data);
+    } catch (error) {
+      console.error(error);
+      reject(new Error('Something went wrong. Please try again'));
+    }
+  });
+
 export const like = postId => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
@@ -69,7 +93,8 @@ export const like = postId => dispatch =>
       resolve();
     } catch (error) {
       console.error(error);
-      reject();
+      if (error.response) reject(error.response.data);
+      else reject(new Error('Something went wrong. Please try again'));
     }
   });
 
@@ -93,7 +118,7 @@ export const unlike = postId => dispatch =>
       resolve();
     } catch (error) {
       console.error(error);
-      reject();
+      reject(new Error('Something went wrong. Please try again'));
     }
   });
 
@@ -136,7 +161,7 @@ export const submitComment = (postId, body) => dispatch =>
       resolve();
     } catch (error) {
       console.error(error);
-      if (error.response) reject(error.response.data);
-      reject(new Error('Something went wrong. Please try again'));
+      if (error.response.data) reject(error.response.data);
+      else reject(new Error('Something went wrong. Please try again'));
     }
   });

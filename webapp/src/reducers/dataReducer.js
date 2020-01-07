@@ -23,6 +23,13 @@ export default (state = INITIAL_STATE, action) => {
         posts: { ...state.posts, [action.payload.postId]: action.payload },
         loading: false,
       };
+    case dataTypes.DELETE_POST:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        posts: { ..._.omit(state.posts, [action.payload.postId]) },
+        loading: false,
+      };
     case dataTypes.SUBMIT_COMMENT:
       if (!action.payload) return { ...state, loading: false };
       return {

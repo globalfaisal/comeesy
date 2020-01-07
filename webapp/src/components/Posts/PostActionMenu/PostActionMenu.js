@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
 /* -- actions -- */
+import { deletePost } from '../../../actions/dataActions';
+import { showAlert } from '../../../actions/UIActions';
 
 /* -- mui -- */
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
@@ -20,10 +22,20 @@ import useStyles from './styles';
 
 const PostActionMenu = ({ post }) => {
   const classes = useStyles();
-
+  const dispatch = useDispatch();
   const currentUser = useSelector(state =>
     state.user.data ? state.user.data.credentials : null
   );
+
+  const handleDelete = postId => {
+    dispatch(deletePost(postId))
+      .then(({ message }) => {
+        dispatch(showAlert('success', message));
+      })
+      .catch(({ message }) => {
+        dispatch(showAlert('error', message));
+      });
+  };
 
   if (!post || !currentUser) return null;
   return post.user.username === currentUser.username ? (
@@ -54,8 +66,8 @@ const PostActionMenu = ({ post }) => {
             <MenuItem
               className={classes.menuItem}
               onClick={() => {
-                // TODO: DISPATCH DELETE ACTION.
                 popupState.close();
+                handleDelete(post.postId);
               }}
             >
               <DeleteIcon fontSize="small" />
