@@ -1,10 +1,10 @@
 /* -- libs -- */
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { getPost } from '../../actions/dataActions';
+import { getPost, submitComment } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
@@ -31,9 +31,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Post = ({ match }) => {
-  const { posts } = useSelector(state => state.data);
+  const { posts, loading } = useSelector(state => state.data);
+  const { data } = useSelector(state => state.user);
+  const imageUrl = data ? data.credentials.imageUrl : '';
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [commentError, setCommentError] = useState('');
 
   useEffect(() => {
     dispatch(getPost(match.params.postId)).catch(({ message }) => {
@@ -41,13 +44,26 @@ const Post = ({ match }) => {
     });
   }, [dispatch, match.params]);
 
-  if (!posts) return <CircularLoading />;
+  const handleCommentSubmit = value => {
+    dispatch(submitComment(match.params.postId, value.trim()))
+      .then(() => setCommentError(''))
+      .catch(({ error }) => setCommentError(error));
+  };
+
+  if (loading && !posts) return <CircularLoading />;
   return (
     <div className={classes.root}>
-      <Container maxWidth="md">
-        <PostCard post={posts[match.params.postId]} />
-        <CommentBox postId={match.params.postId} />
-      </Container>
+      {posts && (
+        <Container maxWidth="md">
+          <PostCard post={posts[match.params.postId]} />
+          <CommentBox
+            handleSubmit={handleCommentSubmit}
+            error={commentError}
+            imageUrl={imageUrl}
+            placeholder="Write a comment..."
+          />
+        </Container>
+      )}
     </div>
   );
 };

@@ -1,10 +1,6 @@
 /* -- libs -- */
 import React, { useState, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-
-/* -- actions -- */
-import { submitComment } from '../../actions/dataActions';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
@@ -26,31 +22,20 @@ import useStyles from './styles';
 
 const MAX_CHAR = 500;
 
-const CommentBox = ({ postId }) => {
+const CommentBox = ({ handleSubmit, error, imageUrl, placeholder }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const inputRef = useRef(null);
-  const { data } = useSelector(state => state.user);
-  const user = data ? data.credentials : null;
 
   const [input, setInput] = useState('');
-  const [commentError, setCommentError] = useState('');
   const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     MAX_CHAR
   );
 
-  const handleChange = e => {
+  const onChange = e => {
     e.persist();
     setInput(e.target.value);
     countTextLength(e.target.value);
-  };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-    dispatch(submitComment(postId, input.trim()))
-      .then(() => setCommentError(''))
-      .catch(({ error }) => setCommentError(error));
   };
 
   const checkAuth = () => {
@@ -62,15 +47,18 @@ const CommentBox = ({ postId }) => {
     <div className={classes.commentBox}>
       <Avatar
         alt="avatar"
-        src={user ? user.imageUrl : deafultAvatarPath}
+        src={imageUrl || deafultAvatarPath}
         className={classes.avatar}
       />
       <Paper
         component="form"
         elevation={0}
         className={classes.paper}
-        onSubmit={handleSubmit}
         onClick={checkAuth}
+        onSubmit={e => {
+          e.preventDefault();
+          handleSubmit(input);
+        }}
       >
         <FormControl fullWidth error={hasExceededLimit}>
           <InputBase
@@ -79,9 +67,9 @@ const CommentBox = ({ postId }) => {
             type="text"
             multiline
             value={input}
-            onChange={handleChange}
+            onChange={onChange}
             inputProps={{ 'aria-label': 'comment' }}
-            placeholder="Write a comment..."
+            placeholder={placeholder}
             inputRef={inputRef}
             rowsMax={6}
             autoFocus
@@ -89,9 +77,9 @@ const CommentBox = ({ postId }) => {
           />
 
           <div className={classes.action}>
-            {commentError && (
+            {error && (
               <FormHelperText className={classes.errorMsg}>
-                {commentError}
+                {error}
               </FormHelperText>
             )}
             <FormHelperText className={classes.count}>
@@ -117,7 +105,10 @@ const CommentBox = ({ postId }) => {
 };
 
 CommentBox.propTypes = {
-  postId: PropTypes.string.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  imageUrl: PropTypes.string,
+  placeholder: PropTypes.string,
 };
 
 export default CommentBox;
