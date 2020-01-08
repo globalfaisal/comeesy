@@ -1,28 +1,24 @@
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
-import { blue } from '@material-ui/core/colors';
 
 export default makeStyles(theme => ({
-  post: {
+  card: {
     '&:not(:first-child)': {
       marginTop: theme.spacing(2),
     },
   },
-  postCard: {
-    border: `1px solid ${theme.palette.colors.greylight}`,
+  cardContent: {
+    paddingTop: 0,
   },
+
   avatar: {
     width: 40,
     height: 40,
   },
-  title: {
+  name: {
     textTransform: 'capitalize',
-    marginRight: 8,
-    '& + span': {
-      color: theme.palette.colors.steelblue,
-      fontWeight: 300,
-    },
   },
+  username: { color: theme.palette.colors.steelblue, fontWeight: 200 },
   createdAt: {
     display: 'block',
     marginTop: -theme.spacing(0.5),
