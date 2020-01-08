@@ -27,8 +27,17 @@ export default (state = INITIAL_STATE, action) => {
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
-        posts: { ..._.omit(state.posts, [action.payload.postId]) },
         loading: false,
+        posts: { ..._.omit(state.posts, [action.payload.postId]) },
+        profile:
+          state.profile && state.profile.posts
+            ? {
+                ...state.profile,
+                posts: {
+                  ..._.omit(state.profile.posts, [action.payload.postId]),
+                },
+              }
+            : state.profile,
       };
     case dataTypes.SUBMIT_COMMENT:
       if (!action.payload) return { ...state, loading: false };

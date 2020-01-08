@@ -25,7 +25,7 @@ import useStyles from './styles';
 
 const PostCard = ({ post }) => {
   const classes = useStyles();
-
+  if (!post) return null;
   return (
     <div className={classes.post}>
       <Card>

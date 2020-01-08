@@ -1,4 +1,5 @@
 import comeesyAPI from '../api/comeesy';
+import history from '../utils/history';
 import { dataTypes } from './types';
 import { hasAuthorization } from './userActions';
 import { getStoredToken } from '../utils/helperFns';
@@ -60,13 +61,14 @@ export const deletePost = postId => dispatch =>
       const response = await comeesyAPI.delete(`/post/${postId}`, {
         headers: { Authorization: token },
       });
-
+      resolve(response.data);
       dispatch({
         type: dataTypes.DELETE_POST,
         payload: { postId }, // Deleted post ID
       });
-
-      resolve(response.data);
+      // Redirect to home
+      const { location } = history;
+      if (location.pathname === `/post/${postId}`) history.push('/');
     } catch (error) {
       console.error(error);
       reject(new Error('Something went wrong. Please try again'));
@@ -158,6 +160,7 @@ export const submitComment = (postId, body) => dispatch =>
           headers: { Authorization: token },
         }
       );
+      dispatch(getPost(response.data.postId));
       resolve();
     } catch (error) {
       console.error(error);
