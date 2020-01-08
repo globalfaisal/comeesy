@@ -8,6 +8,9 @@ import _ from 'lodash';
 import { updateUserDetails } from '../../actions/userActions';
 import { showAlert } from '../../actions/UIActions';
 
+/* -- hooks -- */
+import useTextCounter from '../../hooks/useTextCounter';
+
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
 
@@ -21,6 +24,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
@@ -39,14 +43,18 @@ const useStyle = makeStyles(theme => ({
     position: 'absolute',
     color: theme.palette.colors.dark,
   },
+  count: { textAlign: 'right' },
 }));
-/* -- constants -- */
-const acceptedTypes = ['image/jpeg', 'image/png'];
 
-const UserDetailsSetting = ({ credentials, error, loading }) => {
+/* -- constants -- */
+const charLimit = 160;
+
+const UserDetailsSetting = ({ credentials, loading }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
-
+  const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
+    charLimit
+  );
   const [inputs, setInputs] = useState({
     gender: '',
     birthdate: null,
@@ -67,6 +75,7 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
       location: c.location || '',
       bio: c.bio || '',
     });
+    countTextLength(c.bio || '');
   };
 
   const handleInputChange = e => {
@@ -75,6 +84,7 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
       ...prevInputs,
       [e.target.name]: e.target.value,
     }));
+    if (e.target.id === 'bio') countTextLength(e.target.value);
   };
 
   const handleDateInputChange = date => {
@@ -146,7 +156,11 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
           disabled={loading}
         />
       </FormControl>
-      <FormControl className={classes.formControl} fullWidth>
+      <FormControl
+        className={classes.formControl}
+        fullWidth
+        error={hasExceededLimit}
+      >
         <TextField
           name="bio"
           id="bio"
@@ -160,14 +174,20 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
           rowsMax={4}
           variant="outlined"
           disabled={loading}
+          error={hasExceededLimit}
         />
+        <FormHelperText className={classes.count}>
+          {!hasExceededLimit
+            ? `${textLength}/${charLimit}`
+            : `-${textLength - charLimit}`}
+        </FormHelperText>
       </FormControl>
       <div className={classes.action}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          disabled={loading}
+          disabled={loading || hasExceededLimit}
           className={classes.button}
         >
           Save Changes
@@ -181,7 +201,6 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
 };
 UserDetailsSetting.propTypes = {
   credentials: PropTypes.object.isRequired,
-  error: PropTypes.object,
   loading: PropTypes.bool,
 };
 export default UserDetailsSetting;

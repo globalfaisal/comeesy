@@ -20,16 +20,20 @@ import deafultAvatarPath from '../../assets/images/default-avatar.png';
 /* -- styles -- */
 import useStyles from './styles';
 
-const MAX_CHAR = 500;
-
-const CommentBox = ({ handleSubmit, error, imageUrl, placeholder }) => {
+const CommentBox = ({
+  handleSubmit,
+  error,
+  imageUrl,
+  placeholder,
+  charLimit = 500,
+}) => {
   const classes = useStyles();
   const inputRef = useRef(null);
 
   const [input, setInput] = useState('');
   const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
-    MAX_CHAR
+    charLimit
   );
 
   const onChange = e => {
@@ -84,8 +88,8 @@ const CommentBox = ({ handleSubmit, error, imageUrl, placeholder }) => {
             )}
             <FormHelperText className={classes.count}>
               {!hasExceededLimit
-                ? `${textLength}/${MAX_CHAR}`
-                : `-${textLength - MAX_CHAR}`}
+                ? `${textLength}/${charLimit}`
+                : `-${textLength - charLimit}`}
             </FormHelperText>
             <Button
               type="submit"
@@ -109,6 +113,7 @@ CommentBox.propTypes = {
   error: PropTypes.string,
   imageUrl: PropTypes.string,
   placeholder: PropTypes.string,
+  charLimit: PropTypes.number,
 };
 
 export default CommentBox;
