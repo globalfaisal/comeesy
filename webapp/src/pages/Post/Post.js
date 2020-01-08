@@ -15,6 +15,7 @@ import CommentBox from '../../components/CommentBox/CommentBox';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CommentList from '../../components/Comments/CommentList/CommentList';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -62,6 +63,7 @@ const Post = ({ match }) => {
             imageUrl={imageUrl}
             placeholder="Write a comment..."
           />
+          <CommentList comments={posts[match.params.postId].comments} />
         </Container>
       )}
     </div>
