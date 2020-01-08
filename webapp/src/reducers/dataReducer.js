@@ -52,6 +52,19 @@ export default (state = INITIAL_STATE, action) => {
           },
         },
       };
+    case dataTypes.SET_COMMENT_REPLIES:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          ...state.posts,
+          [action.payload.postId]: {
+            ...state.posts[action.payload.postId],
+            replies: action.payload.replies,
+          },
+        },
+      };
     case dataTypes.LIKE_POST:
     case dataTypes.UNLIKE_POST:
       return {

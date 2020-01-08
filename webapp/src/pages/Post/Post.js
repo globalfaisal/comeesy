@@ -22,13 +22,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     padding: `${theme.spacing(6)}px 0px`,
   },
-  header: {
-    padding: '16px 0',
-    display: 'flex',
-    alignItems: 'center',
-    color: theme.palette.text.secondary,
-    borderBottom: '1px solid #e8e8e8',
-  },
 }));
 
 const Post = ({ match }) => {
@@ -57,13 +50,13 @@ const Post = ({ match }) => {
       {posts && (
         <Container maxWidth="md">
           <PostCard post={posts[match.params.postId]} />
+          <CommentList comments={posts[match.params.postId].comments} />
           <CommentBox
             handleSubmit={handleCommentSubmit}
             error={commentError}
             imageUrl={imageUrl}
             placeholder="Write a comment..."
           />
-          <CommentList comments={posts[match.params.postId].comments} />
         </Container>
       )}
     </div>

@@ -19,6 +19,7 @@ export default () =>
       },
       colors: {
         ...colors.others,
+        defaultBackground: colors.defaultBackground,
       },
     },
     typography: {

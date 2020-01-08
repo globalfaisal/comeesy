@@ -49,6 +49,24 @@ export const getPost = postId => dispatch =>
         reject(new Error('Something went wrong'));
       });
   });
+export const getCommentReplies = (postId, commentId) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    dispatch(loadingData());
+    comeesyAPI
+      .get(`/post/${postId}/comment/${commentId}/replies`)
+      .then(response => {
+        resolve();
+        dispatch({
+          type: dataTypes.SET_COMMENT_REPLIES,
+          payload: { postId, replies: response.data },
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        dispatch({ type: dataTypes.SET_COMMENT_REPLIES, payload: null });
+        reject(new Error('Something went wrong'));
+      });
+  });
 
 export const deletePost = postId => dispatch =>
   new Promise(async (resolve, reject) => {

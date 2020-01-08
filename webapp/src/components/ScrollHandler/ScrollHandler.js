@@ -17,7 +17,7 @@ const ScrollHandler = () => {
           inline: 'center',
         });
       }
-    }, 100);
+    }, 300);
     return () => {
       window.clearTimeout(timeout);
     };
