@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { login } from '../../actions/userActions';
-import { clearErrors } from '../../actions/UIActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
@@ -23,11 +23,6 @@ const Login = () => {
 
   const [inputs, setInputs] = useState({ email: '', password: '' });
 
-  useEffect(() => {
-    dispatch(clearErrors());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleChange = event => {
     event.persist();
     setInputs(prevInputs => ({
@@ -38,7 +33,9 @@ const Login = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(login(inputs));
+    dispatch(login(inputs)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
   };
 
   return (

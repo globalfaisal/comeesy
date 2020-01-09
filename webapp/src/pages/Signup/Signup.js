@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
-import { clearErrors } from '../../actions/UIActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -30,11 +30,6 @@ const Signup = () => {
     confirmPassword: '',
   });
 
-  useEffect(() => {
-    dispatch(clearErrors());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleChange = event => {
     event.persist();
     setInputs(prevInputs => ({
@@ -45,7 +40,9 @@ const Signup = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(signup(inputs)).catch(error => console.log('SIGNUP: ', error));
+    dispatch(signup(inputs)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
   };
 
   return (
