@@ -70,6 +70,7 @@ export default () =>
           minWidth: 100,
           marginTop: -1,
           borderRadius: 0,
+          border: '1px solid #e6e6e6',
         },
       },
       MuiSkeleton: {

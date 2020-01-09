@@ -89,6 +89,7 @@ export const deletePost = postId => dispatch =>
       if (location.pathname === `/post/${postId}`) history.push('/');
     } catch (error) {
       console.error(error);
+      if (error.response) reject(error.response.data);
       reject(new Error('Something went wrong. Please try again'));
     }
   });
