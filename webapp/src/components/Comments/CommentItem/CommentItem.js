@@ -11,21 +11,20 @@ import { getCommentReplies } from '../../../actions/dataActions';
 import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
 
 /* -- components -- */
-import Replies from '../Replies/Replies';
+import RepliesList from '../RepliesList/RepliesList';
 
 /* -- mui -- */
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ReplyIcon from '@material-ui/icons/Reply';
+import ViewReplyIcon from '@material-ui/icons/QuestionAnswerOutlined';
 
 /* -- styles -- */
 import useStyles from './styles';
 import { Button } from '@material-ui/core';
 
-const Comment = ({ comment }) => {
+const CommentItem = ({ comment }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [expandReplies, setExpandReplies] = useState(false);
@@ -44,58 +43,53 @@ const Comment = ({ comment }) => {
       dense
       divider
     >
-      <ListItemText
-        className={classes.title}
-        primary={
-          <Avatar
-            alt={comment.user.username}
-            src={comment.user.imageUrl}
+      <div className={classes.header}>
+        <Avatar
+          alt={comment.user.username}
+          src={comment.user.imageUrl}
+          component={Link}
+          to={`/u/${comment.user.username}`}
+          className={classes.avatar}
+        />
+        <div>
+          <Typography
             component={Link}
             to={`/u/${comment.user.username}`}
-            className={classes.avatar}
-          />
-        }
-        secondary={
-          <Fragment>
-            <Typography
-              component={Link}
-              to={`/u/${comment.user.username}`}
-              variant="body2"
-              color="primary"
-              className={classes.name}
-            >{`${comment.user.name}`}</Typography>
-            <span className="dot inline small"></span>
-            <Typography
-              component="span"
-              variant="body2"
-              className={classes.username}
-            >{`@${comment.user.username}`}</Typography>
-            <Typography
-              component="div"
-              variant="caption"
-              className={classes.createdAt}
-            >
-              {formatDateToRelTime(comment.createdAt)}
-            </Typography>
-          </Fragment>
-        }
-      />
+            variant="body2"
+            color="primary"
+            className={classes.name}
+          >{`${comment.user.name}`}</Typography>
+          <span className="dot inline small"></span>
+          <Typography
+            component="span"
+            variant="body2"
+            className={classes.username}
+          >{`@${comment.user.username}`}</Typography>
+          <Typography
+            component="div"
+            variant="caption"
+            className={classes.createdAt}
+          >
+            {formatDateToRelTime(comment.createdAt)}
+          </Typography>
+        </div>
+      </div>
 
       <div className={classes.body}>
         <Typography variant="body2" color="textSecondary">
           {comment.body}
         </Typography>
       </div>
-      <div className={classes.commentAction}>
+      <div className={classes.commentActions}>
         {comment.replyCount > 0 && (
           <Button
             size="small"
             onClick={handleViewReply}
             className={classes.toggleRepliesButton}
             disableRipple
-            startIcon={<ExpandMoreIcon />}
+            startIcon={<ViewReplyIcon />}
           >
-            {shortenNumbers(comment.replyCount)}
+            View {shortenNumbers(comment.replyCount)}
             {comment.replyCount === 1 ? ' Reply' : ' Replies'}
           </Button>
         )}
@@ -104,11 +98,11 @@ const Comment = ({ comment }) => {
           Reply
         </Button>
       </div>
-      {expandReplies && <Replies comment={comment} />}
+      {expandReplies && <RepliesList comment={comment} />}
     </ListItem>
   );
 };
-Comment.propTypes = {
+CommentItem.propTypes = {
   comment: PropTypes.object.isRequired,
 };
-export default Comment;
+export default CommentItem;

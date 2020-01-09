@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 /* -- utils -- */
 
 /* -- components -- */
-import Comment from '../Comment/Comment';
+import CommentItem from '../CommentItem/CommentItem';
 
 /* -- mui -- */
 import List from '@material-ui/core/List';
@@ -28,7 +28,7 @@ const CommentList = ({ comments = [] }) => {
   return (
     <List dense className={classes.root}>
       {comments.map((comment, key) => (
-        <Comment comment={comment} key={key} />
+        <CommentItem comment={comment} key={key} />
       ))}
     </List>
   );

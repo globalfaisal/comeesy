@@ -14,7 +14,7 @@ export default makeStyles(theme => ({
     height: 28,
     marginRight: theme.spacing(1),
   },
-  title: {
+  header: {
     display: 'flex',
   },
   name: {
@@ -27,8 +27,8 @@ export default makeStyles(theme => ({
   body: {
     padding: '3px 36px 8px 36px',
   },
-  commentAction: {
-    marginLeft: 36,
+  commentActions: {
+    marginLeft: 32,
   },
   toggleRepliesButton: {
     marginRight: 16,

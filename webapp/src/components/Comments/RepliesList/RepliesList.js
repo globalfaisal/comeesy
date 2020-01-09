@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -11,36 +11,34 @@ import { formatDateToRelTime } from '../../../utils/helperFns';
 /* -- mui -- */
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 /* -- styles -- */
 import useStyles from './styles';
 
-const Replies = ({ comment }) => {
+const RepliesList = ({ comment }) => {
   const classes = useStyles();
-  const { posts, loading } = useSelector(state => state.data);
+  const { posts } = useSelector(state => state.data);
 
   if (!comment) return null;
   const replies = _.filter(posts[comment.postId].replies, [
     'commentId',
     comment.commentId,
   ]);
-  const renderReplies = () => (
-    <List dense>
-      {replies.map(reply => (
-        <ListItem
-          key={reply.replyId}
-          className={classes.liItem}
-          alignItems="flex-start"
-          dense
-          divider
-        >
-          <ListItemText
-            className={classes.title}
-            primary={
+
+  if (replies.length === 0) return null;
+  return (
+    <div className={classes.root}>
+      <List dense>
+        {replies.map(reply => (
+          <ListItem
+            key={reply.replyId}
+            className={classes.liItem}
+            alignItems="flex-start"
+            dense
+          >
+            <div className={classes.header}>
               <Avatar
                 alt={reply.user.username}
                 src={reply.user.imageUrl}
@@ -48,9 +46,7 @@ const Replies = ({ comment }) => {
                 to={`/u/${reply.user.username}`}
                 className={classes.avatar}
               />
-            }
-            secondary={
-              <Fragment>
+              <div>
                 <Typography
                   component={Link}
                   to={`/u/${reply.user.username}`}
@@ -71,32 +67,21 @@ const Replies = ({ comment }) => {
                 >
                   {formatDateToRelTime(reply.createdAt)}
                 </Typography>
-              </Fragment>
-            }
-          />
+              </div>
+            </div>
 
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            className={classes.body}
-          >
-            {reply.body}
-          </Typography>
-        </ListItem>
-      ))}
-    </List>
-  );
-  return (
-    <div className={classes.root}>
-      {loading && replies.length === 0 ? (
-        <CircularProgress size={20} />
-      ) : (
-        renderReplies()
-      )}
+            <div className={classes.body}>
+              <Typography variant="body2" color="textSecondary">
+                {reply.body}
+              </Typography>
+            </div>
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 };
-Replies.propTypes = {
+RepliesList.propTypes = {
   comment: PropTypes.object.isRequired,
 };
-export default Replies;
+export default RepliesList;
