@@ -18,6 +18,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ReplyIcon from '@material-ui/icons/Reply';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -26,12 +28,13 @@ import { Button } from '@material-ui/core';
 const Comment = ({ comment }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [hidden, setHidden] = useState(true);
+  const [expandReplies, setExpandReplies] = useState(false);
   if (!comment) return null;
 
   const handleViewReply = () => {
-    dispatch(getCommentReplies(comment.postId, comment.commentId));
-    setHidden(false);
+    dispatch(getCommentReplies(comment.postId, comment.commentId)).then(() => {
+      setExpandReplies(true);
+    });
   };
   return (
     <ListItem
@@ -82,14 +85,26 @@ const Comment = ({ comment }) => {
         <Typography variant="body2" color="textSecondary">
           {comment.body}
         </Typography>
-        {hidden && comment.replyCount > 0 && (
-          <Button size="small" onClick={handleViewReply}>
-            View {shortenNumbers(comment.replyCount)}
-            {comment.replyCount === 1 ? ' reply' : ' replies'}
+      </div>
+      <div className={classes.commentAction}>
+        {comment.replyCount > 0 && (
+          <Button
+            size="small"
+            onClick={handleViewReply}
+            className={classes.toggleRepliesButton}
+            disableRipple
+            startIcon={<ExpandMoreIcon />}
+          >
+            {shortenNumbers(comment.replyCount)}
+            {comment.replyCount === 1 ? ' Reply' : ' Replies'}
           </Button>
         )}
+        {/* TODO: HANDLE REPLY TOGGLER */}
+        <Button size="small" startIcon={<ReplyIcon />} disableRipple>
+          Reply
+        </Button>
       </div>
-      <Replies comment={comment} hidden={hidden} />
+      {expandReplies && <Replies comment={comment} />}
     </ListItem>
   );
 };

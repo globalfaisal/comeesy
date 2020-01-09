@@ -19,7 +19,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 /* -- styles -- */
 import useStyles from './styles';
 
-const Replies = ({ comment, hidden = false }) => {
+const Replies = ({ comment }) => {
   const classes = useStyles();
   const { posts, loading } = useSelector(state => state.data);
 
@@ -28,7 +28,6 @@ const Replies = ({ comment, hidden = false }) => {
     'commentId',
     comment.commentId,
   ]);
-
   const renderReplies = () => (
     <List dense>
       {replies.map(reply => (
@@ -88,7 +87,7 @@ const Replies = ({ comment, hidden = false }) => {
     </List>
   );
   return (
-    <div className={classes.root} hidden={hidden}>
+    <div className={classes.root}>
       {loading && replies.length === 0 ? (
         <CircularProgress size={20} />
       ) : (
@@ -99,6 +98,5 @@ const Replies = ({ comment, hidden = false }) => {
 };
 Replies.propTypes = {
   comment: PropTypes.object.isRequired,
-  hidden: PropTypes.bool.isRequired,
 };
 export default Replies;

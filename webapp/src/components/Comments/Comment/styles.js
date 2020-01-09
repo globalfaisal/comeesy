@@ -25,6 +25,12 @@ export default makeStyles(theme => ({
     fontWeight: 200,
   },
   body: {
-    padding: '3px 16px 16px 36px',
+    padding: '3px 36px 8px 36px',
+  },
+  commentAction: {
+    marginLeft: 36,
+  },
+  toggleRepliesButton: {
+    marginRight: 16,
   },
 }));
