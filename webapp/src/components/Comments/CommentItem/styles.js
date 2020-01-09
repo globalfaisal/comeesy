@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
   liItem: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     '&:last-child': {
@@ -32,5 +33,10 @@ export default makeStyles(theme => ({
   },
   toggleRepliesButton: {
     marginRight: 16,
+  },
+  extraMenuButton: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 }));

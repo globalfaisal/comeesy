@@ -14,7 +14,6 @@ export const getPosts = () => dispatch =>
     comeesyAPI
       .get('/posts')
       .then(response => {
-        resolve();
         dispatch({
           type: dataTypes.SET_POSTS,
           payload: response.data,
@@ -37,7 +36,6 @@ export const getPost = postId => dispatch =>
     comeesyAPI
       .get(`/post/${postId}`)
       .then(response => {
-        resolve();
         dispatch({
           type: dataTypes.SET_POST,
           payload: response.data,
@@ -55,11 +53,11 @@ export const getCommentReplies = (postId, commentId) => dispatch =>
     comeesyAPI
       .get(`/post/${postId}/comment/${commentId}/replies`)
       .then(response => {
-        resolve();
         dispatch({
           type: dataTypes.SET_COMMENT_REPLIES,
           payload: { postId, replies: response.data },
         });
+        resolve(/* GET COMMENT REPLIES SUCCESSFULLY */);
       })
       .catch(error => {
         console.error(error);
@@ -79,7 +77,6 @@ export const deletePost = postId => dispatch =>
       const response = await comeesyAPI.delete(`/post/${postId}`, {
         headers: { Authorization: token },
       });
-      resolve(response.data);
       dispatch({
         type: dataTypes.DELETE_POST,
         payload: { postId }, // Deleted post ID
@@ -87,9 +84,34 @@ export const deletePost = postId => dispatch =>
       // Redirect to home
       const { location } = history;
       if (location.pathname === `/post/${postId}`) history.push('/');
+      resolve(response.data);
     } catch (error) {
       console.error(error);
-      if (error.response) reject(error.response.data);
+      reject(new Error('Something went wrong. Please try again'));
+    }
+  });
+
+export const deleteComment = (postId, commentId) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.delete(
+        `/post/${postId}/comment/${commentId}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch({
+        type: dataTypes.DELETE_COMMENT,
+        payload: { post: response.data, commentId },
+      });
+      resolve({ message: 'Comment deleted successfully' });
+    } catch (error) {
+      console.error(error);
       reject(new Error('Something went wrong. Please try again'));
     }
   });
@@ -110,8 +132,6 @@ export const like = postId => dispatch =>
         type: dataTypes.LIKE_POST,
         payload: response.data,
       });
-
-      resolve();
     } catch (error) {
       console.error(error);
       if (error.response) reject(error.response.data);
@@ -135,8 +155,6 @@ export const unlike = postId => dispatch =>
         type: dataTypes.UNLIKE_POST,
         payload: response.data,
       });
-
-      resolve();
     } catch (error) {
       console.error(error);
       reject(new Error('Something went wrong. Please try again'));
@@ -180,7 +198,6 @@ export const submitComment = (postId, body) => dispatch =>
         }
       );
       dispatch(getPost(response.data.postId));
-      resolve();
     } catch (error) {
       console.error(error);
       if (error.response.data) reject(error.response.data);

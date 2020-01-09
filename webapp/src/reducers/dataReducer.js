@@ -52,6 +52,24 @@ export default (state = INITIAL_STATE, action) => {
           },
         },
       };
+    case dataTypes.DELETE_COMMENT: {
+      if (!action.payload) return { ...state, loading: false };
+
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          ...state.posts,
+          [action.payload.post.postId]: {
+            ...action.payload.post,
+
+            comments: state.posts[action.payload.post.postId].comments.filter(
+              c => c.commentId !== action.payload.commentId
+            ),
+          },
+        },
+      };
+    }
     case dataTypes.SET_COMMENT_REPLIES:
       if (!action.payload) return { ...state, loading: false };
       return {
@@ -69,14 +87,23 @@ export default (state = INITIAL_STATE, action) => {
     case dataTypes.UNLIKE_POST:
       return {
         ...state,
-        posts: { ...state.posts, [action.payload.postId]: action.payload },
+        posts: {
+          ...state.posts,
+          [action.payload.postId]: {
+            ...state.posts[action.payload.postId],
+            ...action.payload,
+          },
+        },
         profile:
           state.profile && state.profile.posts
             ? {
                 ...state.profile,
                 posts: {
                   ...state.profile.posts,
-                  [action.payload.postId]: action.payload,
+                  [action.payload.postId]: {
+                    ...state.profile.posts[action.payload.postId],
+                    ...action.payload,
+                  },
                 },
               }
             : state.profile,
