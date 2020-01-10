@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { dataTypes } from '../actions/types.js';
+import { dataTypes, uiTypes } from '../actions/types.js';
 
 const INITIAL_STATE = {
   posts: null,
@@ -148,7 +148,12 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loading: true,
       };
-
+    case uiTypes.CLEAR_ERRORS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      };
     default:
       return state;
   }

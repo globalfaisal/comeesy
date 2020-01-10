@@ -149,7 +149,6 @@ export const updateUserDetails = data => dispatch =>
       console.error(error);
       if (error.response) {
         dispatch(updateUserDataFailed(error.response.data));
-        reject(error.response.data);
       } else reject(new Error('Something went wrong. Please try again'));
     }
   });
