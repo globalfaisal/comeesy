@@ -116,6 +116,31 @@ export const deleteComment = (postId, commentId) => dispatch =>
     }
   });
 
+export const deleteCommentReply = (postId, commentId, replyId) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.delete(
+        `/post/${postId}/comment/${commentId}/reply/${replyId}`,
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch({
+        type: dataTypes.DELETE_COMMENT_REPLY,
+        payload: { comment: response.data, replyId },
+      });
+      resolve({ message: 'Comment reply deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      reject(new Error('Something went wrong. Please try again'));
+    }
+  });
+
 export const like = postId => dispatch =>
   new Promise(async (resolve, reject) => {
     try {

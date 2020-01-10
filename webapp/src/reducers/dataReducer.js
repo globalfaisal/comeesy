@@ -66,6 +66,32 @@ export default (state = INITIAL_STATE, action) => {
             comments: state.posts[action.payload.post.postId].comments.filter(
               c => c.commentId !== action.payload.commentId
             ),
+            replies: state.posts[action.payload.post.postId].replies.filter(
+              r => r.commentId !== action.payload.commentId
+            ),
+          },
+        },
+      };
+    }
+    case dataTypes.DELETE_COMMENT_REPLY: {
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          ...state.posts,
+          [action.payload.comment.postId]: {
+            ...state.posts[action.payload.comment.postId],
+            comments: state.posts[
+              action.payload.comment.postId
+            ].comments.map(c =>
+              c.commentId === action.payload.comment.commentId
+                ? action.payload.comment
+                : c
+            ),
+            replies: state.posts[action.payload.comment.postId].replies.filter(
+              r => r.replyId !== action.payload.replyId
+            ),
           },
         },
       };

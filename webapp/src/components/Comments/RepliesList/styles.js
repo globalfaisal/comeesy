@@ -8,6 +8,7 @@ export default makeStyles(theme => ({
     borderLeft: `1.5px solid ${theme.palette.colors.greylight}`,
   },
   liItem: {
+    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
   },
@@ -28,5 +29,10 @@ export default makeStyles(theme => ({
   },
   body: {
     padding: '3px 16px 16px 32px',
+  },
+  extraMenuButton: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
 }));
