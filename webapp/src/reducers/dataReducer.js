@@ -66,9 +66,11 @@ export default (state = INITIAL_STATE, action) => {
             comments: state.posts[action.payload.post.postId].comments.filter(
               c => c.commentId !== action.payload.commentId
             ),
-            replies: state.posts[action.payload.post.postId].replies.filter(
-              r => r.commentId !== action.payload.commentId
-            ),
+            replies: state.posts[action.payload.post.postId].replies
+              ? state.posts[action.payload.post.postId].replies.filter(
+                  r => r.commentId !== action.payload.commentId
+                )
+              : [],
           },
         },
       };

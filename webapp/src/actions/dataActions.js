@@ -111,7 +111,7 @@ export const deleteComment = (postId, commentId) => dispatch =>
       });
       resolve({ message: 'Comment deleted successfully' });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       reject(new Error('Something went wrong. Please try again'));
     }
   });

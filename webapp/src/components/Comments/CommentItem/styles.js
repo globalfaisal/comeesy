@@ -27,6 +27,8 @@ export default makeStyles(theme => ({
   },
   body: {
     padding: '3px 36px 8px 36px',
+    maxWidth: '98%',
+    overflowWrap: 'break-word',
   },
   commentActions: {
     marginLeft: 32,
