@@ -15,8 +15,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(theme => ({
   root: {
     margin: '8px 0',
-    paddingTop: 32,
-    paddingBottom: 32,
+    padding: 32,
     background: theme.palette.colors.white,
     border: `1px solid ${theme.palette.colors.greylight}`,
   },

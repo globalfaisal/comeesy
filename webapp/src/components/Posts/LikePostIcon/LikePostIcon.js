@@ -8,8 +8,8 @@ import _ from 'lodash';
 import { like, unlike } from '../../../actions/dataActions';
 
 /* -- mui -- */
-import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/FavoriteOutlined';
+import Button from '@material-ui/core/Button';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -32,18 +32,20 @@ const LikePost = ({ post }) => {
   };
 
   const renderContent = () => (
-    <IconButton
+    <Button
       aria-label="like"
-      size="medium"
+      size="small"
       disableFocusRipple
-      className={classes.likeIconBtn}
+      className={classes.likeBtn}
       onClick={onLikeClick}
+      startIcon={
+        <FavoriteIcon
+          className={liked ? classes.likeIconActive : classes.likeIconNormal}
+        />
+      }
     >
-      <FavoriteIcon
-        fontSize="inherit"
-        className={liked ? classes.likeIconActive : classes.likeIconNormal}
-      />
-    </IconButton>
+      Like
+    </Button>
   );
   return renderContent();
 };

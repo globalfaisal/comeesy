@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 /* -- mui -- */
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import CommentIcon from '@material-ui/icons/ModeComment';
 
 /* -- styles -- */
@@ -13,16 +14,17 @@ import useStyles from './styles';
 const CommentPostIcon = ({ post }) => {
   const classes = useStyles();
   const renderContent = () => (
-    <IconButton
+    <Button
       component={Link}
       to={`/post/${post.postId}#comment`}
       aria-label="comment"
-      size="medium"
+      size="small"
       disableFocusRipple
-      className={classes.commentIconBtn}
+      className={classes.commentBtn}
+      startIcon={<CommentIcon className={classes.commentIcon} />}
     >
-      <CommentIcon fontSize="inherit" className={classes.commentIcon} />
-    </IconButton>
+      Comment
+    </Button>
   );
   return renderContent();
 };

@@ -23,6 +23,7 @@ export default makeStyles(theme => ({
   },
   input: {
     padding: '6px 8px',
+    fontSize: 14,
     color: theme.palette.text.secondary,
   },
   action: {
