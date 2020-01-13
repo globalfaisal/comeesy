@@ -46,7 +46,7 @@ const CommentItem = ({ comment }) => {
   const [toggleReplies, setToggleReplies] = useState(false);
   const [toggleCommentBox, setToggleCommentBox] = useState(false);
 
-  const handleViewReply = () => {
+  const handleViewReplies = () => {
     if (!toggleReplies) {
       dispatch(getCommentReplies(comment.postId, comment.commentId)).then(
         () => {
@@ -62,16 +62,15 @@ const CommentItem = ({ comment }) => {
     });
   };
 
-  const handleReplySubmit = value => {
-    console.log(value);
+  const handleReplySubmit = value =>
     dispatch(submitCommentReply(comment.postId, comment.commentId, value))
       .then(() => {
         setToggleCommentBox(false);
+        handleViewReplies();
       })
       .catch(({ message }) => {
         dispatch(showAlert('error', message));
       });
-  };
 
   const renderExtraMenu = () => {
     if (currentUser && currentUser.username === comment.user.username) {
@@ -163,7 +162,7 @@ const CommentItem = ({ comment }) => {
         {comment.replyCount > 0 && (
           <Button
             size="small"
-            onClick={handleViewReply}
+            onClick={handleViewReplies}
             className={classes.toggleRepliesButton}
             disableRipple
             startIcon={<ViewReplyIcon />}
@@ -175,7 +174,10 @@ const CommentItem = ({ comment }) => {
         )}
         {/* TODO: HANDLE REPLY TOGGLER */}
         <Button
-          onClick={() => setToggleCommentBox(prevState => !prevState)}
+          onClick={() => {
+            setToggleCommentBox(prevState => !prevState);
+            setToggleReplies(false);
+          }}
           size="small"
           startIcon={<ReplyIcon />}
           disableRipple

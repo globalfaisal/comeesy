@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -29,6 +29,7 @@ const CommentBox = ({
 }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
+  const { loading } = useSelector(state => state.data);
   const imageUrl = useSelector(state =>
     state.user.data ? state.user.data.credentials.imageUrl : ''
   );
@@ -64,7 +65,7 @@ const CommentBox = ({
         onClick={checkAuth}
         onSubmit={e => {
           e.preventDefault();
-          handleSubmit(input);
+          handleSubmit(input.trim());
         }}
       >
         <FormControl fullWidth error={hasExceededLimit}>
@@ -98,7 +99,7 @@ const CommentBox = ({
               color="primary"
               size="small"
               variant="contained"
-              disabled={hasExceededLimit || !input.trim().length}
+              disabled={hasExceededLimit || !input.trim().length || loading}
               className={classes.button}
             >
               Post

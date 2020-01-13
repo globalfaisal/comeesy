@@ -214,7 +214,7 @@ export const submitComment = (postId, body) => dispatch =>
       if (!hasAuthorization(dispatch)) {
         return dispatch(openModal(Login));
       }
-
+      dispatch(loadingData());
       const response = await comeesyAPI.post(
         `/post/${postId}/comment`,
         { body },
@@ -236,7 +236,7 @@ export const submitCommentReply = (postId, commentId, body) => dispatch =>
       if (!hasAuthorization(dispatch)) {
         return dispatch(openModal(Login));
       }
-
+      dispatch(loadingData());
       const response = await comeesyAPI.post(
         `/post/${postId}/comment/${commentId}/reply`,
         { body },
@@ -244,7 +244,6 @@ export const submitCommentReply = (postId, commentId, body) => dispatch =>
           headers: { Authorization: token },
         }
       );
-      dispatch(getCommentReplies(postId, commentId));
       dispatch({
         type: dataTypes.SUBMIT_COMMENT_REPLY,
         payload: { postId, commentId },

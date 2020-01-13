@@ -37,9 +37,13 @@ const Post = ({ match }) => {
   }, [dispatch, match.params]);
 
   const handleCommentSubmit = value => {
-    dispatch(submitComment(match.params.postId, value.trim()))
-      .then(() => setCommentError(''))
-      .catch(({ error }) => setCommentError(error));
+    dispatch(submitComment(match.params.postId, value))
+      .then(() => {
+        setCommentError('');
+      })
+      .catch(({ error }) => {
+        setCommentError(error);
+      });
   };
 
   if (loading && !posts) return <CircularLoading />;
