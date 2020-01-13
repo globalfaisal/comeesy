@@ -52,7 +52,7 @@ export const login = data => dispatch =>
       .catch(error => {
         console.error(error);
         dispatch(userAuthFailed(error.response ? error.response.data : null));
-        reject(new Error('Something went wrong. Please try again'));
+        reject();
       });
   });
 
@@ -75,7 +75,7 @@ export const signup = data => dispatch =>
       .catch(error => {
         console.error(error);
         dispatch(userAuthFailed(error.response ? error.response.data : null));
-        reject(new Error('Something went wrong. Please try again'));
+        reject();
       });
   });
 

@@ -1,11 +1,10 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { login } from '../../actions/userActions';
-import { showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
@@ -33,9 +32,7 @@ const Login = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(login(inputs)).catch(({ message }) => {
-      dispatch(showAlert('error', message));
-    });
+    dispatch(login(inputs));
   };
 
   return (

@@ -1,11 +1,10 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
-import { showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -40,9 +39,7 @@ const Signup = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(signup(inputs)).catch(({ message }) => {
-      dispatch(showAlert('error', message));
-    });
+    dispatch(signup(inputs));
   };
 
   return (

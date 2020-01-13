@@ -152,7 +152,7 @@ exports.updateUserAvatar = (req, res) => {
       .bucket()
       .upload(imageToUpload.filePath, {
         gzip: true,
-        destination: `users/${req.user.userId}/${imageFileName}`,
+        destination: `users/${req.user.username}/images/${imageFileName}`,
         metadata: {
           public: true,
           metadata: {

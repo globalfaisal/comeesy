@@ -129,6 +129,8 @@ export default (state = INITIAL_STATE, action) => {
       };
     case dataTypes.LIKE_POST:
     case dataTypes.UNLIKE_POST:
+      if (!action.payload) return { ...state, loading: false };
+
       return {
         ...state,
         posts: {
@@ -153,6 +155,8 @@ export default (state = INITIAL_STATE, action) => {
             : state.profile,
       };
     case dataTypes.SET_PROFILE:
+      if (!action.payload) return { ...state, loading: false };
+
       return {
         ...state,
         profile: {
