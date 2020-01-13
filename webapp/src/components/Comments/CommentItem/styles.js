@@ -32,6 +32,7 @@ export default makeStyles(theme => ({
   },
   commentActions: {
     marginLeft: 32,
+    width: 'calc(100% - 32px)',
   },
   toggleRepliesButton: {
     marginRight: 16,

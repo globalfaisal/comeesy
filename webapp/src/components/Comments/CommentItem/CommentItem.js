@@ -5,13 +5,18 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- actions-- */
-import { getCommentReplies, deleteComment } from '../../../actions/dataActions';
+import {
+  getCommentReplies,
+  deleteComment,
+  submitCommentReply,
+} from '../../../actions/dataActions';
 import { showAlert } from '../../../actions/UIActions';
 
 /* -- utils -- */
 import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
 
 /* -- components -- */
+import CommentBox from '../../CommentBox/CommentBox';
 import RepliesList from '../RepliesList/RepliesList';
 
 /* -- mui -- */
@@ -26,29 +31,42 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import ExtraMenuIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
+import Button from '@material-ui/core/Button';
 
 /* -- styles -- */
 import useStyles from './styles';
-import { Button } from '@material-ui/core';
 
 const CommentItem = ({ comment }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
   const currentUser = useSelector(state =>
     state.user.data ? state.user.data.credentials : null
   );
-  const [expandReplies, setExpandReplies] = useState(false);
+  const [toggleReplies, setToggleReplies] = useState(false);
+  const [toggleCommentBox, setToggleCommentBox] = useState(false);
 
   const handleViewReply = () => {
-    dispatch(getCommentReplies(comment.postId, comment.commentId)).then(() => {
-      setExpandReplies(true);
-    });
+    if (!toggleReplies) {
+      dispatch(getCommentReplies(comment.postId, comment.commentId)).then(
+        () => {
+          setToggleReplies(true);
+        }
+      );
+    } else setToggleReplies(false);
   };
 
   const handleDeleteComment = (postId, commentId) => {
-    dispatch(deleteComment(postId, commentId))
-      .then(({ message }) => {
-        dispatch(showAlert('success', message));
+    dispatch(deleteComment(postId, commentId)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
+  };
+
+  const handleReplySubmit = value => {
+    console.log(value);
+    dispatch(submitCommentReply(comment.postId, comment.commentId, value))
+      .then(() => {
+        setToggleCommentBox(false);
       })
       .catch(({ message }) => {
         dispatch(showAlert('error', message));
@@ -150,16 +168,24 @@ const CommentItem = ({ comment }) => {
             disableRipple
             startIcon={<ViewReplyIcon />}
           >
-            View {shortenNumbers(comment.replyCount)}
-            {comment.replyCount === 1 ? ' Reply' : ' Replies'}
+            {`${toggleReplies ? 'Hide' : 'View'} replies(${shortenNumbers(
+              comment.replyCount
+            )})`}
           </Button>
         )}
         {/* TODO: HANDLE REPLY TOGGLER */}
-        <Button size="small" startIcon={<ReplyIcon />} disableRipple>
+        <Button
+          onClick={() => setToggleCommentBox(prevState => !prevState)}
+          size="small"
+          startIcon={<ReplyIcon />}
+          disableRipple
+        >
           Reply
         </Button>
+        {toggleCommentBox && <CommentBox handleSubmit={handleReplySubmit} />}
       </div>
-      {expandReplies && <RepliesList comment={comment} />}
+
+      {toggleReplies && <RepliesList comment={comment} />}
       {renderExtraMenu()}
     </ListItem>
   );

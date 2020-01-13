@@ -52,6 +52,22 @@ export default (state = INITIAL_STATE, action) => {
           },
         },
       };
+    case dataTypes.SUBMIT_COMMENT_REPLY:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          ...state.posts,
+          [action.payload.postId]: {
+            ...state.posts[action.payload.postId],
+            comments: state.posts[action.payload.postId].comments.map(c => {
+              if (c.commentId === action.payload.commentId) c.replyCount += 1;
+              return c;
+            }),
+          },
+        },
+      };
     case dataTypes.DELETE_COMMENT: {
       if (!action.payload) return { ...state, loading: false };
 

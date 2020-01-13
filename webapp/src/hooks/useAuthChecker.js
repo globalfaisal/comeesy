@@ -13,8 +13,10 @@ const useAuthChecker = () => {
 
   const authenticate = () => {
     if (!hasAuthorization(dispatch)) {
-      return dispatch(openModal(Login));
+      dispatch(openModal(Login));
+      return false;
     }
+    return true;
   };
 
   return { authenticate };

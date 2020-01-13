@@ -42,13 +42,11 @@ const RepliesList = ({ comment }) => {
   const commentReplies = replies.filter(r => r.commentId === comment.commentId);
 
   const handleDeleteComment = (postId, commentId, replyId) => {
-    dispatch(deleteCommentReply(postId, commentId, replyId))
-      .then(({ message }) => {
-        dispatch(showAlert('success', message));
-      })
-      .catch(({ message }) => {
+    dispatch(deleteCommentReply(postId, commentId, replyId)).catch(
+      ({ message }) => {
         dispatch(showAlert('error', message));
-      });
+      }
+    );
   };
 
   const renderExtraMenu = reply => {

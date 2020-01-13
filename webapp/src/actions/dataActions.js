@@ -20,7 +20,7 @@ export const getPosts = () => dispatch =>
         });
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
         dispatch({
           type: dataTypes.SET_POSTS,
           payload: [],
@@ -42,7 +42,7 @@ export const getPost = postId => dispatch =>
         });
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
         dispatch({ type: dataTypes.SET_POST, payload: null });
         reject(new Error('Something went wrong'));
       });
@@ -60,7 +60,7 @@ export const getCommentReplies = (postId, commentId) => dispatch =>
         resolve(/* GET COMMENT REPLIES SUCCESSFULLY */);
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
         dispatch({ type: dataTypes.SET_COMMENT_REPLIES, payload: null });
         reject(new Error('Something went wrong'));
       });
@@ -86,7 +86,7 @@ export const deletePost = postId => dispatch =>
       if (location.pathname === `/post/${postId}`) history.push('/');
       resolve(response.data);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       reject(new Error('Something went wrong. Please try again'));
     }
   });
@@ -136,7 +136,7 @@ export const deleteCommentReply = (postId, commentId, replyId) => dispatch =>
       });
       resolve({ message: 'Comment reply deleted successfully' });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       reject(new Error('Something went wrong. Please try again'));
     }
   });
@@ -158,7 +158,7 @@ export const like = postId => dispatch =>
         payload: response.data,
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       if (error.response) reject(error.response.data);
       else reject(new Error('Something went wrong. Please try again'));
     }
@@ -181,7 +181,7 @@ export const unlike = postId => dispatch =>
         payload: response.data,
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       reject(new Error('Something went wrong. Please try again'));
     }
   });
@@ -198,7 +198,7 @@ export const getProfile = username => dispatch =>
         });
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
         dispatch({
           type: dataTypes.SET_PROFILE,
           payload: null,
@@ -224,8 +224,34 @@ export const submitComment = (postId, body) => dispatch =>
       );
       dispatch(getPost(response.data.postId));
     } catch (error) {
-      console.error(error);
+      console.log(error);
       if (error.response.data) reject(error.response.data);
       else reject(new Error('Something went wrong. Please try again'));
+    }
+  });
+export const submitCommentReply = (postId, commentId, body) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+
+      const response = await comeesyAPI.post(
+        `/post/${postId}/comment/${commentId}/reply`,
+        { body },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch(getCommentReplies(postId, commentId));
+      dispatch({
+        type: dataTypes.SUBMIT_COMMENT_REPLY,
+        payload: { postId, commentId },
+      });
+      resolve();
+    } catch (error) {
+      console.log(error);
+      reject(new Error('Something went wrong. Please try again'));
     }
   });

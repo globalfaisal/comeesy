@@ -25,11 +25,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Post = ({ match }) => {
-  const { posts, loading } = useSelector(state => state.data);
-  const { data } = useSelector(state => state.user);
-  const imageUrl = data ? data.credentials.imageUrl : '';
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { posts, loading } = useSelector(state => state.data);
   const [commentError, setCommentError] = useState('');
 
   useEffect(() => {
@@ -53,9 +51,7 @@ const Post = ({ match }) => {
           <CommentList comments={posts[match.params.postId].comments} />
           <CommentBox
             handleSubmit={handleCommentSubmit}
-            error={commentError}
-            imageUrl={imageUrl}
-            placeholder="Write a comment..."
+            errorMsg={commentError}
           />
         </Container>
       )}

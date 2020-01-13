@@ -1,5 +1,6 @@
 /* -- libs -- */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /* -- hooks -- */
@@ -22,13 +23,15 @@ import useStyles from './styles';
 
 const CommentBox = ({
   handleSubmit,
-  error,
-  imageUrl,
   placeholder,
+  errorMsg,
   charLimit = 500,
 }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
+  const imageUrl = useSelector(state =>
+    state.user.data ? state.user.data.credentials.imageUrl : ''
+  );
 
   const [input, setInput] = useState('');
   const { authenticate } = useAuthChecker();
@@ -73,7 +76,7 @@ const CommentBox = ({
             value={input}
             onChange={onChange}
             inputProps={{ 'aria-label': 'comment' }}
-            placeholder={placeholder}
+            placeholder={placeholder || 'Write a comment...'}
             inputRef={inputRef}
             rowsMax={6}
             autoFocus
@@ -81,16 +84,15 @@ const CommentBox = ({
           />
 
           <div className={classes.action}>
-            {error && (
-              <FormHelperText className={classes.errorMsg}>
-                {error}
-              </FormHelperText>
-            )}
             <FormHelperText className={classes.count}>
-              {!hasExceededLimit
-                ? `${textLength}/${charLimit}`
-                : `-${textLength - charLimit}`}
+              <span>{errorMsg}</span>
+              <span>
+                {!hasExceededLimit
+                  ? `${textLength}/${charLimit}`
+                  : `-${textLength - charLimit}`}
+              </span>
             </FormHelperText>
+
             <Button
               type="submit"
               color="primary"
@@ -110,8 +112,7 @@ const CommentBox = ({
 
 CommentBox.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.string,
-  imageUrl: PropTypes.string,
+  errorMsg: PropTypes.string,
   placeholder: PropTypes.string,
   charLimit: PropTypes.number,
 };

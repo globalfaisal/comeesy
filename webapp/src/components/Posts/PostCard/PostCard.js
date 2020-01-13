@@ -43,13 +43,9 @@ const PostCard = ({ post }) => {
   if (!post) return null;
 
   const handleDeletePost = postId => {
-    dispatch(deletePost(postId))
-      .then(({ message }) => {
-        dispatch(showAlert('success', message));
-      })
-      .catch(({ message }) => {
-        dispatch(showAlert('error', message));
-      });
+    dispatch(deletePost(postId)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
   };
 
   const renderExtraMenu = () => {
