@@ -13,8 +13,6 @@ import PostList from '../../components/Posts/PostList/PostList';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -36,20 +34,8 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <Container>
-        <Grid container spacing={4}>
-          <Grid item xs={12} sm={8} md={6}>
-            <PostList posts={_.values(posts)} loading={loading} />
-          </Grid>
-          <Hidden only="xs">
-            <Grid item sm={4}>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Assumenda voluptatum aut fugit? Id dolor deleniti aliquam
-              excepturi explicabo voluptatibus delectus nam nisi illo, corporis
-              ad. Voluptate consectetur eligendi assumenda officia.
-            </Grid>
-          </Hidden>
-        </Grid>
+      <Container maxWidth="md">
+        <PostList posts={_.values(posts)} loading={loading} />
       </Container>
     </div>
   );
