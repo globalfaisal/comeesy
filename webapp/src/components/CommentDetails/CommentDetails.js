@@ -2,6 +2,7 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 /* -- utils -- */
 import { formatDateToRelTime } from '../../utils/helperFns';
@@ -19,7 +20,7 @@ import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
 /* -- styles -- */
 import useStyles from './styles';
 
-const CommentItem = ({ comment, showOptions, onDelete, size }) => {
+const CommentDetails = ({ item, showOptions, onDelete, type }) => {
   const classes = useStyles();
 
   const renderOptions = () => {
@@ -62,53 +63,61 @@ const CommentItem = ({ comment, showOptions, onDelete, size }) => {
     return null;
   };
 
-  if (!comment) return null;
+  if (!item) return null;
   return (
     <div className={classes.wrapper}>
       <Avatar
-        alt={comment.user.username}
-        src={comment.user.imageUrl}
+        alt={item.user.username}
+        src={item.user.imageUrl}
         component={Link}
-        to={`/u/${comment.user.username}`}
-        className={classes.avatar}
+        to={`/u/${item.user.username}`}
+        className={clsx(
+          classes.avatar,
+          type === 'reply' && classes.smallAvatar
+        )}
       />
-      <div className={classes.content}>
+      <div
+        className={clsx(
+          classes.content,
+          type === 'reply' ? classes.contentReply : classes.contentComment
+        )}
+      >
         <Typography
           component={Link}
-          to={`/u/${comment.user.username}`}
+          to={`/u/${item.user.username}`}
           variant="body2"
           color="primary"
           className={classes.name}
-        >{`${comment.user.name}`}</Typography>
+        >{`${item.user.name}`}</Typography>
         <span className="dot inline small"></span>
         <Typography
           component="span"
           variant="body2"
           className={classes.username}
-        >{`@${comment.user.username}`}</Typography>
+        >{`@${item.user.username}`}</Typography>
         <Typography
           component="span"
           variant="caption"
           className={classes.createdAt}
         >
-          {formatDateToRelTime(comment.createdAt)}
+          {formatDateToRelTime(item.createdAt)}
         </Typography>
         <Typography
           variant="body2"
           color="textPrimary"
           className={classes.body}
         >
-          {comment.body}
+          {item.body}
         </Typography>
+        {renderOptions()}
       </div>
-      {renderOptions()}
     </div>
   );
 };
-CommentItem.propTypes = {
-  comment: PropTypes.object.isRequired,
+CommentDetails.propTypes = {
+  item: PropTypes.object.isRequired,
   showOptions: PropTypes.bool.isRequired,
   onDelete: PropTypes.func.isRequired,
-  size: PropTypes.string,
+  type: PropTypes.string,
 };
-export default CommentItem;
+export default CommentDetails;

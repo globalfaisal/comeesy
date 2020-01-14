@@ -3,30 +3,25 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
   liItem: {
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
+    width: '100%',
   },
   commentActions: {
-    marginLeft: 50,
-    width: '70%',
+    paddingLeft: 50,
+    width: '100%',
     [theme.breakpoints.down('xs')]: {
-      marginLeft: 10,
-      width: '95%',
+      paddingLeft: 20,
     },
   },
   toggleRepliesButton: {
-    marginRight: 8,
+    marginRight: 2,
     color: theme.palette.colors.steelblue,
     fontWeight: 400,
+    padding: '0 6px',
   },
   replyButton: {
     color: theme.palette.colors.steelblue,
     fontWeight: 400,
-  },
-  extraMenuButton: {
-    position: 'absolute',
-    right: 30,
-    top: 10,
   },
 }));

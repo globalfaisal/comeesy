@@ -11,14 +11,14 @@ import CommentIcon from '@material-ui/icons/ModeComment';
 /* -- styles -- */
 import useStyles from './styles';
 
-const CommentPostIcon = ({ post }) => {
+const CommentPostButton = ({ post }) => {
   const classes = useStyles();
   const renderContent = () => (
     <Button
       component={Link}
       to={`/post/${post.postId}#comment`}
       aria-label="comment"
-      size="small"
+      size="medium"
       disableFocusRipple
       className={classes.commentBtn}
       startIcon={<CommentIcon className={classes.commentIcon} />}
@@ -28,7 +28,7 @@ const CommentPostIcon = ({ post }) => {
   );
   return renderContent();
 };
-CommentPostIcon.propTypes = {
+CommentPostButton.propTypes = {
   post: PropTypes.object.isRequired,
 };
-export default CommentPostIcon;
+export default CommentPostButton;

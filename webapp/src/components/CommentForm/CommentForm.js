@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import FormControl from '@material-ui/core/FormControl';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 /* -- styles -- */
@@ -21,11 +22,11 @@ import deafultAvatarPath from '../../assets/images/default-avatar.png';
 /* -- styles -- */
 import useStyles from './styles';
 
-const CommentBox = ({
+const CommentForm = ({
   handleSubmit,
   placeholder,
   errorMsg,
-  charLimit = 500,
+  charLimit = 280,
 }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
@@ -52,7 +53,7 @@ const CommentBox = ({
   };
 
   return (
-    <div className={classes.commentBox}>
+    <div className={classes.root}>
       <Avatar
         alt="avatar"
         src={imageUrl || deafultAvatarPath}
@@ -66,6 +67,7 @@ const CommentBox = ({
         onSubmit={e => {
           e.preventDefault();
           handleSubmit(input.trim());
+          // TODO: REFACTOR (CLEAR INPUT ONLY IF THE COMMENT IS SUCCESSFULLY SUBMITTED)
         }}
       >
         <FormControl fullWidth error={hasExceededLimit}>
@@ -90,15 +92,15 @@ const CommentBox = ({
               <span>
                 {!hasExceededLimit
                   ? `${textLength}/${charLimit}`
-                  : `-${textLength - charLimit}`}
+                  : `(-${textLength - charLimit})`}
               </span>
             </FormHelperText>
-
+            <Divider orientation="vertical" variant="middle" />
             <Button
               type="submit"
               color="primary"
               size="small"
-              variant="contained"
+              // variant="contained"
               disabled={hasExceededLimit || !input.trim().length || loading}
               className={classes.button}
             >
@@ -111,11 +113,11 @@ const CommentBox = ({
   );
 };
 
-CommentBox.propTypes = {
+CommentForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   errorMsg: PropTypes.string,
   placeholder: PropTypes.string,
   charLimit: PropTypes.number,
 };
 
-export default CommentBox;
+export default CommentForm;

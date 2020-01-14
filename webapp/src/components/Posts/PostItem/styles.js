@@ -9,6 +9,7 @@ export default makeStyles(theme => ({
   },
   cardContent: {
     paddingTop: 0,
+    paddingBottom: 6,
   },
 
   avatar: {
@@ -20,17 +21,33 @@ export default makeStyles(theme => ({
   },
   username: { color: theme.palette.colors.steelblue, fontWeight: 200 },
   createdAt: {
-    display: 'block',
-    marginTop: -theme.spacing(0.5),
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: -4,
+    '& > span': {
+      marginLeft: 4,
+    },
   },
   cardAction: {
     display: 'flex',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    height: 50,
     borderTop: `1px solid ${theme.palette.colors.greylight}`,
+    '& > button, & > a': {
+      flex: 1,
+    },
   },
-
+  count: {
+    paddingTop: 16,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    '& span.dot': {
+      margin: '0 8px',
+    },
+  },
   commentCount: {
-    marginLeft: 10,
     color: theme.palette.colors.steelblue,
     '&:hover': {
       textDecoration: 'underline',

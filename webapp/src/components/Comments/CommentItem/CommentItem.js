@@ -15,7 +15,7 @@ import { showAlert } from '../../../actions/UIActions';
 import { shortenNumbers } from '../../../utils/helperFns';
 
 /* -- components -- */
-import CommentBox from '../../CommentBox/CommentBox';
+import CommentForm from '../../CommentForm/CommentForm';
 import CommentDetails from '../../CommentDetails/CommentDetails';
 import RepliesList from '../RepliesList/RepliesList';
 
@@ -78,10 +78,10 @@ const CommentItem = ({ comment }) => {
       dense
     >
       <CommentDetails
-        comment={comment}
+        item={comment}
         showOptions={isCommentAuthor}
         onDelete={handleDeleteComment}
-        size="small"
+        type="comment"
       />
 
       <div className={classes.commentActions}>
@@ -111,14 +111,13 @@ const CommentItem = ({ comment }) => {
         >
           Reply
         </Button>
-        {toggleCommentBox && (
-          <CommentBox
-            handleSubmit={handleReplySubmit}
-            placeholder="Write a reply..."
-          />
-        )}
       </div>
-
+      {toggleCommentBox && (
+        <CommentForm
+          handleSubmit={handleReplySubmit}
+          placeholder="Write a reply..."
+        />
+      )}
       {toggleReplies && <RepliesList comment={comment} />}
     </ListItem>
   );

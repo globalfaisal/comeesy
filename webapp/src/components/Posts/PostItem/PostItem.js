@@ -10,8 +10,8 @@ import { showAlert } from '../../../actions/UIActions';
 
 /* -- components -- */
 import TypographyTruncate from '../../TypographyTruncate/TypographyTruncate';
-import CommentPostIcon from '../CommentPostIcon/CommentPostIcon';
-import LikePostIcon from '../LikePostIcon/LikePostIcon';
+import LikePostButton from '../../LikePostButton/LikePostButton';
+import CommentPostButton from '../../CommentPostButton/CommentPostButton';
 
 /* -- utils -- */
 import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
@@ -27,13 +27,15 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-import ExtraMenuIcon from '@material-ui/icons/MoreVert';
+import ExtraMenuIcon from '@material-ui/icons/MoreHoriz';
+import TimeIcon from '@material-ui/icons/AccessTime';
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
+import Divider from '@material-ui/core/Divider';
 
 /* -- styles -- */
 import useStyles from './styles';
 
-const PostCard = ({ post }) => {
+const PostItem = ({ post }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const currentUser = useSelector(state =>
@@ -114,13 +116,12 @@ const PostCard = ({ post }) => {
           </Fragment>
         }
         subheader={
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            className={classes.createdAt}
-          >
-            {formatDateToRelTime(post.createdAt)}
-          </Typography>
+          <div className={classes.createdAt}>
+            <TimeIcon fontSize="inherit" />
+            <Typography variant="caption" color="textSecondary">
+              {formatDateToRelTime(post.createdAt)}
+            </Typography>
+          </div>
         }
         action={renderExtraMenu()}
       />
@@ -133,16 +134,11 @@ const PostCard = ({ post }) => {
         >
           {post.body}
         </TypographyTruncate>
-      </CardContent>
-      <CardActions disableSpacing className={classes.cardAction}>
-        <div>
-          <LikePostIcon post={post} />
-          <CommentPostIcon post={post} />
-        </div>
-        <div>
+        <div className={classes.count}>
           <Typography variant="caption">
             {shortenNumbers(post.likeCount)} Likes
           </Typography>
+          <span className="dot inline small"></span>
           <Typography
             component={Link}
             to={`/post/${post.postId}#commentList`}
@@ -152,12 +148,17 @@ const PostCard = ({ post }) => {
             {shortenNumbers(post.commentCount)} Comments
           </Typography>
         </div>
+      </CardContent>
+      <CardActions disableSpacing className={classes.cardAction}>
+        <LikePostButton post={post} />
+        <Divider orientation="vertical" variant="middle" />
+        <CommentPostButton post={post} />
       </CardActions>
     </Card>
   );
 };
 
-PostCard.propTypes = {
+PostItem.propTypes = {
   post: PropTypes.object.isRequired,
 };
-export default PostCard;
+export default PostItem;

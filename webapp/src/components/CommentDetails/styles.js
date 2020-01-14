@@ -3,22 +3,33 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
   wrapper: {
-    position: 'relative',
     display: 'flex',
     width: '100%',
   },
 
   content: {
-    padding: '8px 38px 8px 22px',
+    position: 'relative',
     width: '100%',
+    padding: '8px 16px',
     overflowWrap: 'break-word',
-    borderRadius: '0 30px 30px 30px',
+    overflowX: 'hidden',
+    borderRadius: '0 18px 18px 18px',
     backgroundColor: theme.palette.colors.whitesmoke,
   },
+  contentComment: {
+    position: 'relative',
+  },
+  contentReply: {
+    position: 'relative',
+  },
   avatar: {
-    width: 28,
-    height: 28,
-    marginRight: theme.spacing(1),
+    width: 32,
+    height: 32,
+    marginRight: 4,
+  },
+  smallAvatar: {
+    width: 22,
+    height: 22,
   },
   name: {
     textTransform: 'capitalize',
@@ -28,14 +39,19 @@ export default makeStyles(theme => ({
     fontWeight: 200,
   },
   createdAt: {
+    marginRight: 24,
     float: 'right',
+    [theme.breakpoints.down('xs')]: {
+      float: 'none',
+      display: 'block',
+    },
   },
   body: {
     marginTop: 8,
   },
   optionMenuButton: {
     position: 'absolute',
-    right: 10,
-    top: 8,
+    right: 16,
+    top: 6,
   },
 }));

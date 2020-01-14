@@ -8,9 +8,9 @@ import { getPost, submitComment } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostCard from '../../components/Posts/PostCard/PostCard';
+import PostItem from '../../components/Posts/PostItem/PostItem';
 import CircularLoading from '../../components/UI/CircularLoading';
-import CommentBox from '../../components/CommentBox/CommentBox';
+import CommentForm from '../../components/CommentForm/CommentForm';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Post = ({ match }) => {
+const PostDetails = ({ match }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, loading } = useSelector(state => state.data);
@@ -51,9 +51,9 @@ const Post = ({ match }) => {
     <div className={classes.root}>
       {posts && (
         <Container maxWidth="md">
-          <PostCard post={posts[match.params.postId]} />
+          <PostItem post={posts[match.params.postId]} />
           <CommentList comments={posts[match.params.postId].comments} />
-          <CommentBox
+          <CommentForm
             handleSubmit={handleCommentSubmit}
             errorMsg={commentError}
           />
@@ -63,4 +63,4 @@ const Post = ({ match }) => {
   );
 };
 
-export default Post;
+export default PostDetails;

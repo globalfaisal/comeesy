@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /* -- components -- */
-import PostCard from '../PostCard/PostCard';
+import PostItem from '../PostItem/PostItem';
 import SkeletonCard from '../../UI/SkeletonCard';
 import EmptyData from '../../UI/EmptyData';
 
@@ -16,7 +16,7 @@ const PostList = ({ posts = [], loading = false }) => {
     if (!loading && !posts.length)
       return <EmptyData text="No Posts Yet" image={imagePath} />;
 
-    return posts.map(post => <PostCard key={post.postId} post={post} />);
+    return posts.map(post => <PostItem key={post.postId} post={post} />);
   };
   return <div className="posts">{renderPosts()}</div>;
 };

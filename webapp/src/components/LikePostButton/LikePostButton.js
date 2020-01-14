@@ -5,16 +5,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { like, unlike } from '../../../actions/dataActions';
+import { like, unlike } from '../../actions/dataActions';
 
 /* -- mui -- */
 import FavoriteIcon from '@material-ui/icons/FavoriteOutlined';
 import Button from '@material-ui/core/Button';
 
 /* -- styles -- */
-import useStyles from './styles';
+import useStyles from './styles.js';
 
-const LikePost = ({ post }) => {
+const LikePostButton = ({ post }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const likes = useSelector(state =>
@@ -34,7 +34,7 @@ const LikePost = ({ post }) => {
   const renderContent = () => (
     <Button
       aria-label="like"
-      size="small"
+      size="medium"
       disableFocusRipple
       className={classes.likeBtn}
       onClick={onLikeClick}
@@ -49,7 +49,7 @@ const LikePost = ({ post }) => {
   );
   return renderContent();
 };
-LikePost.propTypes = {
+LikePostButton.propTypes = {
   post: PropTypes.object.isRequired,
 };
-export default LikePost;
+export default LikePostButton;

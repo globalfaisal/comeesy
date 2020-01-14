@@ -53,13 +53,14 @@ const RepliesList = ({ comment }) => {
           dense
         >
           <CommentDetails
-            comment={reply}
+            item={reply}
             showOptions={
               currentUser ? currentUser.username === reply.user.username : false
             }
             onDelete={() =>
               handleDeleteReply(reply.postId, reply.commentId, reply.replyId)
             }
+            type="reply"
           />
         </ListItem>
       ))}
