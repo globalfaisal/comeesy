@@ -8,16 +8,18 @@ import { getPosts } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
+import CreatePost from '../../components/CreatePost/CreatePost';
 import PostList from '../../components/PostList/PostList';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   root: {
     padding: `${theme.spacing(6)}px 0px`,
+    maxWidth: 680,
+    margin: 'auto',
   },
 }));
 
@@ -34,9 +36,8 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <Container maxWidth="md">
-        <PostList posts={_.values(posts)} loading={loading} />
-      </Container>
+      <CreatePost />
+      <PostList posts={_.values(posts)} loading={loading} />
     </div>
   );
 };
