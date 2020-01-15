@@ -8,14 +8,14 @@ import { getPost, submitComment } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostItem from '../../components/Posts/PostItem/PostItem';
+import PostItem from '../../components/PostItem/PostItem';
 import CircularLoading from '../../components/UI/CircularLoading';
 import CommentForm from '../../components/CommentForm/CommentForm';
+import CommentList from '../../components/CommentList/CommentList.js';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import CommentList from '../../components/Comments/CommentList/CommentList';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({

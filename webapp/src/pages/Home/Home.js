@@ -8,7 +8,7 @@ import { getPosts } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostList from '../../components/Posts/PostList/PostList';
+import PostList from '../../components/PostList/PostList';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';

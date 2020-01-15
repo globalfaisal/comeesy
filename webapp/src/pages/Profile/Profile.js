@@ -9,7 +9,7 @@ import { getProfile } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostList from '../../components/Posts/PostList/PostList';
+import PostList from '../../components/PostList/PostList';
 import UserDetailsCard from '../../components/UserDetailsCard/UserDetailsCard';
 import CircularLoading from '../../components/UI/CircularLoading.js';
 

@@ -8,15 +8,15 @@ import {
   getCommentReplies,
   deleteComment,
   submitCommentReply,
-} from '../../../actions/dataActions';
-import { showAlert } from '../../../actions/UIActions';
+} from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- utils -- */
-import { shortenNumbers } from '../../../utils/helperFns';
+import { shortenNumbers } from '../../utils/helperFns';
 
 /* -- components -- */
-import CommentForm from '../../CommentForm/CommentForm';
-import CommentDetails from '../../CommentDetails/CommentDetails';
+import CommentForm from '../CommentForm/CommentForm';
+import CommentDetails from '../CommentDetails/CommentDetails';
 import RepliesList from '../RepliesList/RepliesList';
 
 /* -- mui -- */

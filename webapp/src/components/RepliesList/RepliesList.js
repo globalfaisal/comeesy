@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 /* -- actions-- */
-import { deleteCommentReply } from '../../../actions/dataActions';
-import { showAlert } from '../../../actions/UIActions';
+import { deleteCommentReply } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import CommentDetails from '../../CommentDetails/CommentDetails';
+import CommentDetails from '../CommentDetails/CommentDetails';
 
 /* -- mui -- */
 import List from '@material-ui/core/List';

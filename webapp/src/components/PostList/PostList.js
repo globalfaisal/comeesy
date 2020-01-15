@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 
 /* -- components -- */
 import PostItem from '../PostItem/PostItem';
-import SkeletonCard from '../../UI/SkeletonCard';
-import EmptyData from '../../UI/EmptyData';
+import SkeletonCard from '../UI/SkeletonCard';
+import EmptyData from '../UI/EmptyData';
 
 /* -- images -- */
-import imagePath from '../../../assets/images/empty-data.svg';
+import imagePath from '../../assets/images/empty-data.svg';
 
 const PostList = ({ posts = [], loading = false }) => {
   const renderPosts = () => {

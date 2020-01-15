@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 /* -- actions -- */
-import { deletePost } from '../../../actions/dataActions';
-import { showAlert } from '../../../actions/UIActions';
+import { deletePost } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import TypographyTruncate from '../../TypographyTruncate/TypographyTruncate';
-import LikePostButton from '../../LikePostButton/LikePostButton';
-import CommentPostButton from '../../CommentPostButton/CommentPostButton';
+import TypographyTruncate from '../TypographyTruncate/TypographyTruncate';
+import LikePostButton from '../LikePostButton/LikePostButton';
+import CommentPostButton from '../CommentPostButton/CommentPostButton';
 
 /* -- utils -- */
-import { formatDateToRelTime, shortenNumbers } from '../../../utils/helperFns';
+import { formatDateToRelTime, shortenNumbers } from '../../utils/helperFns';
 
 /* -- mui -- */
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
