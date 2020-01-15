@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -21,9 +21,10 @@ import RepliesList from '../RepliesList/RepliesList';
 
 /* -- mui -- */
 import ListItem from '@material-ui/core/ListItem';
-import ReplyIcon from '@material-ui/icons/Reply';
-import ViewReplyIcon from '@material-ui/icons/QuestionAnswerOutlined';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
+import ReplyIcon from '@material-ui/icons/ReplyOutlined';
+import ListRepliesIcon from '@material-ui/icons/TextsmsOutlined';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -63,7 +64,11 @@ const CommentItem = ({ comment }) => {
     dispatch(submitCommentReply(comment.postId, comment.commentId, value))
       .then(() => {
         setToggleCommentBox(false);
-        handleViewReplies();
+        dispatch(getCommentReplies(comment.postId, comment.commentId)).then(
+          () => {
+            setToggleReplies(true);
+          }
+        );
       })
       .catch(({ message }) => {
         dispatch(showAlert('error', message));
@@ -86,39 +91,39 @@ const CommentItem = ({ comment }) => {
 
       <div className={classes.commentActions}>
         {comment.replyCount > 0 && (
-          <Button
-            size="small"
-            onClick={handleViewReplies}
-            className={classes.toggleRepliesButton}
-            disableRipple
-            startIcon={<ViewReplyIcon />}
-          >
-            {`${toggleReplies ? 'Hide' : 'View'} replies(${shortenNumbers(
-              comment.replyCount
-            )})`}
-          </Button>
+          <Fragment>
+            <Button
+              onClick={handleViewReplies}
+              size="small"
+              color="inherit"
+              className={classes.toggleRepliesButton}
+              startIcon={<ListRepliesIcon fontSize="inherit" color="inherit" />}
+            >
+              {`${shortenNumbers(comment.replyCount)} Replies`}
+            </Button>
+            <Divider orientation="vertical" variant="middle" />
+          </Fragment>
         )}
-        {/* TODO: HANDLE REPLY TOGGLER */}
         <Button
           onClick={() => {
             setToggleCommentBox(prevState => !prevState);
-            setToggleReplies(false);
           }}
           size="small"
-          startIcon={<ReplyIcon />}
-          disableRipple
+          color="inherit"
           className={classes.replyButton}
+          startIcon={<ReplyIcon fontSize="inherit" color="inherit" />}
         >
           Reply
         </Button>
       </div>
+      {toggleReplies && <RepliesList comment={comment} />}
       {toggleCommentBox && (
         <CommentForm
           handleSubmit={handleReplySubmit}
           placeholder="Write a reply..."
+          initValue={`@${comment.user.username} `}
         />
       )}
-      {toggleReplies && <RepliesList comment={comment} />}
     </ListItem>
   );
 };

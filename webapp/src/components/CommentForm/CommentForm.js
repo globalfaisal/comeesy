@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -26,6 +26,7 @@ const CommentForm = ({
   handleSubmit,
   placeholder,
   errorMsg,
+  initValue = '',
   charLimit = 280,
 }) => {
   const classes = useStyles();
@@ -35,11 +36,17 @@ const CommentForm = ({
     state.user.data ? state.user.data.credentials.imageUrl : ''
   );
 
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(initValue);
   const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     charLimit
   );
+
+  useEffect(() => {
+    // Move cursor to the end of the input
+    inputRef.current.selectionStart = input.length;
+    inputRef.current.selectionEnd = input.length;
+  }, []);
 
   const onChange = e => {
     e.persist();
@@ -117,6 +124,7 @@ CommentForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   errorMsg: PropTypes.string,
   placeholder: PropTypes.string,
+  initValue: PropTypes.string,
   charLimit: PropTypes.number,
 };
 

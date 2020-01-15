@@ -14,9 +14,10 @@ import { makeStyles } from '@material-ui/core/styles';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: '8px 0',
+    borderRadius: '0px 0px 3px 3px',
     background: theme.palette.colors.white,
     border: `1px solid ${theme.palette.colors.greylight}`,
+    borderTop: '1px solid transparent',
   },
 }));
 

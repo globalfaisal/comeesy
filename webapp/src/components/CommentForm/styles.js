@@ -21,7 +21,7 @@ export default makeStyles(theme => ({
     padding: 10,
     backgroundColor: theme.palette.colors.white,
     border: `1px solid ${theme.palette.colors.greylight}`,
-    borderRadius: '18px',
+    borderRadius: '3px',
   },
   input: {
     padding: '6px 8px',

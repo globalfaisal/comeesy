@@ -16,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import ExtraMenuIcon from '@material-ui/icons/MoreHoriz';
 import DeleteIcon from '@material-ui/icons/DeleteForeverRounded';
+import TimeIcon from '@material-ui/icons/AccessTime';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -95,13 +96,12 @@ const CommentDetails = ({ item, showOptions, onDelete, type }) => {
           variant="body2"
           className={classes.username}
         >{`@${item.user.username}`}</Typography>
-        <Typography
-          component="span"
-          variant="caption"
-          className={classes.createdAt}
-        >
-          {formatDateToRelTime(item.createdAt)}
-        </Typography>
+        <div className={classes.createdAt}>
+          <TimeIcon fontSize="inherit" />
+          <Typography variant="caption" color="textSecondary">
+            {formatDateToRelTime(item.createdAt)}
+          </Typography>
+        </div>
         <Typography
           variant="body2"
           color="textPrimary"

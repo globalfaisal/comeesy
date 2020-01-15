@@ -10,7 +10,7 @@ export default makeStyles(theme => ({
   content: {
     position: 'relative',
     width: '100%',
-    padding: '8px 16px',
+    padding: '8px 22px 10px 12px',
     overflowWrap: 'break-word',
     overflowX: 'hidden',
     borderRadius: '0 18px 18px 18px',
@@ -38,20 +38,29 @@ export default makeStyles(theme => ({
     color: theme.palette.colors.steelblue,
     fontWeight: 200,
   },
+
   createdAt: {
+    display: 'flex',
+    alignItems: 'center',
     marginRight: 24,
+    fontSize: '0.75rem',
     float: 'right',
+    '& > span': {
+      marginLeft: 4,
+      lineHeight: 0,
+      letterSpacing: -0.5,
+    },
     [theme.breakpoints.down('xs')]: {
       float: 'none',
-      display: 'block',
     },
   },
+
   body: {
     marginTop: 8,
   },
   optionMenuButton: {
     position: 'absolute',
-    right: 16,
+    right: 3,
     top: 6,
   },
 }));

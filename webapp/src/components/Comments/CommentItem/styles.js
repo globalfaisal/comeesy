@@ -8,20 +8,27 @@ export default makeStyles(theme => ({
     width: '100%',
   },
   commentActions: {
-    paddingLeft: 50,
-    width: '100%',
-    [theme.breakpoints.down('xs')]: {
-      paddingLeft: 20,
-    },
+    display: 'flex',
+    alignItems: 'center',
+    height: 28,
+    paddingLeft: 40,
+    marginTop: 4,
+    color: theme.palette.colors.steelblue,
   },
   toggleRepliesButton: {
-    marginRight: 2,
-    color: theme.palette.colors.steelblue,
+    fontSize: 12,
     fontWeight: 400,
-    padding: '0 6px',
+    '& svg': {
+      color: theme.palette.colors.steelblue,
+    },
   },
   replyButton: {
-    color: theme.palette.colors.steelblue,
+    fontSize: 12,
     fontWeight: 400,
+    '& svg': {
+      color: 'transparent',
+      strokeWidth: 2,
+      stroke: theme.palette.colors.steelblue,
+    },
   },
 }));

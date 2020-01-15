@@ -24,8 +24,11 @@ export default makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     marginTop: -4,
+    fontSize: '0.75rem',
     '& > span': {
       marginLeft: 4,
+      lineHeight: 0,
+      letterSpacing: -0.5,
     },
   },
   cardAction: {
