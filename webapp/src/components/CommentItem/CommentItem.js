@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {
   getCommentReplies,
   deleteComment,
-  submitCommentReply,
+  createCommentReply,
 } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
@@ -61,7 +61,7 @@ const CommentItem = ({ comment }) => {
   };
 
   const handleReplySubmit = value =>
-    dispatch(submitCommentReply(comment.postId, comment.commentId, value))
+    dispatch(createCommentReply(comment.postId, comment.commentId, value))
       .then(() => {
         setToggleCommentBox(false);
         dispatch(getCommentReplies(comment.postId, comment.commentId)).then(

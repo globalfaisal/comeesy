@@ -8,6 +8,27 @@ import Login from '../pages/Login/Login';
 
 export const loadingData = () => ({ type: dataTypes.LOADING_DATA });
 
+export const getProfile = username => dispatch =>
+  new Promise(async (resolve, reject) => {
+    dispatch(loadingData());
+    comeesyAPI
+      .get(`/user/${username}`)
+      .then(res => {
+        dispatch({
+          type: dataTypes.SET_PROFILE,
+          payload: res.data,
+        });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch({
+          type: dataTypes.SET_PROFILE,
+          payload: null,
+        });
+        reject(new Error('Something went wrong'));
+      });
+  });
+
 export const getPosts = () => dispatch =>
   new Promise(async (resolve, reject) => {
     dispatch(loadingData());
@@ -64,6 +85,59 @@ export const getCommentReplies = (postId, commentId) => dispatch =>
         dispatch({ type: dataTypes.SET_COMMENT_REPLIES, payload: null });
         reject(new Error('Something went wrong'));
       });
+  });
+
+export const createComment = (postId, body) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+      dispatch(loadingData());
+      const response = await comeesyAPI.post(
+        `/post/${postId}/comment`,
+        { body },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch({
+        type: dataTypes.CREATE_COMMENT,
+        payload: response.data,
+      });
+      dispatch(getPost(response.data.postId));
+    } catch (error) {
+      console.log(error);
+      if (error.response.data) reject(error.response.data);
+      else reject(new Error('Something went wrong. Please try again'));
+    }
+  });
+
+export const createCommentReply = (postId, commentId, body) => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+      dispatch(loadingData());
+      const response = await comeesyAPI.post(
+        `/post/${postId}/comment/${commentId}/reply`,
+        { body },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch({
+        type: dataTypes.CREATE_COMMENT_REPLY,
+        payload: { postId, commentId },
+      });
+      resolve();
+    } catch (error) {
+      console.log(error);
+      reject(new Error('Something went wrong. Please try again'));
+    }
   });
 
 export const deletePost = postId => dispatch =>
@@ -180,75 +254,6 @@ export const unlike = postId => dispatch =>
         type: dataTypes.UNLIKE_POST,
         payload: response.data,
       });
-    } catch (error) {
-      console.log(error);
-      reject(new Error('Something went wrong. Please try again'));
-    }
-  });
-
-export const getProfile = username => dispatch =>
-  new Promise(async (resolve, reject) => {
-    dispatch(loadingData());
-    comeesyAPI
-      .get(`/user/${username}`)
-      .then(res => {
-        dispatch({
-          type: dataTypes.SET_PROFILE,
-          payload: res.data,
-        });
-      })
-      .catch(error => {
-        console.log(error);
-        dispatch({
-          type: dataTypes.SET_PROFILE,
-          payload: null,
-        });
-        reject(new Error('Something went wrong'));
-      });
-  });
-
-export const submitComment = (postId, body) => dispatch =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const token = getStoredToken();
-      if (!hasAuthorization(dispatch)) {
-        return dispatch(openModal(Login));
-      }
-      dispatch(loadingData());
-      const response = await comeesyAPI.post(
-        `/post/${postId}/comment`,
-        { body },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      dispatch(getPost(response.data.postId));
-    } catch (error) {
-      console.log(error);
-      if (error.response.data) reject(error.response.data);
-      else reject(new Error('Something went wrong. Please try again'));
-    }
-  });
-export const submitCommentReply = (postId, commentId, body) => dispatch =>
-  new Promise(async (resolve, reject) => {
-    try {
-      const token = getStoredToken();
-      if (!hasAuthorization(dispatch)) {
-        return dispatch(openModal(Login));
-      }
-      dispatch(loadingData());
-      const response = await comeesyAPI.post(
-        `/post/${postId}/comment/${commentId}/reply`,
-        { body },
-        {
-          headers: { Authorization: token },
-        }
-      );
-      dispatch({
-        type: dataTypes.SUBMIT_COMMENT_REPLY,
-        payload: { postId, commentId },
-      });
-      resolve();
     } catch (error) {
       console.log(error);
       reject(new Error('Something went wrong. Please try again'));

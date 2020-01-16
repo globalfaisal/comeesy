@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import _ from 'lodash';
 
 /* -- actions -- */
-import { getPost, submitComment } from '../../actions/dataActions';
+import { getPost, createComment } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
@@ -39,7 +39,7 @@ const PostDetails = ({ match }) => {
   }, [dispatch, match.params]);
 
   const handleCommentSubmit = value => {
-    dispatch(submitComment(match.params.postId, value))
+    dispatch(createComment(match.params.postId, value))
       .then(() => {
         setCommentError('');
       })

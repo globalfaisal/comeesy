@@ -39,7 +39,7 @@ export default (state = INITIAL_STATE, action) => {
               }
             : state.profile,
       };
-    case dataTypes.SUBMIT_COMMENT:
+    case dataTypes.CREATE_COMMENT:
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
@@ -48,11 +48,14 @@ export default (state = INITIAL_STATE, action) => {
           ...state.posts,
           [action.payload.postId]: {
             ...state.posts[action.payload.postId],
-            comments: [action.payload, ...state.posts.comments],
+            comments: [
+              action.payload,
+              ...state.posts[action.payload.postId].comments,
+            ],
           },
         },
       };
-    case dataTypes.SUBMIT_COMMENT_REPLY:
+    case dataTypes.CREATE_COMMENT_REPLY:
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
