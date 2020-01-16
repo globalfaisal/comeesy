@@ -30,6 +30,8 @@ const PostDetails = ({ match }) => {
   const { posts, loading } = useSelector(state => state.data);
   const [commentError, setCommentError] = useState('');
 
+  const post = posts ? posts[match.params.postId] : null;
+
   useEffect(() => {
     dispatch(getPost(match.params.postId)).catch(({ message }) => {
       dispatch(showAlert('error', message));
@@ -49,10 +51,10 @@ const PostDetails = ({ match }) => {
   if (loading && !posts) return <CircularLoading />;
   return (
     <div className={classes.root}>
-      {posts && (
+      {post && (
         <Container maxWidth="md">
-          <PostItem post={posts[match.params.postId]} />
-          <CommentList comments={posts[match.params.postId].comments} />
+          <PostItem post={post} />
+          <CommentList comments={post.comments} />
           <CommentForm
             handleSubmit={handleCommentSubmit}
             errorMsg={commentError}

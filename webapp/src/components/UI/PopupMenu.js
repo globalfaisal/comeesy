@@ -10,7 +10,6 @@ import { Menu as MuiMenu } from '@material-ui/core';
 const Menu = withStyles({
   paper: {
     minWidth: 120,
-    marginTop: -1,
     borderRadius: 0,
   },
 })(MuiMenu);

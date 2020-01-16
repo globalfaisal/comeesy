@@ -17,8 +17,8 @@ import { makeStyles } from '@material-ui/core/styles';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   root: {
-    padding: `${theme.spacing(6)}px 0px`,
-    maxWidth: 680,
+    padding: `${theme.spacing(6)}px 16px`,
+    maxWidth: 800,
     margin: 'auto',
   },
 }));
