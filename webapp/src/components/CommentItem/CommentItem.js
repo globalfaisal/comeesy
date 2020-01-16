@@ -64,11 +64,7 @@ const CommentItem = ({ comment }) => {
     dispatch(createCommentReply(comment.postId, comment.commentId, value))
       .then(() => {
         setToggleCommentBox(false);
-        dispatch(getCommentReplies(comment.postId, comment.commentId)).then(
-          () => {
-            setToggleReplies(true);
-          }
-        );
+        setToggleReplies(true);
       })
       .catch(({ message }) => {
         dispatch(showAlert('error', message));

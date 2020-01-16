@@ -41,9 +41,5 @@ export default makeStyles(theme => ({
   },
   count: {
     margin: '0 8px',
-    '&  > span:first-child': {
-      margin: '0px 10px',
-      color: theme.palette.colors.red,
-    },
   },
 }));

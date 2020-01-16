@@ -41,7 +41,7 @@ exports.getCommentReplies = (req, res) => {
 
 // Add comment on post
 exports.commentOnPost = (req, res) => {
-  const { isValid, error } = validateBodyContent(req.body.body, 500);
+  const { isValid, error } = validateBodyContent(req.body.body, 280);
   if (!isValid) return res.status(400).json({ error });
 
   let postData;
@@ -135,8 +135,8 @@ exports.deleteComment = (req, res) => {
 
 // Post reply on a comment
 exports.replyOnComment = (req, res) => {
-  const { isValid, error } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json({ reply: error });
+  const { isValid, error } = validateBodyContent(req.body.body, 280);
+  if (!isValid) return res.status(400).json({ error });
 
   const newReply = {
     postId: req.params.postId,

@@ -28,7 +28,6 @@ const PostDetails = ({ match }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { posts, loading } = useSelector(state => state.data);
-  const [commentError, setCommentError] = useState('');
 
   const post = posts ? posts[match.params.postId] : null;
 
@@ -39,13 +38,9 @@ const PostDetails = ({ match }) => {
   }, [dispatch, match.params]);
 
   const handleCommentSubmit = value => {
-    dispatch(createComment(match.params.postId, value))
-      .then(() => {
-        setCommentError('');
-      })
-      .catch(({ error }) => {
-        setCommentError(error);
-      });
+    dispatch(createComment(match.params.postId, value)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
   };
 
   if (loading && !posts) return <CircularLoading />;
@@ -55,10 +50,7 @@ const PostDetails = ({ match }) => {
         <Container maxWidth="md">
           <PostItem post={post} />
           <CommentList comments={post.comments} />
-          <CommentForm
-            handleSubmit={handleCommentSubmit}
-            errorMsg={commentError}
-          />
+          <CommentForm handleSubmit={handleCommentSubmit} />
         </Container>
       )}
     </div>

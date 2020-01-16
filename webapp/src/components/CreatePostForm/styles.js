@@ -66,6 +66,9 @@ export default makeStyles(theme => ({
     },
   },
   submitButton: {
-    marginLeft: 0,
+    marginLeft: '0 !important',
+  },
+  divider: {
+    marginRight: 8,
   },
 }));

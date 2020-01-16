@@ -25,7 +25,6 @@ import useStyles from './styles';
 const CommentForm = ({
   handleSubmit,
   placeholder,
-  errorMsg,
   initValue = '',
   charLimit = 280,
 }) => {
@@ -95,7 +94,6 @@ const CommentForm = ({
 
           <div className={classes.action}>
             <FormHelperText className={classes.count}>
-              <span>{errorMsg}</span>
               <span>
                 {!hasExceededLimit
                   ? `${textLength}/${charLimit}`
@@ -122,7 +120,6 @@ const CommentForm = ({
 
 CommentForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  errorMsg: PropTypes.string,
   placeholder: PropTypes.string,
   initValue: PropTypes.string,
   charLimit: PropTypes.number,

@@ -87,6 +87,35 @@ export const getCommentReplies = (postId, commentId) => dispatch =>
       });
   });
 
+export const createPost = body => dispatch =>
+  new Promise(async (resolve, reject) => {
+    try {
+      const token = getStoredToken();
+      if (!hasAuthorization(dispatch)) {
+        return dispatch(openModal(Login));
+      }
+      dispatch(loadingData());
+      const response = await comeesyAPI.post(
+        '/post',
+        { body },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      dispatch({
+        type: dataTypes.CREATE_POST,
+        payload: response.data,
+      });
+      resolve();
+    } catch (error) {
+      console.log(error);
+      dispatch({
+        type: dataTypes.CREATE_POST,
+        payload: null,
+      });
+      reject(new Error('Something went wrong. Please try again'));
+    }
+  });
 export const createComment = (postId, body) => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
@@ -109,8 +138,11 @@ export const createComment = (postId, body) => dispatch =>
       dispatch(getPost(response.data.postId));
     } catch (error) {
       console.log(error);
-      if (error.response.data) reject(error.response.data);
-      else reject(new Error('Something went wrong. Please try again'));
+      dispatch({
+        type: dataTypes.CREATE_COMMENT,
+        payload: null,
+      });
+      reject(new Error('Something went wrong. Please try again'));
     }
   });
 
@@ -131,11 +163,15 @@ export const createCommentReply = (postId, commentId, body) => dispatch =>
       );
       dispatch({
         type: dataTypes.CREATE_COMMENT_REPLY,
-        payload: { postId, commentId },
+        payload: response.data,
       });
       resolve();
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: dataTypes.CREATE_COMMENT_REPLY,
+        payload: null,
+      });
       reject(new Error('Something went wrong. Please try again'));
     }
   });

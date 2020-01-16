@@ -1,7 +1,11 @@
 /* -- libs -- */
 import React, { useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import clsx from 'clsx';
+
+/* -- action -- */
+import { createPost } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
@@ -31,6 +35,7 @@ const charLimit = 500;
 
 const CreatePostForm = ({ isOpen, onClose }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const inputRef = useRef(null);
   const { isAuthenticated, data } = useSelector(state => state.user);
 
@@ -50,7 +55,15 @@ const CreatePostForm = ({ isOpen, onClose }) => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!input.trim()) return;
-    console.log(input);
+    dispatch(createPost(input))
+      .then(() => {
+        dispatch(showAlert('success', 'Post created successfully'));
+        setInput('');
+        onClose();
+      })
+      .catch(({ message }) => {
+        dispatch(showAlert('error', message));
+      });
   };
 
   if (!isAuthenticated || !data) return false;
@@ -126,14 +139,19 @@ const CreatePostForm = ({ isOpen, onClose }) => {
                 ? `${textLength}/${charLimit}`
                 : `-${textLength - charLimit}`}
             </Typography>
-            <Divider orientation="vertical" variant="middle" />
+            <Divider
+              orientation="vertical"
+              variant="middle"
+              className={classes.divider}
+            />
             <Button
               type="submit"
               form="postForm"
               color="primary"
+              variant="contained"
               size="small"
               disabled={hasExceededLimit || !input.trim().length}
-              className={classes.button}
+              className={classes.submitButton}
             >
               Post
             </Button>

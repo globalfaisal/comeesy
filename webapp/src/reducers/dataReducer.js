@@ -39,6 +39,16 @@ export default (state = INITIAL_STATE, action) => {
               }
             : state.profile,
       };
+    case dataTypes.CREATE_POST:
+      if (!action.payload) return { ...state, loading: false };
+      return {
+        ...state,
+        loading: false,
+        posts: {
+          [action.payload.postId]: action.payload,
+          ...state.posts,
+        },
+      };
     case dataTypes.CREATE_COMMENT:
       if (!action.payload) return { ...state, loading: false };
       return {
@@ -68,6 +78,10 @@ export default (state = INITIAL_STATE, action) => {
               if (c.commentId === action.payload.commentId) c.replyCount += 1;
               return c;
             }),
+
+            replies: state.posts[action.payload.postId].replies
+              ? [action.payload, ...state.posts[action.payload.postId].replies]
+              : '',
           },
         },
       };

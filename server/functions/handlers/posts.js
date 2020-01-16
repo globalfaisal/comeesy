@@ -49,8 +49,8 @@ exports.getPost = (req, res) => {
 
 // Post a new post
 exports.addPost = (req, res) => {
-  const { isValid, error } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json({ post: error });
+  const { isValid, error } = validateBodyContent(req.body.body, 500);
+  if (!isValid) return res.status(400).json({ error });
 
   const newPost = {
     body: req.body.body,
