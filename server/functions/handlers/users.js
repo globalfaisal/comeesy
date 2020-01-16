@@ -210,7 +210,7 @@ async function updateUserPassword(req, res) {
     await admin
       .auth()
       .updateUser(req.user.userId, {
-        password: req.body.value.newPassword,
+        password: req.body.value.password,
       })
       .then(() =>
         res.status(200).json({
