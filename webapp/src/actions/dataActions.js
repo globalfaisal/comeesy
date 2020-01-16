@@ -15,14 +15,14 @@ export const getProfile = username => dispatch =>
       .get(`/user/${username}`)
       .then(res => {
         dispatch({
-          type: dataTypes.SET_PROFILE,
+          type: dataTypes.GET_PROFILE,
           payload: res.data,
         });
       })
       .catch(error => {
         console.log(error);
         dispatch({
-          type: dataTypes.SET_PROFILE,
+          type: dataTypes.GET_PROFILE,
           payload: null,
         });
         reject(new Error('Something went wrong'));
@@ -36,14 +36,14 @@ export const getPosts = () => dispatch =>
       .get('/posts')
       .then(response => {
         dispatch({
-          type: dataTypes.SET_POSTS,
+          type: dataTypes.GET_POSTS,
           payload: response.data,
         });
       })
       .catch(error => {
         console.log(error);
         dispatch({
-          type: dataTypes.SET_POSTS,
+          type: dataTypes.GET_POSTS,
           payload: [],
         });
         if (error.response) reject(error.response.data);
@@ -58,13 +58,13 @@ export const getPost = postId => dispatch =>
       .get(`/post/${postId}`)
       .then(response => {
         dispatch({
-          type: dataTypes.SET_POST,
+          type: dataTypes.GET_POST,
           payload: response.data,
         });
       })
       .catch(error => {
         console.log(error);
-        dispatch({ type: dataTypes.SET_POST, payload: null });
+        dispatch({ type: dataTypes.GET_POST, payload: null });
         reject(new Error('Something went wrong'));
       });
   });
@@ -75,14 +75,14 @@ export const getCommentReplies = (postId, commentId) => dispatch =>
       .get(`/post/${postId}/comment/${commentId}/replies`)
       .then(response => {
         dispatch({
-          type: dataTypes.SET_COMMENT_REPLIES,
+          type: dataTypes.GET_COMMENT_REPLIES,
           payload: { postId, replies: response.data },
         });
         resolve(/* GET COMMENT REPLIES SUCCESSFULLY */);
       })
       .catch(error => {
         console.log(error);
-        dispatch({ type: dataTypes.SET_COMMENT_REPLIES, payload: null });
+        dispatch({ type: dataTypes.GET_COMMENT_REPLIES, payload: null });
         reject(new Error('Something went wrong'));
       });
   });

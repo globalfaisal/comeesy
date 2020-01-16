@@ -10,13 +10,13 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case dataTypes.SET_POSTS:
+    case dataTypes.GET_POSTS:
       return {
         ...state,
         posts: _.mapKeys(action.payload, 'postId'),
         loading: false,
       };
-    case dataTypes.SET_POST:
+    case dataTypes.GET_POST:
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
@@ -117,7 +117,7 @@ export default (state = INITIAL_STATE, action) => {
         },
       };
     }
-    case dataTypes.SET_COMMENT_REPLIES:
+    case dataTypes.GET_COMMENT_REPLIES:
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
@@ -157,7 +157,7 @@ export default (state = INITIAL_STATE, action) => {
               }
             : state.profile,
       };
-    case dataTypes.SET_PROFILE:
+    case dataTypes.GET_PROFILE:
       if (!action.payload) return { ...state, loading: false };
 
       return {
