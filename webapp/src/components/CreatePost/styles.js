@@ -2,42 +2,69 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
-  root: {
-    margin: '16px 0 32px',
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.colors.white,
+    boxShadow: theme.shadows[5],
+    borderRadius: 3,
+    width: 580,
+    maxWidth: '80%',
+    maxHeight: '80%',
+    [theme.breakpoints.down(420)]: {
+      minWidth: '100%',
+      minHeight: '100%',
+    },
   },
 
   content: {
+    flex: 1,
+    overflowY: 'auto',
+    overflowX: 'hidden',
     display: 'flex',
-    paddingBottom: 0,
+    alignItems: 'center',
   },
   action: {
-    width: '100%',
+    height: 50,
+    padding: 16,
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    padding: 16,
-    height: 50,
   },
   avatar: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
+    marginRight: 20,
+    transition: 'all 0.75s ease-in-out',
+  },
+  avatarHidden: {
+    opacity: 0,
+    width: 0,
+    height: 0,
+    marginRight: 0,
+    transition: 'all 0.75s ease-in-out',
   },
   header: {
     backgroundColor: theme.palette.colors.whitesmoke,
-    paddingTop: 6,
-    paddingBottom: 6,
+    '& h6': {
+      fontWeight: 400,
+    },
   },
   input: {
-    marginLeft: 20,
     fontWeight: 200,
     fontSize: 22,
-    width: '100%',
+    alignItems: 'flex-start',
     '& > textarea::-webkit-input-placeholder': {
       color: theme.palette.text.secondary,
       opacity: 0.9,
     },
   },
-  button: {
+  submitButton: {
     marginLeft: 0,
   },
 }));

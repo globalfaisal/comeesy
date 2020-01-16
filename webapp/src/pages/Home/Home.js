@@ -36,7 +36,6 @@ const Home = () => {
 
   return (
     <div className={classes.root}>
-      <CreatePost />
       <PostList posts={_.values(posts)} loading={loading} />
     </div>
   );

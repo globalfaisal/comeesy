@@ -1,24 +1,27 @@
 /* -- libs -- */
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
 import useAuthChecker from '../../hooks/useAuthChecker';
 
 /* -- mui -- */
+import { Modal as MuiModal } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
-import Paper from '@material-ui/core/Paper';
-import FormControl from '@material-ui/core/FormControl';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -38,6 +41,12 @@ const CommentForm = () => {
     charLimit
   );
 
+  const [open, setOpen] = useState(true);
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   const onChange = e => {
     e.persist();
     setInput(e.target.value);
@@ -52,62 +61,92 @@ const CommentForm = () => {
 
   if (!isAuthenticated || !data) return false;
   return (
-    <Card className={classes.root} onClick={() => authenticate()}>
-      <CardHeader
-        className={classes.header}
-        title={
-          <Typography variant="subtitle1" color="textPrimary">
-            Create Post
-          </Typography>
-        }
-      />
-      <CardContent
-        className={classes.content}
-        component="form"
-        id="postForm"
-        onSubmit={handleSubmit}
-      >
-        <Avatar
-          alt={data.credentials.username}
-          src={data.credentials.imageUrl}
-          className={classes.avatar}
-        />
-        <InputBase
-          id="post"
-          name="post"
-          type="text"
-          multiline
-          value={input}
-          onChange={onChange}
-          inputProps={{ 'aria-label': 'post' }}
-          placeholder="Have any short joke? Let's share the laughter with you."
-          inputRef={inputRef}
-          autoFocus
-          className={classes.input}
-        />
-      </CardContent>
-      <div className={classes.action}>
-        <Typography
-          variant="caption"
-          color={!hasExceededLimit ? 'textSecondary' : 'error'}
-        >
-          {!hasExceededLimit
-            ? `${textLength}/${charLimit}`
-            : `-${textLength - charLimit}`}
-        </Typography>
-        <Divider orientation="vertical" variant="middle" />
-        <Button
-          type="submit"
-          form="postForm"
-          color="primary"
-          size="small"
-          disabled={hasExceededLimit || !input.trim().length}
-          className={classes.button}
-        >
-          Post
-        </Button>
-      </div>
-    </Card>
+    <MuiModal
+      aria-labelledby="modal-title"
+      className={classes.modal}
+      open={open}
+      onClose={onClose}
+      disableAutoFocus
+      closeAfterTransition
+      BackdropComponent={Backdrop}
+      BackdropProps={{
+        timeout: 500,
+      }}
+    >
+      <Fade in={open}>
+        <Card className={classes.card} onClick={() => authenticate()}>
+          <CardHeader
+            className={classes.header}
+            title={
+              <Typography variant="h6" color="textSecondary">
+                Create Post
+              </Typography>
+            }
+            action={
+              <IconButton
+                key="close"
+                aria-label="close"
+                size="small"
+                onClick={onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            }
+          />
+          <CardContent
+            className={classes.content}
+            component="form"
+            id="postForm"
+            onSubmit={handleSubmit}
+          >
+            <Avatar
+              alt={data.credentials.username}
+              src={data.credentials.imageUrl}
+              className={clsx(
+                classes.avatar,
+                input.length > 0 ? classes.avatarHidden : ''
+              )}
+            />
+
+            <InputBase
+              id="post"
+              name="post"
+              type="text"
+              multiline
+              value={input}
+              onChange={onChange}
+              inputProps={{ 'aria-label': 'post' }}
+              placeholder="Tell us your best joke..."
+              inputRef={inputRef}
+              autoFocus
+              fullWidth
+              className={classes.input}
+            />
+          </CardContent>
+          <CardActions className={classes.action}>
+            <Typography
+              variant="caption"
+              color={!hasExceededLimit ? 'textSecondary' : 'error'}
+            >
+              {!hasExceededLimit
+                ? `${textLength}/${charLimit}`
+                : `-${textLength - charLimit}`}
+            </Typography>
+            <Divider orientation="vertical" variant="middle" />
+            <Button
+              type="submit"
+              form="postForm"
+              color="primary"
+              size="small"
+              disabled={hasExceededLimit || !input.trim().length}
+              className={classes.button}
+            >
+              Post
+            </Button>
+          </CardActions>
+        </Card>
+      </Fade>
+    </MuiModal>
   );
 };
 
