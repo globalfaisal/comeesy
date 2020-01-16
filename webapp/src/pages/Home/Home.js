@@ -8,7 +8,6 @@ import { getPosts } from '../../actions/dataActions';
 import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import CreatePost from '../../components/CreatePost/CreatePost';
 import PostList from '../../components/PostList/PostList';
 
 /* -- mui -- */

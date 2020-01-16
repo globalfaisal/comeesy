@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -24,8 +24,10 @@ import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   navLink: {
-    fontSize: 28,
     position: 'relative',
+    margin: '0 4px',
+    fontSize: 28,
+    color: theme.palette.colors.whitesmoke,
   },
   paper: {
     width: 350,
@@ -144,8 +146,10 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
       </MenuItem>
     ));
   return (
-    <div className="notification-menu">
+    <Fragment>
       <IconButton
+        component={Link}
+        to="#"
         id="notificationMenuButton"
         onClick={onOpenMenu}
         aria-controls="notificationMenu"
@@ -174,7 +178,7 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
           <EmptyData text="No notifications yet" className={classes.empty} />
         )}
       </PopupMenu>
-    </div>
+    </Fragment>
   );
 };
 

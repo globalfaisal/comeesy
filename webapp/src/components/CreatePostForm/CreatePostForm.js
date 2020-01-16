@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
@@ -29,7 +29,7 @@ import useStyles from './styles';
 /* -- styles -- */
 const charLimit = 500;
 
-const CommentForm = () => {
+const CreatePostForm = ({ isOpen, onClose }) => {
   const classes = useStyles();
   const inputRef = useRef(null);
   const { isAuthenticated, data } = useSelector(state => state.user);
@@ -40,12 +40,6 @@ const CommentForm = () => {
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     charLimit
   );
-
-  const [open, setOpen] = useState(true);
-
-  const onClose = () => {
-    setOpen(false);
-  };
 
   const onChange = e => {
     e.persist();
@@ -64,7 +58,7 @@ const CommentForm = () => {
     <MuiModal
       aria-labelledby="modal-title"
       className={classes.modal}
-      open={open}
+      open={isOpen}
       onClose={onClose}
       disableAutoFocus
       closeAfterTransition
@@ -73,7 +67,7 @@ const CommentForm = () => {
         timeout: 500,
       }}
     >
-      <Fade in={open}>
+      <Fade in={isOpen}>
         <Card className={classes.card} onClick={() => authenticate()}>
           <CardHeader
             className={classes.header}
@@ -116,7 +110,7 @@ const CommentForm = () => {
               value={input}
               onChange={onChange}
               inputProps={{ 'aria-label': 'post' }}
-              placeholder="Tell us your best joke..."
+              placeholder="Write something..."
               inputRef={inputRef}
               autoFocus
               fullWidth
@@ -150,6 +144,6 @@ const CommentForm = () => {
   );
 };
 
-CommentForm.propTypes = {};
+CreatePostForm.propTypes = {};
 
-export default CommentForm;
+export default CreatePostForm;

@@ -15,6 +15,7 @@ export default makeStyles(theme => ({
     borderRadius: 3,
     width: 580,
     maxWidth: '80%',
+    minHeight: 250,
     maxHeight: '80%',
     [theme.breakpoints.down(420)]: {
       minWidth: '100%',
@@ -27,7 +28,6 @@ export default makeStyles(theme => ({
     overflowY: 'auto',
     overflowX: 'hidden',
     display: 'flex',
-    alignItems: 'center',
   },
   action: {
     height: 50,
@@ -56,9 +56,10 @@ export default makeStyles(theme => ({
     },
   },
   input: {
+    paddingTop: 10,
+    alignSelf: 'flex-start',
     fontWeight: 200,
     fontSize: 22,
-    alignItems: 'flex-start',
     '& > textarea::-webkit-input-placeholder': {
       color: theme.palette.text.secondary,
       opacity: 0.9,
