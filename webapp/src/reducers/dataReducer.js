@@ -20,7 +20,20 @@ export default (state = INITIAL_STATE, action) => {
       if (!action.payload) return { ...state, loading: false };
       return {
         ...state,
-        posts: { ...state.posts, [action.payload.postId]: action.payload },
+        posts: {
+          ...state.posts,
+          [action.payload.postId]: action.payload,
+        },
+        profile:
+          state.profile && state.profile.posts
+            ? {
+                ...state.profile,
+                posts: {
+                  ...state.profile.posts,
+                  [action.payload.postId]: action.payload,
+                },
+              }
+            : state.profile,
         loading: false,
       };
     case dataTypes.DELETE_POST:
@@ -59,8 +72,8 @@ export default (state = INITIAL_STATE, action) => {
           [action.payload.postId]: {
             ...state.posts[action.payload.postId],
             comments: [
-              action.payload,
               ...state.posts[action.payload.postId].comments,
+              action.payload,
             ],
           },
         },
@@ -147,7 +160,6 @@ export default (state = INITIAL_STATE, action) => {
     case dataTypes.LIKE_POST:
     case dataTypes.UNLIKE_POST:
       if (!action.payload) return { ...state, loading: false };
-
       return {
         ...state,
         posts: {

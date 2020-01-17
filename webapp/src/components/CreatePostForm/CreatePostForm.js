@@ -144,15 +144,13 @@ const CreatePostForm = ({ isOpen, onClose }) => {
             variant="middle"
             className={classes.divider}
           />
-          <Button onClick={handleCancel} color="primary" size="small">
-            Cancel
-          </Button>
+          <Button onClick={handleCancel}>Cancel</Button>
           <Button
             type="submit"
             form="postForm"
             onClick={handleSubmit}
             color="primary"
-            size="small"
+            variant="contained"
             disabled={hasExceededLimit || !input.trim().length}
             className={classes.submitButton}
           >

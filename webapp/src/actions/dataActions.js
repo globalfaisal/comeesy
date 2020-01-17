@@ -106,6 +106,10 @@ export const createPost = body => dispatch =>
         type: dataTypes.CREATE_POST,
         payload: response.data,
       });
+      dispatch({
+        type: dataTypes.GET_POST,
+        payload: response.data,
+      });
       resolve();
     } catch (error) {
       console.log(error);
