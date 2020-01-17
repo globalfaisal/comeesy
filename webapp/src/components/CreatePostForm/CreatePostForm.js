@@ -1,6 +1,7 @@
 /* -- libs -- */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 /* -- action -- */
@@ -11,21 +12,22 @@ import { showAlert } from '../../actions/UIActions';
 import useTextCounter from '../../hooks/useTextCounter';
 import useAuthChecker from '../../hooks/useAuthChecker';
 
+/* -- component -- */
+import AlertDialog from '../UI/AlertDialog';
+
 /* -- mui -- */
-import { Modal as MuiModal } from '@material-ui/core';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
+import { useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Avatar from '@material-ui/core/Avatar';
 import InputBase from '@material-ui/core/InputBase';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -40,6 +42,12 @@ const CreatePostForm = ({ isOpen, onClose }) => {
   const { isAuthenticated, data } = useSelector(state => state.user);
 
   const [input, setInput] = useState('');
+  const [isOpenCancelAlertDialog, setOpenCancelAlertDialog] = React.useState(
+    false
+  );
+
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
   const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
@@ -65,48 +73,37 @@ const CreatePostForm = ({ isOpen, onClose }) => {
         dispatch(showAlert('error', message));
       });
   };
-
+  const handleCancel = () => {
+    if (input.trim().length === 0) {
+      onClose();
+      return;
+    }
+    setOpenCancelAlertDialog(true);
+  };
   if (!isAuthenticated || !data) return false;
   return (
-    <MuiModal
-      aria-labelledby="modal-title"
-      className={classes.modal}
-      open={isOpen}
-      onClose={onClose}
-      disableAutoFocus
-      closeAfterTransition
-      disableBackdropClick
-      disableEscapeKeyDown
-      BackdropComponent={Backdrop}
-      BackdropProps={{
-        timeout: 500,
-      }}
-    >
-      <Fade in={isOpen}>
-        <Card className={classes.card} onClick={() => authenticate()}>
-          <CardHeader
-            className={classes.header}
-            title={
-              <Typography variant="h6" color="textSecondary">
-                Create Post
-              </Typography>
-            }
-            action={
-              <IconButton
-                key="close"
-                aria-label="close"
-                size="small"
-                onClick={onClose}
-              >
-                <CloseIcon />
-              </IconButton>
-            }
-          />
-          <CardContent
-            className={classes.content}
+    <Fragment>
+      <Dialog
+        open={isOpen}
+        onClose={onClose}
+        onClick={() => authenticate()}
+        scroll="paper"
+        fullScreen={fullScreen}
+        fullWidth
+        maxWidth="sm"
+        disableBackdropClick
+        disableEscapeKeyDown
+        aria-labelledby="form-title"
+      >
+        <DialogTitle id="form-title" className={classes.header}>
+          Create Post
+        </DialogTitle>
+        <DialogContent>
+          <form
             component="form"
             id="postForm"
             onSubmit={handleSubmit}
+            className={classes.form}
           >
             <Avatar
               alt={data.credentials.username}
@@ -131,39 +128,54 @@ const CreatePostForm = ({ isOpen, onClose }) => {
               fullWidth
               className={classes.input}
             />
-          </CardContent>
-          <CardActions className={classes.action}>
-            <Typography
-              variant="caption"
-              color={!hasExceededLimit ? 'textSecondary' : 'error'}
-            >
-              {!hasExceededLimit
-                ? `${textLength}/${charLimit}`
-                : `-${textLength - charLimit}`}
-            </Typography>
-            <Divider
-              orientation="vertical"
-              variant="middle"
-              className={classes.divider}
-            />
-            <Button
-              type="submit"
-              form="postForm"
-              color="primary"
-              variant="contained"
-              size="small"
-              disabled={hasExceededLimit || !input.trim().length}
-              className={classes.submitButton}
-            >
-              Post
-            </Button>
-          </CardActions>
-        </Card>
-      </Fade>
-    </MuiModal>
+          </form>
+        </DialogContent>
+        <DialogActions className={classes.action}>
+          <Typography
+            variant="caption"
+            color={!hasExceededLimit ? 'textSecondary' : 'error'}
+          >
+            {!hasExceededLimit
+              ? `${textLength}/${charLimit}`
+              : `-${textLength - charLimit}`}
+          </Typography>
+          <Divider
+            orientation="vertical"
+            variant="middle"
+            className={classes.divider}
+          />
+          <Button onClick={handleCancel} color="primary" size="small">
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            form="postForm"
+            onClick={handleSubmit}
+            color="primary"
+            size="small"
+            disabled={hasExceededLimit || !input.trim().length}
+            className={classes.submitButton}
+          >
+            Post
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <AlertDialog
+        open={isOpenCancelAlertDialog}
+        title="Warning"
+        text="Are you sure you want to cancel? Changes you made may not be saved."
+        confirmButtonText="Yes"
+        cancelButtonText="No"
+        onConfirm={onClose}
+        onCancel={() => setOpenCancelAlertDialog(false)}
+      />
+    </Fragment>
   );
 };
 
-CreatePostForm.propTypes = {};
+CreatePostForm.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default CreatePostForm;

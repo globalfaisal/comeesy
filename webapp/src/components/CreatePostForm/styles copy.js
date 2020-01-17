@@ -2,10 +2,32 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export default makeStyles(theme => ({
-  form: {
+  modal: {
     display: 'flex',
-    minHeight: 100,
-    padding: '8px 0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  card: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.colors.white,
+    boxShadow: theme.shadows[5],
+    borderRadius: 3,
+    width: 580,
+    maxWidth: '80%',
+    minHeight: 250,
+    maxHeight: '80%',
+    [theme.breakpoints.down(420)]: {
+      minWidth: '100%',
+      minHeight: '100%',
+    },
+  },
+
+  content: {
+    flex: 1,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+    display: 'flex',
   },
   action: {
     height: 50,
@@ -29,30 +51,22 @@ export default makeStyles(theme => ({
   },
   header: {
     backgroundColor: theme.palette.colors.whitesmoke,
-    '& > h2': {
+    '& h6': {
       fontWeight: 400,
-      [theme.breakpoints.down(480)]: {
-        fontSize: '1rem',
-        fontWeight: 500,
-      },
     },
   },
   input: {
     paddingTop: 10,
     alignSelf: 'flex-start',
-    fontWeight: 300,
+    fontWeight: 200,
     fontSize: 22,
     '& > textarea::-webkit-input-placeholder': {
       color: theme.palette.text.secondary,
       opacity: 0.9,
     },
-    [theme.breakpoints.down(480)]: {
-      fontSize: 'inherit',
-      fontWeight: 400,
-    },
   },
   submitButton: {
-    maringLeft: 16,
+    marginLeft: '0 !important',
   },
   divider: {
     marginRight: 8,

@@ -8,14 +8,14 @@ import CreatePostForm from '../CreatePostForm/CreatePostForm';
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import AddIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import AddIcon from '@material-ui/icons/Add';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   navLink: {
     margin: '0 4px',
-    fontSize: 28,
-    color: theme.palette.colors.whitesmoke,
+    fontSize: 32,
+    color: theme.palette.colors.greylight,
   },
 }));
 

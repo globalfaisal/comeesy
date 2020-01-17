@@ -19,7 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import TimeIcon from '@material-ui/icons/AccessTime';
-import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
+import NotificationIcon from '@material-ui/icons/Notifications';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     margin: '0 4px',
     fontSize: 28,
-    color: theme.palette.colors.whitesmoke,
+    color: theme.palette.colors.greylight,
   },
   paper: {
     width: 350,

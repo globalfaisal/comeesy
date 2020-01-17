@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     width: 28,
     height: 28,
-    border: `1.2px solid ${theme.palette.colors.whitesmoke}`,
+    border: `1.2px solid ${theme.palette.colors.greylight}`,
   },
 }));
 
