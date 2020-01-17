@@ -94,7 +94,7 @@ const PostItem = ({ post }) => {
             alt={post.user.username}
             src={post.user.imageUrl}
             component={Link}
-            to={`/u/${post.user.username}`}
+            to={`/user/${post.user.username}`}
             className={classes.avatar}
           />
         }
@@ -102,7 +102,7 @@ const PostItem = ({ post }) => {
           <Fragment>
             <Typography
               component={Link}
-              to={`/u/${post.user.username}`}
+              to={`/user/${post.user.username}`}
               variant="subtitle1"
               color="primary"
               className={classes.name}

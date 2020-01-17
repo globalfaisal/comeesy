@@ -63,7 +63,7 @@ const UserMenu = ({ user, onLogout }) => {
       >
         <MenuItem
           component={Link}
-          to={`/u/${user.username}`}
+          to={`/user/${user.username}`}
           onClick={onCloseMenu}
           dense
         >

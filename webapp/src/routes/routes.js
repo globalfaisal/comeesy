@@ -14,7 +14,7 @@ export default [
     layout: '/main',
   },
   {
-    path: '/u/:username',
+    path: '/user/:username',
     name: 'Profile',
     component: Profile,
     layout: '/main',

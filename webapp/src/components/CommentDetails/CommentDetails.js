@@ -71,7 +71,7 @@ const CommentDetails = ({ item, showOptions, onDelete, type }) => {
         alt={item.user.username}
         src={item.user.imageUrl}
         component={Link}
-        to={`/u/${item.user.username}`}
+        to={`/user/${item.user.username}`}
         className={clsx(
           classes.avatar,
           type === 'reply' && classes.smallAvatar
@@ -85,7 +85,7 @@ const CommentDetails = ({ item, showOptions, onDelete, type }) => {
       >
         <Typography
           component={Link}
-          to={`/u/${item.user.username}`}
+          to={`/user/${item.user.username}`}
           variant="body2"
           color="primary"
           className={classes.name}
