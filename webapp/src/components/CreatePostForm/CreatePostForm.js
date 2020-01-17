@@ -32,7 +32,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 /* -- styles -- */
 import useStyles from './styles';
 
-/* -- styles -- */
+/* -- constants -- */
 const charLimit = 500;
 
 const CreatePostForm = ({ isOpen, onClose }) => {
@@ -163,7 +163,7 @@ const CreatePostForm = ({ isOpen, onClose }) => {
       <AlertDialog
         open={isOpenCancelAlertDialog}
         title="Warning"
-        text="Are you sure you want to cancel? Changes you made may not be saved."
+        text="You haven't finished your post yet. Do you want to leave without finishing?"
         confirmButtonText="Yes"
         cancelButtonText="No"
         onConfirm={onClose}

@@ -1,6 +1,7 @@
 /* -- libs -- */
 import React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
@@ -14,20 +15,16 @@ const useStyles = makeStyles(theme => ({
   logo: {
     width: 28,
     height: 28,
-    [theme.breakpoints.down('xs')]: {
-      width: 22,
-      height: 22,
-    },
   },
 }));
 
-const Logo = ({ variant = 'white', title }) => {
+const Logo = ({ variant = 'white', title, className }) => {
   const classes = useStyles();
   return (
     <img
       src={variant === 'white' ? logoWhitePath : logoBlackPath}
       alt="logo"
-      className={classes.logo}
+      className={clsx(classes.logo, className)}
       title={title}
     />
   );
@@ -35,5 +32,6 @@ const Logo = ({ variant = 'white', title }) => {
 Logo.propTypes = {
   variant: PropTypes.string,
   title: PropTypes.string,
+  className: PropTypes.string,
 };
 export default Logo;

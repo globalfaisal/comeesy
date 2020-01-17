@@ -30,14 +30,24 @@ const useStyles = makeStyles(theme => ({
     color: theme.palette.colors.greylight,
   },
   paper: {
-    width: 350,
-    minHeight: 'calc(100vh - 55px)',
+    minWidth: 350,
+    minHeight: 'calc(100vh - 53px)',
     top: '53px !important',
     paddingTop: 8,
     paddingBottom: 8,
     overflowX: 'hidden',
     overflowY: 'auto',
     display: 'flex',
+    [theme.breakpoints.down(420)]: {
+      left: '0 !important',
+      minWidth: '100vw',
+    },
+  },
+  title: {
+    paddingLeft: 16,
+    paddingBottom: 16,
+    fontWeight: 500,
+    fontSize: '1rem',
   },
   menuItem: {
     whiteSpace: 'normal',
@@ -173,10 +183,20 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
         onClose={onCloseMenu}
         classes={{ paper: classes.paper }}
       >
+        <Typography
+          variant="h6"
+          color="textSecondary"
+          className={classes.title}
+        >
+          Notifications
+        </Typography>
         {notifications && notifications.length > 0 ? (
           renderNotifications()
         ) : (
-          <EmptyData text="No notifications yet" className={classes.empty} />
+          <EmptyData
+            text="You don't have any notifications"
+            className={classes.empty}
+          />
         )}
       </PopupMenu>
     </Fragment>

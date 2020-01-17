@@ -20,6 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
@@ -30,13 +31,26 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   nav: {
-    marginLeft: theme.spacing(2),
+    marginLeft: 16,
     color: theme.palette.colors.grey,
     display: 'flex',
     alignItems: 'center',
   },
   navLink: {
     margin: theme.spacing(1),
+  },
+  brand: {
+    paddingTop: 6,
+    display: 'flex',
+    alignItems: 'center',
+    fontSize: 18,
+    fontWeight: 500,
+    letterSpacing: -1,
+  },
+  logo: {
+    width: 26,
+    height: 26,
+    marginRight: 6,
   },
 }));
 
@@ -51,9 +65,16 @@ const Navbar = () => {
       <LinearLoading loading={isDataLoading || loading} />
 
       <Toolbar variant="dense">
-        <Link to="/">
-          <Logo variant="white" />
-        </Link>
+        <Typography
+          component={Link}
+          to="/"
+          className={classes.brand}
+          color="inherit"
+        >
+          <Logo variant="white" className={classes.logo} />
+          COMEESY
+        </Typography>
+
         <div className={classes.grow} />
 
         <nav className={classes.nav}>
