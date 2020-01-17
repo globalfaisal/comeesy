@@ -75,6 +75,8 @@ const CreatePostForm = ({ isOpen, onClose }) => {
       onClose={onClose}
       disableAutoFocus
       closeAfterTransition
+      disableBackdropClick
+      disableEscapeKeyDown
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,

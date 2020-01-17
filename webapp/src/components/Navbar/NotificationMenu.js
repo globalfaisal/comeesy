@@ -41,6 +41,8 @@ const useStyles = makeStyles(theme => ({
   },
   menuItem: {
     whiteSpace: 'normal',
+    paddingTop: 8,
+    paddingBottom: 8,
     '&:not(:last-child)': {
       borderBottom: `1px solid ${theme.palette.colors.greylight}`,
     },
@@ -113,7 +115,6 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
           classes.menuItem,
           !item.read ? classes.unReadIndicator : ''
         )}
-        dense
       >
         <Avatar
           alt={item.sender.username}

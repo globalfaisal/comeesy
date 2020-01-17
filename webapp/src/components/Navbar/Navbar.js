@@ -11,9 +11,9 @@ import { logout, markNotificationsRead } from '../../actions/userActions';
 /* -- components -- */
 import LinearLoading from '../UI/LinearLoading';
 import Logo from '../UI/Logo';
-import UserMenu from '../Menus/UserMenu';
-import NotificationMenu from '../Menus/NotificationMenu';
-import CreatePostNavLink from '../Menus/CreatePostNavLink';
+import UserMenu from './UserMenu';
+import NotificationMenu from './NotificationMenu';
+import CreatePostNavLink from './CreatePostNavLink';
 
 /* -- mui -- */
 import { makeStyles } from '@material-ui/core/styles';
