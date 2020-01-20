@@ -6,9 +6,10 @@ import _ from 'lodash';
 
 /* -- actions -- */
 import { getProfile } from '../../actions/dataActions';
+import { showAlert } from '../../actions/UIActions';
 
 /* -- components -- */
-import PostList from '../../components/Posts/PostList/PostList';
+import PostList from '../../components/PostList/PostList';
 import UserDetailsCard from '../../components/UserDetailsCard/UserDetailsCard';
 import CircularLoading from '../../components/UI/CircularLoading.js';
 
@@ -28,11 +29,14 @@ const Profile = ({ match: { params } }) => {
   const { profile, loading } = useSelector(state => state.data);
 
   useEffect(() => {
-    dispatch(getProfile(params.username));
+    dispatch(getProfile(params.username)).catch(({ message }) => {
+      dispatch(showAlert('error', message));
+    });
   }, [dispatch, params.username]);
 
   const renderContent = () => {
-    if (loading || !profile) return <CircularLoading />;
+    if (loading) return <CircularLoading />;
+    if (!profile) return null;
     return (
       <div className="profile-page">
         <section className={classes.cover}>

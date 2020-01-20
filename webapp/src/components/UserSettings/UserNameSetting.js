@@ -43,13 +43,9 @@ const UserNameSetting = ({ name, error, loading }) => {
     setInput(prevState => ({ ...prevState, value: e.target.value }));
   };
   const handleSubmit = () => {
-    dispatch(updateUserCredentials(input))
-      .then(({ message }) => {
-        dispatch(showAlert('success', message));
-      })
-      .catch(({ message }) => {
-        dispatch(showAlert('error', message));
-      });
+    dispatch(updateUserCredentials(input)).then(({ message }) => {
+      dispatch(showAlert('success', message));
+    });
   };
 
   return (

@@ -17,7 +17,7 @@ export const colors = {
 
   others: {
     white: '#ffffff',
-    whitesmoke: '#f7f7f7',
+    whitesmoke: '#f5f6f7',
     black: '#24292e',
     dark: '#444444',
     greylight: '#e6e6e6',

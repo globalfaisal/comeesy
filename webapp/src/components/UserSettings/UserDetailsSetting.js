@@ -1,12 +1,15 @@
 /* -- libs -- */
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 /* -- actions -- */
 import { updateUserDetails } from '../../actions/userActions';
-import { showAlert } from '../../actions/UIActions';
+import { showAlert, clearErrors } from '../../actions/UIActions';
+
+/* -- hooks -- */
+import useTextCounter from '../../hooks/useTextCounter';
 
 /* -- components -- */
 import DatePickerInput from '../UI/DatePickerInput';
@@ -21,6 +24,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
@@ -39,13 +43,31 @@ const useStyle = makeStyles(theme => ({
     position: 'absolute',
     color: theme.palette.colors.dark,
   },
+  count: {
+    '& > span:last-child': { float: 'right' },
+  },
 }));
-/* -- constants -- */
-const acceptedTypes = ['image/jpeg', 'image/png'];
 
-const UserDetailsSetting = ({ credentials, error, loading }) => {
+/* -- constants -- */
+const locationCharLimit = 50;
+const bioCharLimit = 160;
+
+const UserDetailsSetting = ({ credentials, loading }) => {
   const classes = useStyle();
   const dispatch = useDispatch();
+  const { error } = useSelector(state => state.user);
+
+  const {
+    hasExceededLimit: locationExceededLimit,
+    textLength: locationLength,
+    countTextLength: countLocationLength,
+  } = useTextCounter(locationCharLimit);
+
+  const {
+    hasExceededLimit: bioExceededLimit,
+    textLength: bioLength,
+    countTextLength: countBioLength,
+  } = useTextCounter(bioCharLimit);
 
   const [inputs, setInputs] = useState({
     gender: '',
@@ -56,8 +78,9 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
 
   useEffect(() => {
     mapStateToCredentials(credentials);
+    dispatch(clearErrors());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [credentials]);
+  }, []);
 
   const mapStateToCredentials = c => {
     if (!c) return null;
@@ -67,6 +90,8 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
       location: c.location || '',
       bio: c.bio || '',
     });
+    countBioLength(c.bio || '');
+    countLocationLength(c.location || '');
   };
 
   const handleInputChange = e => {
@@ -75,6 +100,8 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
       ...prevInputs,
       [e.target.name]: e.target.value,
     }));
+    if (e.target.id === 'location') countLocationLength(e.target.value);
+    if (e.target.id === 'bio') countBioLength(e.target.value);
   };
 
   const handleDateInputChange = date => {
@@ -133,7 +160,12 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
           disabled={loading}
         />
       </FormControl>
-      <FormControl className={classes.formControl} fullWidth>
+
+      <FormControl
+        className={classes.formControl}
+        fullWidth
+        error={(error && error.location) || locationExceededLimit}
+      >
         <TextField
           name="location"
           id="location"
@@ -144,9 +176,23 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
           placeholder="Add your location"
           variant="outlined"
           disabled={loading}
+          error={(error && error.location) || locationExceededLimit}
         />
+        <FormHelperText className={classes.count}>
+          <span>{error && error.location}</span>
+          <span>
+            {' '}
+            {!locationExceededLimit
+              ? `${locationLength}/${locationCharLimit}`
+              : `-${locationLength - locationCharLimit}`}
+          </span>
+        </FormHelperText>
       </FormControl>
-      <FormControl className={classes.formControl} fullWidth>
+      <FormControl
+        className={classes.formControl}
+        fullWidth
+        error={(error && error.bio) || bioExceededLimit}
+      >
         <TextField
           name="bio"
           id="bio"
@@ -160,14 +206,23 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
           rowsMax={4}
           variant="outlined"
           disabled={loading}
+          error={(error && error.bio) || bioExceededLimit}
         />
+        <FormHelperText className={classes.count}>
+          <span>{error && error.bio}</span>
+          <span>
+            {!bioExceededLimit
+              ? `${bioLength}/${bioCharLimit}`
+              : `-${bioLength - bioCharLimit}`}
+          </span>
+        </FormHelperText>
       </FormControl>
       <div className={classes.action}>
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          disabled={loading}
+          disabled={loading || bioExceededLimit || locationExceededLimit}
           className={classes.button}
         >
           Save Changes
@@ -181,7 +236,6 @@ const UserDetailsSetting = ({ credentials, error, loading }) => {
 };
 UserDetailsSetting.propTypes = {
   credentials: PropTypes.object.isRequired,
-  error: PropTypes.object,
   loading: PropTypes.bool,
 };
 export default UserDetailsSetting;

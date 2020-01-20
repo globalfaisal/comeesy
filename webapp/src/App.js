@@ -16,7 +16,7 @@ import getTheme from './utils/theme/theme';
 
 /* -- mui -- */
 import CssBaseline from '@material-ui/core/CssBaseline';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,14 +34,14 @@ const App = () => {
 
   const theme = getTheme();
   return (
-    <MuiThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Switch>
         <Route exact path="/auth/signup" render={p => <AuthLayout {...p} />} />
         <Route exact path="/auth/login" render={p => <AuthLayout {...p} />} />
         <Route path="/" render={p => <MainLayout {...p} />} />
       </Switch>
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

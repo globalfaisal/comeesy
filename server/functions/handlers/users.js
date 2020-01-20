@@ -18,11 +18,23 @@ const config = require('../config');
 // Update user profile details
 exports.updateUserDetails = async (req, res) => {
   const { isValid } = validateBodyContent(req.body);
-
   if (!isValid) {
     return res
       .status(400)
       .json({ message: 'At least one field must be updated' });
+  }
+  // Re-enforce max-character limit for location
+  if (req.body.location && req.body.location.length > 50) {
+    return res.status(400).json({
+      location: 'Must not exceeded the maximum character limit',
+    });
+  }
+
+  // Re-enforce max-character limit for bio
+  if (req.body.bio && req.body.bio.length > 160) {
+    return res
+      .status(400)
+      .json({ bio: 'Must not exceeded the maximum character limit' });
   }
 
   try {
@@ -140,7 +152,7 @@ exports.updateUserAvatar = (req, res) => {
       .bucket()
       .upload(imageToUpload.filePath, {
         gzip: true,
-        destination: `users/${req.user.userId}/${imageFileName}`,
+        destination: `users/${req.user.username}/images/${imageFileName}`,
         metadata: {
           public: true,
           metadata: {
@@ -198,7 +210,7 @@ async function updateUserPassword(req, res) {
     await admin
       .auth()
       .updateUser(req.user.userId, {
-        password: req.body.value.newPassword,
+        password: req.body.value.password,
       })
       .then(() =>
         res.status(200).json({

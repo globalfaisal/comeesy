@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -17,65 +17,79 @@ import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
-import Box from '@material-ui/core/Box';
-import NotificationIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import CommentIcon from '@material-ui/icons/Comment';
-import CommentReplyIcon from '@material-ui/icons/QuestionAnswer';
-
-/* -- image -- */
-import imagePath from '../../assets/images/notification.svg';
+import TimeIcon from '@material-ui/icons/AccessTime';
+import NotificationIcon from '@material-ui/icons/Notifications';
 
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   navLink: {
-    fontSize: 28,
     position: 'relative',
+    margin: '0 4px',
+    fontSize: 28,
+    color: theme.palette.colors.greylight,
   },
   paper: {
-    width: 400,
-    minHeight: 100,
-    maxHeight: 350,
+    minWidth: 350,
+    minHeight: 'calc(100vh - 53px)',
+    top: '53px !important',
     paddingTop: 8,
     paddingBottom: 8,
+    overflowX: 'hidden',
     overflowY: 'auto',
     display: 'flex',
+    [theme.breakpoints.down(420)]: {
+      left: '0 !important',
+      minWidth: '100vw',
+    },
+  },
+  title: {
+    paddingLeft: 16,
+    paddingBottom: 16,
+    fontWeight: 500,
+    fontSize: '1rem',
   },
   menuItem: {
     whiteSpace: 'normal',
+    paddingTop: 8,
+    paddingBottom: 8,
     '&:not(:last-child)': {
       borderBottom: `1px solid ${theme.palette.colors.greylight}`,
     },
   },
+  unReadIndicator: {
+    backgroundColor: theme.palette.colors.whitesmoke,
+    borderBottom: `1px solid ${theme.palette.colors.white}`,
+  },
   avatar: {
     marginRight: 6,
+    width: 40,
+    height: 40,
   },
-  message: {
+  content: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    marginLeft: 8,
   },
-  unReadIndicator: {
-    backgroundColor: theme.palette.colors.whitesmoke,
-    marginTop: 4,
-  },
+
   sender: {
-    marginRight: 4,
-    fontWeight: 400,
-    letterSpacing: 0.3,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
-  empty: {
-    minHeight: 130,
+
+  createdAt: {
+    fontSize: '0.75rem',
+    lineHeight: 0,
+    letterSpacing: -0.5,
+    display: 'flex',
+    alignItems: 'center',
+    '& > span': {
+      marginLeft: 4,
+    },
   },
 }));
-
-const variantIcon = {
-  like: FavoriteIcon,
-  comment: CommentIcon,
-  reply: CommentReplyIcon,
-};
 
 const NotificationMenu = ({ notifications = [], onMarkRead }) => {
   const classes = useStyles();
@@ -93,21 +107,11 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
           .map(item => item.notificationId);
 
         if (unReadNotificationIds.length > 0) onMarkRead(unReadNotificationIds);
-      }, 3000);
+      }, 6000);
     }
   };
   const onCloseMenu = e => {
     setAnchorEl(null);
-  };
-
-  const getNotificationTypIcon = type => {
-    if (!type) return;
-    const Icon = variantIcon[type];
-    return (
-      <Box component="span" marginRight={1}>
-        <Icon fontSize="inherit" />
-      </Box>
-    );
   };
 
   const renderNotifications = () =>
@@ -121,40 +125,42 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
           classes.menuItem,
           !item.read ? classes.unReadIndicator : ''
         )}
-        dense
       >
         <Avatar
           alt={item.sender.username}
           src={item.sender.imageUrl}
           className={classes.avatar}
         />
-        <div className={classes.message}>
-          <Typography
-            variant="body2"
-            color="textPrimary"
-            className={classes.sender}
-          >
-            {item.sender.name}
-            <div className="dot inline small" />{' '}
+        <div className={classes.content}>
+          <div className={classes.sender}>
+            <Typography variant="body2" component="span" color="textPrimary">
+              {item.sender.name}
+            </Typography>
             <Typography
+              component="span"
               variant="caption"
               color="textSecondary"
-              component="small"
+              className={classes.createdAt}
             >
-              {item.body}
+              <TimeIcon fontSize="inherit" />
+              <span>{formatDateToRelTime(item.createdAt)}</span>
             </Typography>
-          </Typography>
-
-          <Typography variant="caption" color="textSecondary">
-            {getNotificationTypIcon(item.type)}
-            {formatDateToRelTime(item.createdAt)}
+          </div>
+          <Typography
+            variant="body2"
+            color="textSecondary"
+            className={classes.message}
+          >
+            {item.body}
           </Typography>
         </div>
       </MenuItem>
     ));
   return (
-    <div className="notification-menu">
+    <Fragment>
       <IconButton
+        component={Link}
+        to="#"
         id="notificationMenuButton"
         onClick={onOpenMenu}
         aria-controls="notificationMenu"
@@ -177,17 +183,23 @@ const NotificationMenu = ({ notifications = [], onMarkRead }) => {
         onClose={onCloseMenu}
         classes={{ paper: classes.paper }}
       >
+        <Typography
+          variant="h6"
+          color="textSecondary"
+          className={classes.title}
+        >
+          Notifications
+        </Typography>
         {notifications && notifications.length > 0 ? (
           renderNotifications()
         ) : (
           <EmptyData
             text="You don't have any notifications"
-            image={imagePath}
             className={classes.empty}
           />
         )}
       </PopupMenu>
-    </div>
+    </Fragment>
   );
 };
 

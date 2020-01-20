@@ -53,13 +53,9 @@ const UserPasswordSetting = ({ loading, error }) => {
   };
   const handleSubmit = () => {
     // dispatch form data
-    dispatch(updateUserCredentials(input))
-      .then(({ message }) => {
-        dispatch(showAlert('success', message));
-      })
-      .catch(({ message }) => {
-        dispatch(showAlert('error', message));
-      });
+    dispatch(updateUserCredentials(input)).then(({ message }) => {
+      dispatch(showAlert('success', message));
+    });
   };
 
   return (

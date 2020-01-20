@@ -43,7 +43,7 @@ const deleteCommentNotification = async snapshot => {
     const postRef = await db.doc(`/posts/${snapshot.data().postId}`).get();
     const replyNotificationsSnapshot = await db
       .collection('notifications')
-      .where('type', '==', 'reply')
+      .where('type', '==', 'comment')
       .where('commentId', '==', snapshot.data().commentId)
       .get();
 

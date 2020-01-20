@@ -19,6 +19,7 @@ import Tab from '@material-ui/core/Tab';
 
 /* -- components -- */
 import Logo from '../../components/UI/Logo';
+import SnackAlert from '../../components/UI/SnackAlert';
 
 /* -- styles -- */
 import useStyles from './styles';
@@ -90,6 +91,7 @@ const AuthLayout = props => {
           </Grid>
         </Card>
       </Grid>
+      <SnackAlert />
     </main>
   );
 };

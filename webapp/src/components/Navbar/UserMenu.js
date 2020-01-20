@@ -1,5 +1,5 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -15,7 +15,13 @@ import Avatar from '@material-ui/core/Avatar';
 /* -- styles -- */
 const useStyles = makeStyles(theme => ({
   navLink: {
+    margin: '0 4px',
     fontSize: 28,
+  },
+  avatar: {
+    width: 28,
+    height: 28,
+    border: `1.2px solid ${theme.palette.colors.greylight}`,
   },
 }));
 
@@ -32,10 +38,12 @@ const UserMenu = ({ user, onLogout }) => {
 
   if (!user) return null;
   return (
-    <div className="user-menu">
+    <Fragment>
       <IconButton
-        id="userMenuButton"
+        component={Link}
+        to="#"
         onClick={onOpenMenu}
+        id="userMenuButton"
         aria-controls="userMenu"
         aria-haspopup="true"
         color="inherit"
@@ -55,7 +63,7 @@ const UserMenu = ({ user, onLogout }) => {
       >
         <MenuItem
           component={Link}
-          to={`/u/${user.username}`}
+          to={`/user/${user.username}`}
           onClick={onCloseMenu}
           dense
         >
@@ -74,7 +82,7 @@ const UserMenu = ({ user, onLogout }) => {
           Logout
         </MenuItem>
       </PopupMenu>
-    </div>
+    </Fragment>
   );
 };
 

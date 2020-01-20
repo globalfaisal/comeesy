@@ -25,7 +25,8 @@ const useStyles = makeStyles(theme => ({
     boxShadow: theme.shadows[5],
     padding: '42px 32px',
     borderRadius: 3,
-    minWidth: 320,
+    minWidth: 500,
+    minHeight: 200,
     maxWidth: '80%',
     [theme.breakpoints.down(420)]: {
       minWidth: '100%',
@@ -44,7 +45,7 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 6,
     right: 6,
-    color: theme.palette.colors.grey,
+    color: theme.palette.colors.greylight,
   },
 }));
 

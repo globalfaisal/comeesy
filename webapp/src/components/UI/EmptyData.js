@@ -30,7 +30,7 @@ const EmptyData = ({ text, image, className }) => {
   const classes = useStyle();
   return (
     <div className={clsx(classes.root, className)}>
-      <img src={image} alt={text} className={classes.media} />
+      {image && <img src={image} alt={text} className={classes.media} />}
       <Typography
         variant="body1"
         color="textSecondary"

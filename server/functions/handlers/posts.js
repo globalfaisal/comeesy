@@ -49,8 +49,8 @@ exports.getPost = (req, res) => {
 
 // Post a new post
 exports.addPost = (req, res) => {
-  const { isValid, error } = validateBodyContent(req.body.body);
-  if (!isValid) return res.status(400).json({ post: error });
+  const { isValid, error } = validateBodyContent(req.body.body, 500);
+  if (!isValid) return res.status(400).json({ error });
 
   const newPost = {
     body: req.body.body,
@@ -87,12 +87,13 @@ exports.deletePost = (req, res) => {
   postDocument
     .get()
     .then(async doc => {
-      if (!doc.exists) return res.status(404).json({ error: 'Post not found' });
+      if (!doc.exists)
+        return res.status(404).json({ message: 'Post not found' });
 
       postData = doc.data();
 
       if (postData.user.username !== req.user.username) {
-        return res.status(403).json({ error: 'Unauthorized delete request' });
+        return res.status(403).json({ message: 'Unauthorized delete request' });
       }
 
       // Delete post document from posts collection
@@ -100,7 +101,7 @@ exports.deletePost = (req, res) => {
       console.log('Post deleted successfully');
 
       return res.status(200).json({
-        message: `Post ${postData.postId} deleted successfully`,
+        message: `Post deleted successfully`,
       });
     })
     .catch(err => {

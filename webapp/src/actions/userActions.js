@@ -50,10 +50,9 @@ export const login = data => dispatch =>
         }
       })
       .catch(error => {
-        console.error(error.response);
-        dispatch(userAuthFailed(error.response.data));
-        if (error.response) reject(error.response.data);
-        else reject(new Error('Something went wrong'));
+        console.error(error);
+        dispatch(userAuthFailed(error.response ? error.response.data : null));
+        reject();
       });
   });
 
@@ -75,9 +74,8 @@ export const signup = data => dispatch =>
       })
       .catch(error => {
         console.error(error);
-        dispatch(userAuthFailed(error.response.data));
-        if (error.response) reject(error.response.data);
-        else reject(new Error('Something went wrong'));
+        dispatch(userAuthFailed(error.response ? error.response.data : null));
+        reject();
       });
   });
 
@@ -149,9 +147,9 @@ export const updateUserDetails = data => dispatch =>
       dispatch(getUserOwnData());
     } catch (error) {
       console.error(error);
-      dispatch(updateUserDataFailed(error.response.data));
-      if (error.response) reject(error.response.data);
-      else reject(new Error('Something went wrong'));
+      if (error.response) {
+        dispatch(updateUserDataFailed(error.response.data));
+      } else reject(new Error('Something went wrong. Please try again'));
     }
   });
 
@@ -173,9 +171,10 @@ export const updateUserCredentials = data => dispatch =>
       dispatch(getUserOwnData());
     } catch (error) {
       console.error(error);
-      dispatch(updateUserDataFailed(error.response.data));
-      if (error.response) reject(error.response.data);
-      else reject(new Error('Something went wrong'));
+      if (error.response) {
+        dispatch(updateUserDataFailed(error.response.data));
+        reject(error.response.data);
+      } else reject(new Error('Something went wrong. Please try again'));
     }
   });
 
@@ -198,9 +197,10 @@ export const uploadUserAvatar = formData => dispatch =>
       dispatch(getUserOwnData());
     } catch (error) {
       console.error(error.response);
-      dispatch(updateUserDataFailed(error.response.data));
-      if (error.response) reject(error.response.data);
-      else reject(new Error('Something went wrong'));
+      if (error.response) {
+        dispatch(updateUserDataFailed(error.response.data));
+        reject(error.response.data);
+      } else reject(new Error('Something went wrong. Please try again'));
     }
   });
 
