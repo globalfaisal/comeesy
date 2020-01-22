@@ -8,8 +8,11 @@
 # testing
 /coverage
 
-# production
+# React app production
 /build
+
+# Firebase Hosting Cache
+.firebase
 
 # misc
 .DS_Store
