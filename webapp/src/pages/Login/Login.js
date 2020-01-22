@@ -1,10 +1,11 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { login } from '../../actions/userActions';
+import { clearErrors } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
@@ -21,6 +22,13 @@ const Login = () => {
   const { loading, error } = useSelector(state => state.user);
 
   const [inputs, setInputs] = useState({ email: '', password: '' });
+
+  useEffect(
+    () => () => {
+      dispatch(clearErrors());
+    },
+    []
+  );
 
   const handleChange = event => {
     event.persist();
@@ -41,6 +49,13 @@ const Login = () => {
         <Typography variant="h6" gutterBottom>
           Login
         </Typography>
+
+        {error && error.account && (
+          <Typography variant="body2" color="error" gutterBottom>
+            {error.account}
+          </Typography>
+        )}
+
         <form
           noValidate
           name="login-form"

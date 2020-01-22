@@ -32,10 +32,18 @@ exports.login = (req, res) => {
             "This account doesn't exist. Enter different account or Create one",
         });
       }
+
       if (err.code === 'auth/wrong-password') {
         return res
           .status(403)
           .json({ password: 'Wrong password. Please try again' });
+      }
+      if (err.code === 'auth/user-disabled') {
+        {
+          return res.status(403).json({
+            account: 'The user account has been disabled.',
+          });
+        }
       }
       console.error('Error while login user ', err);
       return res

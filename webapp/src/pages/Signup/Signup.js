@@ -1,10 +1,11 @@
 /* -- libs -- */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
+import { clearErrors } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -28,6 +29,13 @@ const Signup = () => {
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(
+    () => () => {
+      dispatch(clearErrors());
+    },
+    []
+  );
 
   const handleChange = event => {
     event.persist();
