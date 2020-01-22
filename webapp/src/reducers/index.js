@@ -1,6 +1,4 @@
 /* -- libs -- */
-import { firestoreReducer } from 'redux-firestore';
-import { firebaseReducer } from 'react-redux-firebase';
 import { combineReducers } from 'redux';
 
 /* -- reducers -- */
@@ -12,6 +10,4 @@ export default combineReducers({
   user: userReducer,
   data: dataReducer,
   UI: UIReducer,
-  firestore: firestoreReducer,
-  firebase: firebaseReducer,
 });
