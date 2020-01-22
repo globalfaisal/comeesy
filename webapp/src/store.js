@@ -1,11 +1,14 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import reduxThunk from 'redux-thunk';
+import thunk from 'redux-thunk';
+import firebase from './firebase';
 
-import reducers from './reducers';
+import rootReducer from './reducers';
+
+const getFirebase = () => firebase;
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export default createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(reduxThunk))
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk.withExtraArgument(getFirebase)))
 );
