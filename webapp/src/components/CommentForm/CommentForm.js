@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
-import useAuthChecker from '../../hooks/useAuthChecker';
 
 /* -- mui -- */
 import Avatar from '@material-ui/core/Avatar';
@@ -36,7 +35,6 @@ const CommentForm = ({
   );
 
   const [input, setInput] = useState(initValue);
-  const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     charLimit
   );
@@ -54,7 +52,6 @@ const CommentForm = ({
   };
 
   const checkAuth = () => {
-    authenticate();
     inputRef.current.focus();
   };
 

@@ -15,10 +15,14 @@ const loadingUser = () => ({
   type: userTypes.LOADING_USER,
 });
 
-const userAuthSuccess = () => ({
-  type: userTypes.USER_AUTH_SUCCESS,
-});
-const userAuthFailed = error => ({
+export const userAuthSuccess = () => dispatch => {
+  dispatch(getUserOwnData());
+  dispatch({
+    type: userTypes.USER_AUTH_SUCCESS,
+  });
+};
+
+export const userAuthFailed = error => ({
   type: userTypes.USER_AUTH_FAILED,
   payload: error,
 });
@@ -32,19 +36,21 @@ const updateUserDataFailed = error => ({
   payload: error,
 });
 
-export const login = data => dispatch =>
+export const login = userData => (dispatch, getState, getFirebase) =>
   new Promise((resolve, reject) => {
     dispatch(loadingUser());
 
-    comeesyAPI
-      .post('/auth/login', data)
-      .then(res => {
-        resolve();
-        const idToken = `Bearer ${res.data.idToken}`;
-        storeToken(idToken);
+    // Sign-in user in with email and password.
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(userData.email, userData.password)
+      .then(async ({ user }) => {
+        // Get the user's ID token.
+        const idToken = await user.getIdToken();
+        storeToken(`Bearer ${idToken}`);
         dispatch(userAuthSuccess());
-        dispatch(getUserOwnData());
-        dispatch(closeModal());
+        // dispatch(closeModal());
         if (history.location.pathname === '/auth/login') {
           history.push('/');
         }
@@ -52,7 +58,7 @@ export const login = data => dispatch =>
       .catch(error => {
         console.error(error);
         dispatch(userAuthFailed(error.response ? error.response.data : null));
-        reject();
+        // reject();
       });
   });
 
@@ -67,7 +73,6 @@ export const signup = data => dispatch =>
         const idToken = `Bearer ${res.data.idToken}`;
         storeToken(idToken);
         dispatch(userAuthSuccess());
-        dispatch(getUserOwnData());
         if (history.location.pathname === '/auth/signup') {
           history.push('/');
         }
@@ -79,15 +84,18 @@ export const signup = data => dispatch =>
       });
   });
 
-export const logout = () => dispatch =>
+// Signout user.
+export const logout = () => (dispatch, getState, getFirebase) =>
   new Promise((resolve, reject) => {
     dispatch(loadingUser());
-    comeesyAPI
-      .get('/auth/logout')
-      .then(res => {
-        resolve();
+    const firebase = getFirebase();
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
         clearToken();
         dispatch({ type: userTypes.LOGOUT });
+        resolve();
       })
       .catch(error => {
         console.error(error);
@@ -102,9 +110,9 @@ export const getUserOwnData = () => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      if (!hasAuthorization(dispatch)) {
-        return dispatch(openModal(Login));
-      }
+      // if (!hasAuthorization(dispatch)) {
+      //   return dispatch(openModal(Login));
+      // }
 
       dispatch(loadingUser());
 
@@ -113,7 +121,6 @@ export const getUserOwnData = () => dispatch =>
       });
 
       resolve(response.data);
-      dispatch(userAuthSuccess());
       dispatch({
         type: userTypes.GET_USER_SUCCESS,
         payload: response.data,

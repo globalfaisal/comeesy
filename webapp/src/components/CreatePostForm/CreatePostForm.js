@@ -10,7 +10,6 @@ import { showAlert } from '../../actions/UIActions';
 
 /* -- hooks -- */
 import useTextCounter from '../../hooks/useTextCounter';
-import useAuthChecker from '../../hooks/useAuthChecker';
 
 /* -- component -- */
 import AlertDialog from '../UI/AlertDialog';
@@ -49,7 +48,6 @@ const CreatePostForm = ({ isOpen, onClose }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
-  const { authenticate } = useAuthChecker();
   const { hasExceededLimit, textLength, countTextLength } = useTextCounter(
     charLimit
   );
@@ -86,7 +84,6 @@ const CreatePostForm = ({ isOpen, onClose }) => {
       <Dialog
         open={isOpen}
         onClose={onClose}
-        onClick={() => authenticate()}
         scroll="paper"
         fullScreen={fullScreen}
         fullWidth

@@ -1,38 +1,39 @@
 /* -- libs -- */
-import React, { useEffect } from 'react';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import firebase from './firebase';
+
+/* -- actions -- */
+import { userAuthSuccess, userAuthFailed } from './actions/userActions';
 
 /* -- layouts -- */
 import AuthLayout from './layouts/AuthLayout/AuthLayout';
 import MainLayout from './layouts/MainLayout/MainLayout';
 
-/* -- actions -- */
-import { getUserOwnData } from './actions/userActions';
-import { closeModal } from './actions/UIActions';
-
 /* -- utils -- */
 import getTheme from './utils/theme/theme';
 
 /* -- mui -- */
-import CssBaseline from '@material-ui/core/CssBaseline';
 import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 const App = () => {
+  const theme = getTheme();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // 1. Get user data
-    dispatch(getUserOwnData());
-    // 2. Hide login modal at the start of the app
-    const timer = window.setTimeout(() => {
-      dispatch(closeModal());
-    }, 200);
-    return () => window.clearTimeout(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Observe user auth state changes,
+  // Invokes action creator based on the state change.
+  firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+      // User is signed in.
+      dispatch(userAuthSuccess());
+    } else {
+      // No user is signed in.
+      dispatch(userAuthFailed(null));
+    }
+  });
 
-  const theme = getTheme();
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
