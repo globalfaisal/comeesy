@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { login } from '../../actions/userActions';
-import { clearErrors } from '../../actions/UIActions';
+import { clearErrors, closeModal, showAlert } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Typography from '@material-ui/core/Typography';
@@ -40,7 +40,9 @@ const Login = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(login(inputs));
+    dispatch(login(inputs))
+      .then(() => dispatch(closeModal()))
+      .catch(({ message }) => dispatch(showAlert('error', message)));
   };
 
   return (

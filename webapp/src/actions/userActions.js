@@ -15,7 +15,8 @@ const loadingUser = () => ({
   type: userTypes.LOADING_USER,
 });
 
-export const userAuthSuccess = () => dispatch => {
+export const userAuthSuccess = idToken => dispatch => {
+  storeToken(`Bearer ${idToken}`);
   dispatch(getUserOwnData());
   dispatch({
     type: userTypes.USER_AUTH_SUCCESS,
@@ -36,7 +37,11 @@ const updateUserDataFailed = error => ({
   payload: error,
 });
 
-export const login = userData => (dispatch, getState, getFirebase) =>
+export const login = ({ email, password }) => (
+  dispatch,
+  getState,
+  getFirebase
+) =>
   new Promise((resolve, reject) => {
     dispatch(loadingUser());
 
@@ -44,21 +49,39 @@ export const login = userData => (dispatch, getState, getFirebase) =>
     const firebase = getFirebase();
     firebase
       .auth()
-      .signInWithEmailAndPassword(userData.email, userData.password)
+      .signInWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
         // Get the user's ID token.
         const idToken = await user.getIdToken();
-        storeToken(`Bearer ${idToken}`);
-        dispatch(userAuthSuccess());
-        // dispatch(closeModal());
+        dispatch(userAuthSuccess(idToken));
         if (history.location.pathname === '/auth/login') {
           history.push('/');
         }
+        resolve();
       })
-      .catch(error => {
-        console.error(error);
-        dispatch(userAuthFailed(error.response ? error.response.data : null));
-        // reject();
+      .catch(err => {
+        if (err.code === 'auth/user-not-found') {
+          return dispatch(
+            userAuthFailed({
+              email:
+                "This account doesn't exist. Enter different account or Create one",
+            })
+          );
+        }
+
+        if (err.code === 'auth/wrong-password') {
+          return dispatch(
+            userAuthFailed({ password: 'Wrong password. Please try again' })
+          );
+        }
+        if (err.code === 'auth/user-disabled') {
+          return dispatch(
+            userAuthFailed({ account: 'The user account has been disabled.' })
+          );
+        }
+
+        dispatch(userAuthFailed(null));
+        reject(new Error('Something went wrong, please try again'));
       });
   });
 
@@ -68,19 +91,20 @@ export const signup = data => dispatch =>
 
     comeesyAPI
       .post('/auth/signup', data)
-      .then(res => {
-        resolve();
-        const idToken = `Bearer ${res.data.idToken}`;
-        storeToken(idToken);
-        dispatch(userAuthSuccess());
+      .then(() => {
+        dispatch(login(data));
         if (history.location.pathname === '/auth/signup') {
           history.push('/');
         }
+        resolve();
       })
       .catch(error => {
         console.error(error);
-        dispatch(userAuthFailed(error.response ? error.response.data : null));
-        reject();
+        if (error.response) dispatch(userAuthFailed(error.response.data));
+        else {
+          dispatch(userAuthFailed(null));
+          reject(new Error('Something went wrong, please try again'));
+        }
       });
   });
 
@@ -110,9 +134,6 @@ export const getUserOwnData = () => dispatch =>
   new Promise(async (resolve, reject) => {
     try {
       const token = getStoredToken();
-      // if (!hasAuthorization(dispatch)) {
-      //   return dispatch(openModal(Login));
-      // }
 
       dispatch(loadingUser());
 

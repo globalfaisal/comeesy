@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 /* -- actions -- */
 import { signup } from '../../actions/userActions';
-import { clearErrors } from '../../actions/UIActions';
+import { clearErrors, showAlert, closeModal } from '../../actions/UIActions';
 
 /* -- mui -- */
 import Grid from '@material-ui/core/Grid';
@@ -42,7 +42,9 @@ const Signup = () => {
     setInputs(prevInputs => ({
       ...prevInputs,
       [event.target.name]: event.target.value,
-    }));
+    }))
+      .then(() => dispatch(closeModal()))
+      .catch(({ message }) => dispatch(showAlert('error', message)));
   };
 
   const handleSubmit = event => {
@@ -155,12 +157,6 @@ const Signup = () => {
               className={classes.button}
             >
               Sign up
-              {loading && (
-                <CircularProgress
-                  size={22}
-                  className={classes.singupProgress}
-                />
-              )}
             </Button>
             <Typography
               variant="body2"

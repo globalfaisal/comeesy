@@ -27,7 +27,7 @@ const App = () => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
       // User is signed in.
-      dispatch(userAuthSuccess());
+      user.getIdToken().then(token => dispatch(userAuthSuccess(token)));
     } else {
       // No user is signed in.
       dispatch(userAuthFailed(null));
