@@ -10,4 +10,9 @@ A Simple but fully featured social media app.
 - Restful API built with [Node](https://nodejs.org/en/) and [Express.js](https://expressjs.com/)
 - Incorporates Google Material Design principles through [Material-UI](https://material-ui.com) react components that implement Google's material design
 
-**See live demo** https://comeesy.web.app/
+**See live demo** 
+https://comeesy.web.app/
+
+**Sample User Login** 
+email: jane.doe@email.com
+password: janedoe123
